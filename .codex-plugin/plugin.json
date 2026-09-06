@@ -1,0 +1,38 @@
+{
+  "name": "reasoning-workflow",
+  "version": "5.0.0",
+  "description": "A general-purpose reasoning and deep-research workflow with semantic state, traceability, validation, and change control.",
+  "author": {
+    "name": "折鸢",
+    "url": "https://github.com/zy839971925-zyy"
+  },
+  "homepage": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills",
+  "repository": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills",
+  "keywords": [
+    "reasoning",
+    "deep-research",
+    "agent-workflow",
+    "semantic-enforcement",
+    "evidence",
+    "traceability",
+    "codex",
+    "chatgpt"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Reasoning Workflow",
+    "shortDescription": "Reason, research, decide, execute, and verify with traceable state",
+    "longDescription": "A general governing workflow for substantive agent tasks. It treats question answering and project execution as two first-class lanes, adds adaptive inquiry and evidence reasoning, and enforces typed semantic state, transitive invalidation, closure rules, delivery reconciliation, provenance, and runtime validation.",
+    "developerName": "折鸢",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills",
+    "privacyPolicyURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Use Reasoning Workflow to analyze this at the deepest useful level.",
+      "Investigate this question and challenge the leading explanation.",
+      "Plan and execute this task with traceable state and verification."
+    ]
+  }
+}

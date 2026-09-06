@@ -1,0 +1,35 @@
+{
+  "case_id": "ambiguous-question",
+  "intent": "Question wording permits materially different interpretations",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "adaptive",
+    "must": [
+      "identify epistemic task",
+      "separate frame uncertainty from answer uncertainty",
+      "clarify or bound material ambiguity"
+    ],
+    "must_not": [
+      "commit to first interpretation without checking"
+    ],
+    "closure_blockers": [
+      "material unresolved framing ambiguity"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "lane_selected",
+        "lane": "question"
+      },
+      {
+        "event": "problem_model_created"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

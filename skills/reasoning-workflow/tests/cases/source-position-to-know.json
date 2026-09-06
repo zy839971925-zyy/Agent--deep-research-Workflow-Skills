@@ -1,0 +1,33 @@
+{
+  "case_id": "source-position-to-know",
+  "intent": "Sources have different authority and access to the proposition being evaluated",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "standard-or-deep",
+    "must": [
+      "evaluate source access/method for exact proposition",
+      "distinguish official statement from underlying empirical truth",
+      "distinguish lived experience from prevalence",
+      "trace copied provenance"
+    ],
+    "must_not": [
+      "rank evidence solely by prestige",
+      "use a source outside its position-to-know as decisive proof"
+    ],
+    "closure_blockers": [
+      "decisive claim supported only by poorly positioned source"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "position_to_know_checked"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

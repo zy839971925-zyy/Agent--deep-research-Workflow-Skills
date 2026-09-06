@@ -1,0 +1,37 @@
+{
+  "case_id": "question-drift",
+  "intent": "Research uncovers an easier adjacent question and analysis starts answering that instead",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "adaptive",
+    "must": [
+      "preserve original epistemic task",
+      "compare final synthesis with original question",
+      "use adjacent findings only when they help answer parent",
+      "state unresolved original component"
+    ],
+    "must_not": [
+      "substitute an easier nearby question",
+      "claim closure because adjacent research is strong"
+    ],
+    "closure_blockers": [
+      "original epistemic task not answered or bounded"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "question_drift_checked"
+      }
+    ],
+    "forbidden_events": [
+      {
+        "event": "adjacent_question_substituted"
+      }
+    ],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

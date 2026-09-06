@@ -1,0 +1,37 @@
+{
+  "case_id": "requirement-missing",
+  "intent": "One requested deliverable/requirement is absent",
+  "expected": {
+    "lane": [
+      "action"
+    ],
+    "effort": "standard",
+    "must": [
+      "requirement coverage check",
+      "mark missing/blocker",
+      "prevent delivery_ready"
+    ],
+    "must_not": [
+      "close because substantive analysis is strong"
+    ],
+    "closure_blockers": [
+      "undispositioned requirement"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "delivery_integrity_checked"
+      }
+    ],
+    "forbidden_events": [
+      {
+        "event": "delivery_committed"
+      }
+    ],
+    "expected_final_state": {},
+    "expected_findings": [
+      "REQ_MISSING_MANIFEST"
+    ]
+  }
+}

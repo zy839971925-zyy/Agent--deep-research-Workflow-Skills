@@ -1,0 +1,36 @@
+{
+  "case_id": "stale-source",
+  "intent": "An upstream source/version changes during work",
+  "expected": {
+    "lane": [
+      "question",
+      "action"
+    ],
+    "effort": "adaptive",
+    "must": [
+      "mark dependents stale",
+      "preserve unaffected work",
+      "re-verify current version",
+      "reconcile artifacts"
+    ],
+    "must_not": [
+      "leave derived artifact silently current"
+    ],
+    "closure_blockers": [
+      "material stale dependency"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "temporal_scope_checked"
+      },
+      {
+        "event": "effective_state_recomputed"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}
