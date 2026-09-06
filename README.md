@@ -1,475 +1,361 @@
-Reasoning Workflow
+<div align="center">
 
-A general-purpose governing workflow for how AI agents understand, reason, research, decide, act, and verify.
+<img src="./skills/reasoning-workflow/assets/icon.svg" width="96" height="96" alt="Reasoning Workflow" />
 
-Reasoning Workflow is designed for substantive agent work: answering questions, investigating uncertain problems, analyzing systems, writing, planning, diagnosing, comparing, forecasting, recommending, designing, implementing, auditing, modifying persistent state, and verifying outcomes.
+# Reasoning Workflow
 
-It began as an attempt to build a better Deep Research workflow.
+### Teach AI how to think before it searches.
 
-The problem quickly turned out to be larger than research.
+**Understand the problem. Model the relationships. Research what actually matters.**
 
-A capable agent should not simply receive a prompt, match keywords, call tools, and produce an output. It should first understand what problem it is solving, construct a revisable model of that problem, identify what its conclusions depend on, determine what information actually matters, route work to specialist capabilities when necessary, and know what must be true before the task can legitimately be considered complete.
+A general-purpose reasoning and Deep Research workflow for AI agents.
 
-That is what Reasoning Workflow is intended to govern.
+It teaches an agent to understand what the user is actually asking, decompose and recompose the problem, trace consequential relationships and causal structure, identify uncertainty and competing explanations, derive what evidence is actually needed, and only then search, challenge, synthesize, act, and verify.
 
-Understand before acting.
-Model before retrieving.
-Research what can change the answer.
-Preserve what conclusions depend on.
-Verify before declaring completion.
+<br />
 
-⸻
+[![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827?style=flat-square)](./skills/reasoning-workflow/SKILL.md)
+[![Deep Research](https://img.shields.io/badge/Deep%20Research-Problem--Driven-2563EB?style=flat-square)](./skills/reasoning-workflow/SKILL.md)
+[![Reasoning](https://img.shields.io/badge/Reasoning-Before%20Retrieval-7C3AED?style=flat-square)](./skills/reasoning-workflow/SKILL.md)
+[![Semantic Validation](https://img.shields.io/badge/Runtime-Semantic%20Validation-0F766E?style=flat-square)](./skills/reasoning-workflow/scripts)
 
-What this is
+<br />
 
-Reasoning Workflow is a general-purpose orchestration and reasoning layer for AI agents.
+[Quick Start](#quick-start) ·
+[Why](#why-this-exists) ·
+[How It Thinks](#how-it-thinks) ·
+[Deep Research](#deep-research-is-model-driven) ·
+[Two Lanes](#from-deep-research-to-a-general-reasoning-workflow) ·
+[Advanced Runtime](#advanced-runtime-for-long-running-work) ·
+[Package](#package-structure)
 
-It is meant to sit above specialist capabilities rather than replace them.
+</div>
 
-                    ┌─────────────────────┐
-                    │  Reasoning Workflow │
-                    └──────────┬──────────┘
-                               │
-             understand · model · reason
-               research · decide · verify
-                               │
-       ┌───────────────┬───────┼────────┬───────────────┐
-       │               │       │        │               │
-     Coding       Product    Data      PDF          Research
-                  Design    Analysis              / Retrieval
-       │               │       │        │               │
-       └───────────────┴───────┼────────┴───────────────┘
-                               │
-                         User outcome
+---
 
-The workflow governs questions such as:
+## The idea in 30 seconds
 
-* What is the user actually asking?
-* What kind of epistemic task is this?
-* What is already known?
-* What is merely assumed?
-* Which premises does the conclusion depend on?
-* What relationships or mechanisms matter?
-* What competing explanations exist?
-* What uncertainty could materially change the answer?
-* Is external research actually necessary?
-* What evidence would distinguish between alternatives?
-* Which specialist skill or tool should perform the next operation?
-* What changed after execution?
-* What became stale?
-* What must be verified?
-* Is the task truly complete?
+A lot of AI research begins like this:
 
-The specialist capability performs the domain-specific operation.
+```text
+user question
+     ↓
+keywords
+     ↓
+search
+     ↓
+more sources
+     ↓
+summary
+```
 
-Reasoning Workflow governs the reasoning around it.
+That looks reasonable.
 
-⸻
+But there is a problem:
 
-Why this exists
+> **What if the model misunderstood the question before it searched anything?**
 
-Agent workflows often fail in two opposite directions.
+Then fifty sources do not necessarily help.
 
-1. Research without understanding
+You can produce a deeply researched answer to the wrong question.
 
-A user asks a question.
+Reasoning Workflow moves the starting point upstream:
 
-The agent extracts a few nouns and immediately searches them.
+```text
+user question / task
+        ↓
+understand the real problem
+        ↓
+build a revisable problem model
+        ↓
+decompose ↔ recompose
+        ↓
+map causal / dependency / constraint relationships
+        ↓
+identify uncertainty + competing explanations
+        ↓
+derive evidence needs
+        ↓
+research / observe
+        ↓
+challenge + update
+        ↓
+answer / decide / act
+        ↓
+verify
+```
 
-prompt
-→ keywords
-→ search
-→ more sources
-→ summary
+> **Search is downstream of reasoning.**
 
-This can look rigorous while missing the real problem.
+The agent should not begin by asking:
 
-The relevant evidence may exist several causal steps away from the words used in the prompt. Important variables may be upstream causes, common causes, mediators, constraints, feedback loops, lagging effects, substitutes, or hidden assumptions.
+> “What keywords should I search?”
 
-A large number of sources cannot repair a badly framed question.
+It should first ask:
 
-2. Process without reasoning
+> “What do I actually need to know — and why would knowing it change the answer?”
 
-The opposite failure is turning every task into:
+That is the core of this project.
 
-plan
-→ execute
-→ verify
-→ close
+---
 
-before sufficiently understanding the problem.
+## Quick Start
 
-This creates procedural discipline while weakening inquiry.
-
-A question becomes a project.
-
-A hypothesis becomes a requirement.
-
-A preliminary interpretation becomes a decision.
-
-A checklist replaces thinking.
-
-Reasoning Workflow is designed to avoid both failure modes.
-
-⸻
-
-One governing workflow for substantive agent work
-
-The workflow can govern many different classes of tasks.
-
-Questions
-Analysis
-Research
-Explanation
-Diagnosis
-Comparison
-Writing
-Planning
-Recommendation
-Forecasting
-Decision support
-Design
-Coding
-Implementation
-File modification
-Audit
-Verification
-Persistent projects
-Consequential change
-
-These tasks do not all require the same amount of process.
-
-They do, however, share a common requirement:
-
-The agent should understand what it is doing before it commits to how it will do it.
-
-⸻
-
-Two first-class lanes
-
-Reasoning Workflow has two equal lanes.
-
-A question is not a truncated project.
-
-Answering a question is a complete task.
-
-flowchart TD
-    U[User intent] --> E[Identify epistemic task / desired outcome]
-    E --> M[Build revisable problem model]
-    M --> Q[Question / Reasoning Lane]
-    M --> A[Action / Project Lane]
-    Q --> Q1[Essence · premises · decomposition]
-    Q1 --> Q2[Relationships · competing explanations]
-    Q2 --> Q3[Uncertainty · reasoning · research]
-    Q3 --> Q4[Challenge · recompose · answer · verify]
-    A --> A1[Reasoning / decision layer first]
-    A1 --> A2[Risk · change control · execute]
-    A2 --> A3[Re-observe · verify · validate]
-    A3 --> A4[Reconcile · effectiveness · close / reopen]
-    Q4 --> O[User outcome]
-    A4 --> O
-
-Question / Reasoning Lane
+You do **not** need to learn the whole workflow before using it.
 
-understand
-→ identify essence
-→ model
-→ premises
-→ decompose / recompose
-→ relationships
-→ competing explanations
-→ uncertainty
-→ reason / research
-→ challenge
-→ synthesize
-→ answer
-→ verify
+If your AI can read this repository, give it your actual task and tell it to load the Skill:
 
-This lane is sufficient for tasks such as:
+```text
+Read skills/reasoning-workflow/SKILL.md and use it as the governing workflow for this task.
 
-* factual questions;
-* explanations;
-* mechanism analysis;
-* truth assessment;
-* rumor verification;
-* comparison;
-* diagnosis;
-* interpretation;
-* conceptual analysis;
-* technical investigation;
-* forecasting;
-* forming a judgment;
-* decision analysis;
-* open-ended research.
+My task:
+[write your question or task here]
+```
 
-A difficult question can involve extensive research without becoming a project-management exercise.
-
-Action / Project Lane
-
-When the task requires changing persistent state, producing controlled artifacts, modifying code or files, operating tools, or implementing consequential changes, the reasoning layer extends into:
-
-understand
-→ model / research
-→ decide
-→ assess risk
-→ govern change
-→ execute
-→ re-observe
-→ verify
-→ validate
-→ reconcile
-→ assess effectiveness
-→ close / reopen
-
-The Action lane extends reasoning.
-
-It does not replace it.
-
-⸻
-
-The reasoning kernel
-
-Before selecting tools, the workflow attempts to identify the real epistemic task.
-
-The user may be asking the agent to:
-
-establish a fact
-explain a cause
-judge whether something is true
-compare alternatives
-diagnose a failure
-understand a mechanism
-forecast an outcome
-interpret a statement
-make a recommendation
-support a decision
-or directly solve a problem
-
-The first question is therefore not:
-
-Which tool should I call?
-
-It is:
-
-What conclusion would actually answer the user’s question?
-
-⸻
-
-Build a revisable problem model
-
-The workflow distinguishes different epistemic roles.
-
-fact
-observation
-premise
-assumption
-hypothesis
-inference
-judgment
-recommendation
-unknown
-
-These should not silently collapse into one another.
+Then ask whatever you actually care about.
 
 For example:
 
-OBSERVATION
-Sales increased after the product launch.
-INFERENCE
-The launch may have contributed to the increase.
-HYPOTHESIS
-The launch was the primary cause of the increase.
-JUDGMENT
-The launch was probably commercially effective.
-RECOMMENDATION
-Expand the campaign.
+```text
+Read skills/reasoning-workflow/SKILL.md and use it as the governing workflow for this task.
 
-Evidence supporting the first statement does not automatically prove the last.
+My task:
+Is this product really discontinued?
 
-The problem model must remain revisable.
+Don't just search the product name.
+Investigate the strongest evidence, possible source propagation,
+alternative explanations, and what would actually establish the answer.
+```
 
-New evidence should be allowed to change the interpretation rather than merely accumulate support for the first plausible story.
+Or simply:
 
-⸻
+```text
+Use the Reasoning Workflow in this repository to deeply investigate:
 
-Model-driven research
+[my question]
+```
 
-Reasoning Workflow originated from a Deep Research problem:
+If the Skill is installed in a compatible agent runtime:
 
-Agents often retrieve information before they understand what information would actually matter.
+```text
+Use $reasoning-workflow as the governing workflow for this task:
 
-The workflow therefore prefers:
+[your task]
+```
 
-observation
-→ problem model
-→ premises / assumptions
-→ hypotheses
-→ relationships
-→ material uncertainty
-→ discriminating evidence
-→ retrieval
-→ model update
+If you attached the Skill as an archive rather than cloning the repository:
 
-over:
+```text
+Read reasoning-workflow/SKILL.md from the attached archive
+and use it as the governing workflow for this task.
 
+[your task]
+```
+
+> [!TIP]
+> For most users, that is enough.  
+> You do not need to manually operate the state model, validators, schemas, or advanced project machinery.
+
+---
+
+# Why this exists
+
+## Deep Research often starts too late
+
+The problem is usually not that an AI cannot search.
+
+Modern agents can retrieve enormous amounts of information.
+
+The harder problem is deciding:
+
+- what the question really is;
+- which parts of it actually matter;
+- what depends on what;
+- what is observation versus assumption;
+- what mechanisms could explain the observation;
+- which competing explanations remain plausible;
+- what evidence could distinguish them;
+- where that evidence is likely to exist;
+- and when another search would no longer materially improve the answer.
+
+Without that layer, “Deep Research” can easily become:
+
+```text
 prompt
-→ keywords
-→ more pages
-→ summary
+→ keyword expansion
+→ many searches
+→ many sources
+→ long synthesis
+```
 
-The central principle is:
+The output may look impressive while the underlying question was framed incorrectly.
 
-Research should follow the structure of the problem, not merely the wording of the prompt.
+Reasoning Workflow instead aims for:
 
-⸻
+```text
+prompt
+→ epistemic task
+→ problem model
+→ relationship model
+→ uncertainty
+→ hypotheses
+→ evidence needs
+→ retrieval
+→ challenge
+→ synthesis
+```
 
-Research starts from uncertainty
+More research is useful only when it produces **better understanding**.
 
-Before an important retrieval, the workflow should be able to answer:
+---
 
-What do I currently not know?
-Why could this unknown materially change the answer?
-What competing explanations are currently plausible?
-What evidence would distinguish between them?
-What would I do differently after learning it?
+# How it thinks
 
-Retrieval can then serve specific purposes such as:
+```mermaid
+flowchart LR
+    Q["User question / task"] --> U["Understand"]
+    U --> M["Problem model"]
+    M --> D["Decompose ↔ Recompose"]
+    D --> R["Relationships / mechanisms"]
+    R --> H["Hypotheses + uncertainty"]
+    H --> E["Evidence needs"]
+    E --> S["Research / observe"]
+    S --> C["Challenge + update"]
+    C --> O["Answer / decide / act / verify"]
 
-discover the frame
-establish a premise
-test a mechanism
-distinguish alternatives
-resolve an entity or version
-estimate magnitude
-check recency
-falsify a conclusion
+    C -. new evidence changes model .-> M
+```
 
-Research is therefore not measured primarily by source count.
+The problem model is **revisable**.
 
-The target is information gain.
+New evidence can change a premise.
 
-⸻
+A changed premise can change an inference.
 
-Frame uncertainty vs answer uncertainty
+A changed inference can change a judgment, decision, artifact, or verification result.
 
-Not all uncertainty is the same.
+The workflow is therefore not a fixed chain of steps. It is an updating reasoning system.
 
-Answer uncertainty
+---
 
-The problem is correctly framed, but the answer is unknown.
+## 1 · Understand what the user actually needs
 
-question known
-→ answer unknown
+The nouns in a prompt are not automatically the problem structure.
 
-More evidence may solve the problem.
+Before choosing tools, searches, categories, or execution steps, the agent first determines the actual epistemic task.
 
-Frame uncertainty
+The user may be asking for:
 
-The current understanding of the problem itself may be wrong or incomplete.
+```text
+fact
+verification
+explanation
+mechanism
+interpretation
+diagnosis
+comparison
+forecast
+judgment
+decision
+recommendation
+creation
+execution
+audit
+```
 
-problem space uncertain
-→ orient
-→ expand
-→ map
-→ identify structure
-→ then focus
+Several can coexist.
 
-When frame uncertainty is high, immediately narrowing to literal keyword search can produce a deeply researched answer to the wrong question.
+A product recommendation may require:
 
-⸻
+```text
+verification
++ comparison
++ measurement
++ decision analysis
+```
 
-Decompose — then recompose
+A debugging task may require:
 
-Complex questions often need decomposition.
+```text
+observation
++ diagnosis
++ causal reasoning
++ implementation
++ verification
+```
 
-But decomposition is useful only if the pieces can reconstruct the original problem.
+An unfamiliar research problem may begin with:
 
-Reasoning Workflow therefore applies a recomposition test:
-
-If every subquestion were answered perfectly, would those answers be sufficient to answer the parent question?
-
-If not, the decomposition may be:
-
-* incomplete;
-* overlapping;
-* at inconsistent analytic levels;
-* missing dependencies;
-* aimed at the wrong abstraction.
-
-The objective is not checklist-style MECE compliance.
-
-The objective is explanatory sufficiency.
-
-⸻
-
-Mechanism before taxonomy
-
-Classification can be useful.
-
-But categorization should normally follow understanding rather than replace it.
-
-A useful progression is:
-
+```text
 concrete observations
-→ recurring patterns
-→ consequential relationships
-→ mechanism / essence
-→ abstraction / taxonomy
+        ↓
+recurring patterns
+        ↓
+consequential relationships
+        ↓
+mechanisms
+        ↓
+abstractions / categories
+```
 
-A label compresses a model.
+The workflow prefers understanding before taxonomy.
 
-It should not become the model.
+Categories should compress understanding.
 
-⸻
+They should not replace it.
 
-Induction, abduction, and deduction
+---
 
-The workflow treats several reasoning operators as complementary.
+## 2 · Decompose — and then recompose
 
-Induction
+“Break the problem into smaller questions” is useful advice.
 
-observations
-→ pattern
-→ tentative generalization
+It is also incomplete.
 
-Abduction
+An AI can generate ten beautifully organized subquestions and still completely miss the original problem.
 
-observation
-→ possible explanations
-→ competing hypotheses
+So Reasoning Workflow applies a stronger test:
 
-Deduction
+> **If every subquestion were answered perfectly, would those answers actually be sufficient to answer the original question?**
 
-hypothesis / mechanism
-→ predicted consequence
-→ testable observation
+If the answer is no, the decomposition failed.
 
-A stronger reasoning loop is therefore:
+Good decomposition should preserve:
 
-observation
-→ induction / abduction
-→ competing hypotheses
-→ deduction
-→ discriminating predictions
-→ evidence
-→ revision
+| Property | Question |
+| --- | --- |
+| Low overlap | Are multiple branches doing the same reasoning? |
+| Material coverage | Is an answer-bearing dependency missing? |
+| Stable analytic level | Are causes, symptoms, actors, outcomes, and actions being mixed arbitrarily? |
+| Dependency visibility | Do we know which branches depend on which? |
+| Recomposability | Can the branches actually reconstruct the parent answer? |
 
-This helps prevent:
+The goal is not:
 
-first intuition
-→ search for supporting evidence
-→ confidence increases
+```text
+make a nicer outline
+```
 
-without meaningful hypothesis competition.
+The goal is:
 
-⸻
+```text
+reduce complexity
+without destroying the structure needed to answer the question
+```
 
-Relationship reasoning
+---
 
-“Related to” is too weak for serious analysis.
+## 3 · “Related to” is not enough
 
-The workflow distinguishes relationships such as:
+AI systems frequently say:
 
+> “A is related to B.”
+
+But **how**?
+
+Reasoning Workflow distinguishes consequential relationships such as:
+
+```text
 causes
 correlates_with
 depends_on
@@ -481,1025 +367,384 @@ precedes
 is_part_of
 is_example_of
 is_alternative_to
+```
 
-Depending on the problem, it may also explore:
+For harder problems, it can also inspect:
 
+```text
 upstream causes
 common causes
-downstream consequences
-mediators
+downstream effects
 feedback loops
-time lags
+delays
 thresholds
-adaptation
-expectations
-path dependence
 confounding
 selection effects
 reverse causality
+incentives
+adaptation
+expectations
+path dependence
 substitutes
 complements
 buffers
+external forces
+```
 
-This is particularly important in problems where the relevant answer cannot be found by searching the literal nouns in the prompt.
+Consider:
 
-Relationship exploration is also pruned.
+```mermaid
+flowchart LR
+    C["Common cause C"] --> A["A"]
+    C --> B["B"]
 
-A branch is worth pursuing when resolving it could materially change:
+    A --> M["Mediator"]
+    M --> B
 
+    B --> D["Downstream effect"]
+
+    D -. feedback .-> A
+```
+
+Seeing that A and B move together is not enough to conclude:
+
+```text
+A → B
+```
+
+Maybe:
+
+```text
+C → A
+C → B
+```
+
+Or:
+
+```text
+B → A
+```
+
+Or:
+
+```text
+A → mediator → B
+```
+
+Or the relationship only appears under a particular threshold, time horizon, incentive structure, or population.
+
+This matters because:
+
+> **Relationships determine what the agent should investigate next.**
+
+The graph should not expand forever.
+
+A relationship deserves more investigation when resolving it could materially change:
+
+```text
 interpretation
-explanation
 prediction
 judgment
 decision
-or action
+design
+recommendation
+action
+```
 
-⸻
+---
 
-Competing explanations
+## 4 · Keep more than one explanation alive
 
-For important explanatory claims, the workflow asks:
+A plausible story is not automatically the correct story.
 
-What else could produce the same observation?
+Reasoning Workflow can combine:
+
+```text
+induction
+observations → candidate pattern
+
+abduction
+observations → plausible explanation
+
+deduction
+hypothesis → predictions that should follow
+```
+
+The resulting loop is:
+
+```text
+observation
+    ↓
+pattern / candidate explanation
+    ↓
+competing hypotheses
+    ↓
+deduced predictions
+    ↓
+discriminating evidence
+    ↓
+revision
+```
+
+For a material conclusion, the agent should ask:
+
+```text
+What else could explain this?
+
 What would each explanation predict differently?
-Which evidence best distinguishes them?
-What evidence would make the current explanation less plausible?
-Which premise, if false, would reverse the conclusion?
-
-Research becomes stronger when it searches for discriminating evidence, not merely additional confirming material.
-
-Ten sources repeating the same proposition may add less value than one observation capable of distinguishing two competing mechanisms.
-
-⸻
-
-Source quality means “position to know”
-
-Source evaluation is not a simple prestige ranking.
-
-The workflow asks:
-
-Is this source actually in a position to know this specific proposition?
-
-For example:
-
-Source	Often strong for	Often weak for
-Official institution	official rules, announcements, formal specifications	independent evaluation of itself
-Company	product specifications, internal announcements	unbiased assessment of real-world product quality
-Journalist	reported events, sourced investigation	unsourced claims about hidden internal mechanisms
-Research paper	measured relationships under its design	conclusions outside the measured scope
-User community	real experiences, edge cases, failure modes	population-wide incidence
-Secondary summary	orientation and discovery	replacing the primary evidence it summarizes
-
-The question is not merely:
-
-Is this source authoritative?
-
-It is:
-
-Authoritative about what?
-
-⸻
-
-Structured uncertainty
-
-Uncertainty should not collapse into words such as:
-
-maybe
-probably
-unclear
-
-Reasoning Workflow distinguishes uncertainty sources such as:
-
-missing evidence
-source conflict
-measurement uncertainty
-definition / scope mismatch
-premise uncertainty
-model uncertainty
-causal uncertainty
-future behavioral uncertainty
-external-variable uncertainty
-
-Different uncertainty types imply different actions.
-
-For example:
-
-missing evidence
-→ retrieval may help
-definition mismatch
-→ clarify the construct
-premise uncertainty
-→ challenge the dependency
-causal uncertainty
-→ compare mechanisms
-future uncertainty
-→ scenarios / signposts / monitoring
-
-Not every uncertainty must be eliminated.
-
-Some should be bounded, disclosed, monitored, or explicitly retained.
-
-⸻
-
-Challenge is part of normal reasoning
-
-For conclusions carrying material weight, the workflow asks proportionately:
 
 What evidence would make me change my answer?
-Which premise, if false, would break the conclusion?
-Is there a counterexample?
-Does another explanation fit the same evidence?
-Am I treating sequence or correlation as causation?
-What happens if the main assumption is wrong?
 
-Simple questions may pass this stage almost immediately.
+Which premise would collapse the conclusion if it were false?
 
-Consequential conclusions require deeper challenge.
+What remains uncertain?
+```
 
-⸻
+The first coherent explanation should not quietly become “the truth.”
 
-Adaptive depth
+---
 
-Reasoning Workflow is designed to be broadly applicable without becoming a fixed procedural ceremony.
+# Deep Research is model-driven
 
-It separates five dimensions of depth.
+This is the part the project originally began with.
 
-Dimension	Core question
-Reasoning breadth	How much of the problem space, mechanism, relationship structure, and alternative space must be explored?
-Evidence depth	How much external observation or retrieval is necessary?
-Challenge depth	How aggressively should counterevidence, alternatives, and reversal conditions be tested?
-Verification depth	How much checking is needed before accepting the result?
-Governance depth	How much traceability, authorization, reversibility, monitoring, and effectiveness control is required?
+Research should start from an **information need**, not a keyword list.
 
-A simple task may remain:
+Before retrieving new evidence, the workflow asks:
 
-understand
-→ reason
-→ answer
-→ check
+### What do I not know?
 
-A difficult task may expand into:
+Then:
 
-orient
-→ model
-→ decompose
-→ inspect relationships
-→ form competing explanations
-→ research
-→ challenge
-→ recompose
-→ decide
-→ verify
+### Why could that unknown change the answer?
 
-A consequential persistent task may additionally require:
+Then:
 
-change control
-→ execution
-→ state synchronization
-→ artifact validation
-→ effectiveness assessment
-→ closure / reopen
+### What observation would discriminate between the live explanations?
 
-The governing principle is:
+And finally:
 
-Rigor is not ceremony.
+### Where is the closest evidence surface to that observation?
 
-Complexity comes from the problem.
+That evidence surface may be:
 
-Not from the framework having many modules.
+```text
+conversation context
+user-provided files
+repositories
+source code
+logs
+tests
+structured datasets
+runtime experiments
+official records
+public web
+academic literature
+specialist reporting
+community evidence
+historical archives
+```
 
-⸻
+Web search is one evidence surface.
 
-Stop research by marginal information gain
+It is not synonymous with research.
 
-Research should not stop because the agent has reached:
+---
 
-5 searches
-10 sources
-20 pages
+## Frame uncertainty vs. answer uncertainty
 
-It should stop when another feasible research action is unlikely to materially improve the answer relative to its cost.
+These are different.
 
-A useful question is:
+### Answer uncertainty
 
-If I learned the answer to the next unresolved question, is there a meaningful chance I would change the core explanation, judgment, forecast, or decision?
+The question is basically correct, but the answer is unknown.
 
-If not, continued retrieval has low expected value.
+```text
+Question is stable
+→ gather evidence
+→ resolve answer
+```
 
-⸻
+### Frame uncertainty
 
-Decision quality is not belief quality
+The current model of the problem itself may be wrong or incomplete.
 
-Many substantive tasks eventually ask:
+The missing piece could be:
 
-What should I do?
+```text
+an actor
+a mechanism
+a definition
+an adjacent domain
+a hidden dependency
+a time boundary
+a source ecosystem
+an incentive
+a confounder
+```
 
-That is not the same question as:
+When frame uncertainty is high, narrowing immediately can be dangerous.
 
-What is true?
+Reasoning Workflow can instead use:
 
-Reasoning Workflow separates:
+```text
+ORIENT
+  ↓
+EXPAND
+  ↓
+MAP
+  ↓
+FOCUS
+```
 
-evidence
-→ inference
-→ belief / judgment
+Explore enough to discover the real structure.
 
-from:
+Then narrow.
 
-objective
-→ alternatives
-→ constraints
-→ consequences
-→ trade-offs
-→ uncertainty
-→ robustness / sensitivity
-→ reversibility
-→ opportunity cost
-→ value of more information
-→ recommendation
+---
 
-A belief can remain uncertain while a decision is robust.
+## Evidence should be judged by position to know
 
-A fact can be highly certain while the correct decision remains ambiguous because the user’s objectives or trade-offs are unclear.
+A source is not strong simply because it looks authoritative.
 
-The workflow therefore avoids silently treating value judgments as evidence-derived facts.
+For an important claim, ask:
 
-When important preferences are unknown, conditional recommendations may be more appropriate:
+```text
+Was this source actually in a position to know?
 
-If X matters most → choose A.
-If Y matters most → choose B.
+Could its method observe the thing being claimed?
 
-⸻
+Does the time match?
 
-Measurement validity is not decision relevance
+Does the entity or version match?
 
-A correctly measured quantity can still be the wrong thing to optimize.
+Does the population match?
 
-The workflow distinguishes:
+Is this observation, inference, hearsay, or copied reporting?
 
-construct
-→ operational measure
-→ measurement validity
-→ decision relevance
+Are apparently independent sources actually one provenance chain?
+```
 
-Examples:
+For example:
 
-large market
-≠ automatically attractive market
-high benchmark score
-≠ automatically better real-world task performance
-more engagement
-≠ automatically more user value
-sales growth
-≠ automatically positive net value
-
-The workflow asks both:
-
-Does the proxy actually measure the construct?
-
-and:
+```text
+Article A ─┐
+Article B ─┼──> Original source X
+Article C ─┘
+```
 
-Even if it does, how much should that construct matter to the final decision?
+That is not three independent confirmations.
 
-⸻
+It is one underlying evidence origin repeated three times.
 
-Specialist skills remain specialist
+> **10 articles copying the same original source ≠ 10 independent confirmations.**
 
-Reasoning Workflow is not intended to replace domain-specific skills.
+Likewise, an official source may be the strongest evidence for:
 
-It should compose with them.
+> “What does this institution officially state?”
 
-Reasoning Workflow + Coding
-Reasoning Workflow + Product Design
-Reasoning Workflow + Data Analysis
-Reasoning Workflow + PDFs
-Reasoning Workflow + Spreadsheets
-Reasoning Workflow + Research
-Reasoning Workflow + Computer Use
+while being weaker evidence for:
 
-The governing workflow decides:
+> “What actually happened operationally?”
 
-what the actual objective is
-what is known vs assumed
-what evidence is missing
-which relationships matter
-what specialist capability is needed
-what changed after the operation
-what became stale
-what must be verified
-what counts as complete
+Different propositions require different sources.
 
-The specialist capability performs the specialized work.
+---
 
-This distinction is important.
+## Evidence should discriminate, not just accumulate
 
-A universal governing workflow does not mean one Skill should contain every domain capability.
+Imagine two explanations:
 
-It means the same reasoning architecture can govern many different domains.
+```text
+H1 → predicts A, B, C
+H2 → predicts A, B, D
+```
 
-⸻
+Finding twenty more examples of `A` may add little information.
 
-Persistent work and canonical state
+Finding whether `C` or `D` occurred may change everything.
 
-Some tasks end with an answer.
+So the workflow prefers evidence with high expected **information gain**.
 
-Others continue across many actions, artifacts, observations, decisions, or sessions.
+Sometimes:
 
-For persistent work, Reasoning Workflow can maintain a canonical current-state representation covering concepts such as:
+```text
+1 discriminating observation
+>
+30 loosely relevant sources
+```
 
-objective
-scope
-requirements
-acceptance criteria
-questions
-answers
-observations
-evidence
-premises
-assumptions
-hypotheses
-uncertainties
-relationships
-inferences
-judgments
-recommendations
-decisions
-risks
-actions
-artifacts
-verification
-effectiveness
-stale items
-blocked items
-last completed action
-next safe action
+Deep Research should reduce consequential uncertainty.
 
-The distinction is:
+It should not merely produce a larger bibliography.
 
-PRESERVED HISTORY
-raw inputs
-observations
-user steering
-state-changing events
-        │
-        ▼
-CANONICAL CURRENT STATE
-        │
-        ▼
-DERIVED REPRESENTATIONS
-reports
-code
-documents
-slides
-UI
-other artifacts
+---
 
-The canonical state answers:
+## Research should know when to stop
 
-What should the agent currently believe and act from?
+Source count is not a completion criterion.
 
-Preserved history answers:
+Search count is not a completion criterion.
 
-How did the work arrive here?
+Report length is not a completion criterion.
 
-⸻
+Agent count is not a completion criterion.
 
-Machine-enforceable semantics
+The useful question is:
 
-Reasoning principles become more useful when important structural invariants can also be checked by machines.
+> **What is the expected answer gain from the next feasible inquiry?**
 
-Two principles guide the semantic layer:
+Research can stop when another realistic investigation is unlikely to materially change:
 
-Declared state is input. Effective state is computed.
+```text
+the answer
+the confidence
+the decision
+the recommendation
+the important uncertainty
+```
 
-Validators certify structural admissibility, not epistemic truth.
+This prevents both premature stopping and endless research.
 
-For example, a record may still declare:
+---
 
-status = current
+# From Deep Research to a general reasoning workflow
 
-while an upstream premise has already been invalidated.
+Reasoning Workflow began as an attempt to make Deep Research better.
 
-The effective state can therefore become:
+Then the same failure appeared everywhere:
 
-Premise invalidated
-        ↓
-Inference stale
-        ↓
-Judgment stale
-        ↓
-Recommendation recompute
-        ↓
-Artifact stale
-        ↓
-Verification rerun
+> **AI often acts before it understands.**
 
-The purpose is not to let a formal validator decide what is true in the real world.
+Coding.
 
-The purpose is to make it harder for an obviously stale, incomplete, contradictory, or structurally unsupported reasoning state to masquerade as current and complete.
+Design.
 
-⸻
+Product analysis.
 
-Typed semantic records
+Market research.
 
-Persistent state can use typed records including:
+Writing.
 
-Epistemic
+Planning.
 
-Question
-Answer
-Observation
-Evidence
-Premise
-Assumption
-Hypothesis
-Uncertainty
-Relationship
-Inference
-Judgment
+Diagnosis.
 
-Decision
+Forecasting.
 
-Objective
-Constraint
-Alternative
-Consequence
-Measurement
-Recommendation
-Decision
+Decision support.
 
-Runtime
+Long-running agent work.
 
-Requirement
-Risk
-Action
-Artifact
-Verification
-Effectiveness
-Raw / Derived Record
-Event
+The underlying discipline turned out to generalize.
 
-Typed references make relationships between these records explicit.
+That is why the project now has **two first-class lanes**.
 
-This enables structural checks such as:
+---
 
-premise_refs
-must resolve to Premise records
-question_refs
-must resolve to Question records
-verification_refs
-must resolve to Verification records
+## Question / Reasoning Lane
 
-rather than treating every ID as an arbitrary string.
-
-⸻
-
-Closure is different from stopping
-
-An agent stopping work does not prove that a task is complete.
-
-For the Question / Reasoning Lane, closure can depend on conditions such as:
-
-root question answered or bounded
-material child questions dispositioned
-recomposition complete
-question drift checked
-material uncertainty resolved / bounded / irreducible
-decisive dependencies current
-current answer available
-
-For persistent Action / Project work, closure may additionally require:
-
-material requirements satisfied
-blocking risks dispositioned
-required artifacts current
-verification passed
-delivery state reconciled
-effectiveness checked where required
-
-The intended distinction is:
-
-agent stopped
-
-versus:
-
-task is admissible for closure
-
-⸻
-
-System invariants
-
-For substantive persistent work, Reasoning Workflow aims to preserve eight system properties.
-
-Invariant	Meaning
-Traceable	Important conclusions and outputs can be traced to their basis
-Readable	A human or successor agent can understand the current state
-Synchronized	Upstream changes update or invalidate dependent state
-Original-preserving	Raw evidence remains distinguishable from transformations and inference
-Complete	Closure checks the original question, requirements, blockers, artifacts, and verification
-Consistent	Canonical state and derived representations can be reconciled
-Durable / recoverable	Persistent work can checkpoint, resume, and hand off where supported
-Fast / proportionate	Heavy formal machinery activates only when it adds material value
-
-These are system properties.
-
-They are not instructions to create a large state file for every simple question.
-
-⸻
-
-Semantic validation stack
-
-The machine layer is organized conceptually into several validation layers.
-
-1. Type validity
-2. Graph validity
-3. Effective-state computation
-4. Closure semantics
-5. Runtime integrity
-6. Decision-quality structure
-7. Behavioral evaluation
-
-Type validity
-
-Checks:
-
-record shape
-enums
-typed references
-local invariants
-
-Graph validity
-
-Checks:
-
-dependency relationships
-cycle policies
-lineage
-reference integrity
-
-Effective-state computation
-
-Handles:
-
-stale propagation
-invalidation
-supersession
-recomputation
-
-Closure semantics
-
-Handles:
-
-epistemic closure
-runtime closure
-delivery reconciliation
-
-Runtime integrity
-
-Can check structures such as:
-
-event continuity
-raw lineage
-artifact references
-hashes / fingerprints where available
-
-Decision structure
-
-Makes explicit structures such as:
-
-objectives
-alternatives
-constraints
-consequences
-trade-offs
-uncertainty
-value of information
-
-Behavioral evaluation
-
-Can evaluate public observables such as:
-
-expected events
-forbidden events
-expected final state
-expected findings
-
-without requiring private chain-of-thought.
-
-⸻
-
-Raw evidence and lineage
-
-Where the environment supports durable artifacts, original inputs should remain distinguishable from transformations.
-
-RAW-001 original image
-│
-├── DER-001 crop
-├── DER-002 enhancement
-│      └── OCR-001
-│
-└── OBS-004 visual observation
-       └── INF-003 inference
-
-The intended principle is:
-
-Transformations create descendants, not silent replacements.
-
-The same applies to:
-
-original document
-→ working copy
-→ revised artifact
-→ delivered artifact
-
-and:
-
-retrieved page
-→ extracted passage
-→ observation
-→ inference
-→ judgment
-
-⸻
-
-Behavioral regression
-
-The repository includes behavioral specifications designed to test workflow behavior across different task classes.
-
-Examples include:
-
-trivial questions
-ambiguous questions
-deep open inquiry
-needle search
-rumor verification
-human-statement interpretation
-conflicting evidence
-stale sources
-premise invalidation
-question drift
-decomposition / recomposition
-interrupted work
-user steering
-partial failure
-persistent change
-ineffective change
-requirement omission
-multi-artifact drift
-specialist-skill handoff
-
-These are intentionally treated as:
-
-regression specifications, not proof of model intelligence.
-
-A run can expose observable events and final state without recording hidden chain-of-thought.
-
-⸻
-
-Repository structure
-
-.
-├── .codex-plugin/
-│   └── plugin.json
-│
-├── .github/
-│   └── workflows/
-│       └── validate.yml
-│
-├── README.md
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── PRIVACY.md
-├── TERMS.md
-│
-└── skills/
-    └── reasoning-workflow/
-        ├── SKILL.md
-        ├── README.md
-        │
-        ├── agents/
-        │   └── openai.yaml
-        │
-        ├── assets/
-        │
-        ├── references/
-        │   ├── problem-framing-and-effort.md
-        │   ├── inquiry-and-research.md
-        │   ├── reasoning-structure-and-decomposition.md
-        │   ├── relationships-and-systems.md
-        │   ├── evidence-and-provenance.md
-        │   ├── hypotheses-and-bias-control.md
-        │   ├── decision-and-recommendation.md
-        │   ├── measurement-and-operationalization.md
-        │   ├── semantic-state-contract.md
-        │   ├── synchronization-and-recovery.md
-        │   ├── synthesis-execution-and-verification.md
-        │   └── ...
-        │
-        ├── schemas/
-        │
-        ├── scripts/
-        │
-        └── tests/
-
-The public repository README explains the project.
-
-The runtime entry point is:
-
-skills/reasoning-workflow/SKILL.md
-
-Detailed modules are loaded progressively from references/.
-
-Machine-readable contracts live under schemas/.
-
-Deterministic semantic checks live under scripts/.
-
-Behavioral and validator regression material lives under tests/.
-
-⸻
-
-Quick start
-
-Use as a Skill
-
-The Skill root is:
-
-skills/reasoning-workflow/
-
-A compatible agent environment can install or load that directory as a Skill.
-
-The root SKILL.md acts as the governing router.
-
-Detailed references should be loaded progressively rather than injecting the entire package into context at once.
-
-⸻
-
-Use in a normal chat
-
-When the Skill is attached as a file rather than formally installed, a suitable bootstrap instruction is:
-
-Read reasoning-workflow/SKILL.md and use it as the governing workflow for subsequent substantive tasks in this conversation.
-Apply the core reasoning process to substantive questions, but only activate heavy research, persistent state, change governance, semantic validation, or specialist references when the task actually warrants them.
-Load references, schemas, and scripts progressively rather than all at once.
-
-⸻
-
-Use as a skill-only Codex plugin
-
-The repository also contains:
-
-.codex-plugin/plugin.json
-
-with the Skill directory exposed through:
-
-./skills/
-
-The Skill itself remains:
-
-reasoning-workflow
-
-The plugin wrapper is a distribution mechanism.
-
-It does not change the internal reasoning architecture.
-
-⸻
-
-Validation
-
-Python 3.10+ is recommended.
-
-Semantic validators use jsonschema.
-
-From the Skill directory:
-
-cd skills/reasoning-workflow
-python -m pip install -r scripts/requirements.txt
-python scripts/validate_skill.py .
-python scripts/validate_links.py .
-python -m unittest tests.test_validators -v
-
-The validation suite is intended to check structural properties such as:
-
-Skill/package integrity
-reference navigation
-JSON Schema validity
-typed-reference compatibility
-dependency semantics
-cycle policy
-transitive invalidation
-closure blockers
-state ↔ delivery reconciliation
-event continuity
-raw lineage
-artifact and verification references
-
-Passing these checks does not prove that the real-world answer is true.
-
-It means that the represented reasoning or work state satisfies the structural rules the workflow claims to enforce.
-
-⸻
-
-What Reasoning Workflow does not claim
-
-Reasoning Workflow does not claim that:
-
-* every question requires research;
-* every task requires persistent state;
-* more sources automatically produce a better answer;
-* more process automatically produces better reasoning;
-* every relationship is causal;
-* every uncertainty can or should be eliminated;
-* validators can prove epistemic truth;
-* a generic governing workflow can replace domain expertise;
-* specialist skills should be absorbed into one giant universal tool;
-* private chain-of-thought should be recorded for auditability.
-
-The objective is not maximal process.
-
-The objective is better problem understanding and stronger structural integrity at the level appropriate to the task.
-
-⸻
-
-Design philosophy
-
-Several principles recur throughout the project.
-
-Understand before acting
-
-Do not let tool availability decide what the problem is.
-
-Model before retrieving
-
-Search because something important is unknown.
-
-Not because “research” sounds rigorous.
-
-Research the problem, not the keywords
-
-The important evidence may lie in mechanisms, dependencies, and adjacent variables not explicitly named by the user.
-
-Mechanism before taxonomy
-
-Understand the phenomenon before compressing it into a category.
-
-Relationships before isolated facts
-
-Real systems are often explained by interactions, not individual variables.
-
-Competing explanations before confidence
-
-A conclusion becomes stronger when plausible alternatives fail, not merely when confirming evidence accumulates.
-
-Information gain over source count
-
-Prefer evidence capable of changing the model.
-
-Recomposition after decomposition
-
-Solving subquestions is useful only if they reconstruct the parent problem.
-
-Belief quality is not decision quality
-
-Knowing what is true and deciding what to do are related but different semantic layers.
-
-Measurement validity is not decision relevance
-
-A metric may measure something correctly without measuring what matters.
-
-Effective state over declared state
-
-A conclusion does not remain current merely because its own record says current.
-
-Closure over stopping
-
-The agent stopping is not proof that the task is complete.
-
-Specialist skills remain specialist
-
-A universal workflow should orchestrate domain capabilities, not erase their boundaries.
-
-Proportional rigor
-
-The workflow should become more rigorous because the problem demands it.
-
-Not because the framework contains many components.
-
-⸻
-
-Project direction
-
-The main reasoning architecture is intentionally becoming more stable.
-
-Future development should favor stronger implementation of the ideas already present rather than continuously adding more methodology prose.
-
-High-value areas include:
-
-semantic contracts
-typed state
-dependency semantics
-question / answer binding
-recursive closure
-temporal validity
-artifact / state synchronization
-verification provenance
-event integrity
-raw lineage
-decision-quality enforcement
-behavioral evaluation
-runtime integrations
-
-The long-term objective is not to formalize truth.
-
-It is to make it harder for an agent to:
-
-answer the wrong question
-research irrelevant evidence
-hide important assumptions
-ignore competing explanations
-use stale premises as current
-let artifacts drift from decisions
-claim verification without coverage
-or declare incomplete work finished
-
-⸻
-
-Contributing
-
-See CONTRIBUTING.md.
-
-Useful contributions include:
-
-* real failure cases;
-* semantic-contract improvements;
-* validator correctness;
-* dependency and invalidation semantics;
-* reasoning and research edge cases;
-* behavioral regression scenarios;
-* specialist-skill interoperability;
-* runtime integrations;
-* documentation improvements.
-
-When proposing a new principle, prefer identifying a concrete failure mode that the existing workflow cannot adequately:
-
-represent
-detect
-reason about
-recover from
-or prevent
-
-rather than adding methodology for its own sake.
-
-⸻
-
-中文简介
-
-Reasoning Workflow 是一个面向 AI Agent 的通用 governing workflow。
-
-它最初来自一个 Deep Research 问题：
-
-为什么 Agent 明明搜索了很多资料，最后还是可能没有真正理解问题？
-
-后来我们发现，这个问题并不属于 Research 本身。
-
-几乎所有严肃的 Agent 任务都会面对类似的问题：
-
-用户真正想解决什么？
-当前问题是怎么被定义的？
-哪些是事实，哪些只是前提或假设？
-事物之间有哪些真正重要的关系？
-还有哪些竞争解释？
-什么未知信息真的会改变结论？
-现在应该继续推理、搜索，还是调用专业 Skill？
-执行以后什么状态发生了变化？
-哪些旧结论因此失效？
-什么东西必须重新验证？
-什么时候才算真正完成？
-
-于是这个项目逐渐从 Deep Research workflow 演化成了一个可以治理：
-
-问答
-分析
-研究
-写作
-规划
-诊断
-比较
-推荐
-预测
-决策
-设计
-编码
-实施
-审计
-验证
-以及复杂长期任务
-
-的通用工作流。
-
-它有两条平级 Lane。
-
-Question / Reasoning Lane
-
+```text
 understand
 → identify essence
 → model
@@ -1513,145 +758,952 @@ understand
 → synthesize
 → answer
 → verify
+```
 
-这里非常重要的一条原则是：
+This lane is enough for many tasks:
 
-回答一个问题本身就是一个完整任务。
+```text
+fact checking
+explanation
+interpretation
+diagnosis
+comparison
+rumor verification
+mechanism analysis
+forecasting
+judgment
+recommendation
+decision analysis
+Deep Research
+```
 
-并不是所有问题都应该被强行变成项目管理。
+A difficult question may require hours of research.
 
-Action / Project Lane
+It is still a complete question-answering task.
 
-当任务需要真正改变 persistent state，例如：
+It does not need to be artificially turned into a project-management exercise.
 
-写代码
-修改文件
-生成 artifact
-执行操作
-实施方案
-完成项目
+---
 
-Reasoning Lane 才继续扩展为：
+## Action / Project Lane
 
-risk
-→ change control
+When work changes persistent state or creates controlled artifacts, the cognitive lane extends into execution:
+
+```text
+understand
+→ model / research
+→ decide
+→ assess risk
 → execute
 → re-observe
 → verify
 → validate
 → reconcile
-→ effectiveness
+→ evaluate effectiveness
 → close / reopen
+```
 
-Reasoning Workflow 也不是为了替代 Coding、Product Design、PDF、Spreadsheet、Data Analysis 等专业 Skill。
+Examples include:
 
-它位于更上层：
+```text
+code changes
+file modification
+multi-artifact production
+persistent configuration
+long-running projects
+multi-agent work
+consequential external actions
+handoff / recovery
+```
 
-负责理解问题、组织推理、决定研究方向、选择专业能力、整合结果、管理状态并判断任务是否真正完成。
+The Action lane does **not** replace reasoning.
 
-另一个核心思想是：
+It begins with enough of the Question / Reasoning lane to understand what should be done.
 
-Research should follow the structure of the problem, not merely the wording of the prompt.
+```mermaid
+flowchart TB
+    I["User intent"] --> M["Revisable problem model"]
 
-也就是说：
+    M --> Q["Question / Reasoning"]
+    M --> A["Action / Project"]
 
-用户问 A
-≠
-立刻搜索 A
+    Q --> Q1["reason → research → challenge → answer"]
+    A --> A1["reason → decide → execute → observe → verify"]
 
-更合理的过程可能是：
+    Q1 --> O["User outcome"]
+    A1 --> O
+```
 
-理解问题
-→ 建立模型
-→ 找前提
-→ 找关系
-→ 提出竞争解释
-→ 找 material uncertainty
-→ 判断什么证据能区分这些解释
-→ 再去检索
-→ 更新模型
+---
 
-这也是为什么 Reasoning Workflow 特别强调：
+# Adaptive depth
 
-因果关系
-依赖关系
-中介变量
-反馈
-时间滞后
-阈值
-适应
-路径依赖
-反向因果
-替代关系
-共同原因
+Using the workflow does not mean forcing maximum ceremony onto every request.
 
-等系统结构。
+A simple question should stay simple.
 
-同时它又是自适应的。
+Reasoning Workflow calibrates several dimensions independently:
 
-简单问题可以只有：
+| Dimension | Increase when |
+| --- | --- |
+| **Reasoning breadth** | multiple mechanisms, interpretations, actors, or boundary conditions matter |
+| **Evidence depth** | facts are uncertain, changing, disputed, dispersed, quantitative, or consequential |
+| **Challenge depth** | causal claims, forecasts, accusations, or fragile premises matter |
+| **Verification depth** | errors are costly or exactness matters |
+| **Governance depth** | work changes persistent state or spans artifacts, sessions, agents, or systems |
 
-理解 → 推理 → 回答 → 检查
+Convenient presets are:
 
-复杂问题才逐渐增加：
+```text
+Light
+Standard
+Deep
+Max
+```
 
-Reasoning breadth
-Evidence depth
-Challenge depth
-Verification depth
-Governance depth
+They are not fixed source counts or token budgets.
 
-因此：
+The workflow can expand and contract as the task changes.
 
-Rigor is not ceremony.
+Examples:
 
-严谨并不意味着所有任务都必须跑完整流程。
+### Simple question
 
-当任务进入持久化或复杂执行阶段，项目还可以进一步使用 typed state、dependency graph、stale propagation、closure gate、delivery reconciliation 等机器语义。
+```text
+understand
+→ answer
+→ check
+```
 
-其中一个核心原则是：
+### Difficult research question
 
-Declared state is input. Effective state is computed.
+```text
+understand
+→ orient
+→ model
+→ decompose / recompose
+→ map relationships
+→ derive evidence needs
+→ research
+→ challenge
+→ synthesize
+→ verify
+```
 
-例如一个 premise 已经失效，那么依赖它的：
+### Long-running consequential work
 
-Inference
-Judgment
-Recommendation
-Artifact
-Verification
+```text
+reasoning lane
+→ controlled execution
+→ re-observe
+→ validate
+→ reconcile
+→ effectiveness
+```
 
-都可能需要重新计算、失效或重新验证。
+> **Rigor is not ceremony.**
 
-但这里有一个明确边界：
+---
 
-Validators certify structural admissibility, not epistemic truth.
+# What kinds of questions can I give it?
 
-机器 validator 可以检查：
+Almost any substantive question where better problem understanding could improve the result.
 
-类型是否正确
-引用是否合法
-依赖是否自洽
-旧前提是否继续被当作 current
-任务是否还有 material blocker
-delivery 是否与 canonical state 一致
+### Rumor / verification
 
-但它不能代替现实世界证据，也不能证明一个结论一定是真的。
+```text
+“People are saying this product was discontinued because the original formula was lost.
+Verify whether that is actually true.”
+```
 
-Reasoning Workflow 最终想解决的不是：
+The workflow should distinguish:
 
-“如何让 Agent 跑更多流程？”
+```text
+rumor
+→ source propagation
+→ official statement
+→ operational evidence
+→ alternative explanations
+→ confidence
+```
 
-而是：
+---
 
-如何让 Agent 在各种严肃任务中，更清楚地知道自己正在解决什么、结论依赖什么、还缺什么、什么时候应该继续调查、什么时候应该调用专业能力，以及什么时候才真的可以说：完成。
+### Market / forecasting
 
-⸻
+```text
+“Will memory prices keep rising?”
+```
 
-License
+Instead of only searching:
 
-No open-source license has been declared yet.
+```text
+memory price forecast
+```
 
-Public availability of this repository should not be interpreted as an automatic grant of permission to reuse, redistribute, repackage, or create derivative distributions.
+the model may need to reason about:
 
-Add an explicit license only when the intended reuse policy has been decided.
+```text
+supply
+capacity expansion
+inventory
+AI demand
+contract pricing
+spot pricing
+node transitions
+supplier incentives
+substitution
+lead times
+macro demand
+feedback
+```
+
+Those relationships determine the search plan.
+
+---
+
+### Product comparison
+
+```text
+“Which one should I buy?”
+```
+
+The workflow separates:
+
+```text
+technical specification
+measurement validity
+actual use case
+constraints
+trade-offs
+uncertainty
+decision relevance
+```
+
+The biggest benchmark number does not automatically determine the recommendation.
+
+---
+
+### Debugging
+
+```text
+“This frontend has several state inconsistencies.
+Find the real failure mechanism before modifying code.”
+```
+
+The workflow can move from:
+
+```text
+symptom
+→ observation
+→ dependency
+→ candidate mechanism
+→ competing causes
+→ discriminating test
+→ fix
+→ verification
+```
+
+instead of immediately editing the first suspicious line.
+
+---
+
+### Open-ended Deep Research
+
+```text
+“Research whether this industry is worth entering,
+including important indirect relationships I did not mention.”
+```
+
+The workflow can explicitly investigate frame uncertainty before narrowing.
+
+---
+
+# Decision quality is separate from factual accuracy
+
+Knowing what is true is not always enough to know what to do.
+
+A recommendation may depend on:
+
+```text
+objectives
+constraints
+alternatives
+consequences
+trade-offs
+uncertainty
+reversibility
+opportunity cost
+sensitivity
+value of more information
+```
+
+Reasoning Workflow therefore separates:
+
+```text
+evidence
+↓
+belief
+
+from
+
+belief + goals + constraints
+↓
+decision
+```
+
+It also separates a construct from its proxy:
+
+```text
+measurement validity ≠ decision relevance
+```
+
+A benchmark can accurately measure benchmark performance while still failing to represent the user's real workload.
+
+---
+
+# Advanced runtime for long-running work
+
+Everything above is useful to ordinary users.
+
+The following layer matters mainly when the task becomes persistent, mutable, multi-artifact, multi-agent, or consequential.
+
+<details>
+<summary><strong>Why long-running reasoning needs state semantics</strong></summary>
+
+<br />
+
+Suppose an earlier premise changes:
+
+```text
+P2 premise changed
+       ↓
+I3 inference
+       ↓
+J4 judgment
+       ↓
+A1 artifact
+       ↓
+V3 verification
+```
+
+If `P2` changes, the downstream records should not silently remain “current.”
+
+They may need to become:
+
+```text
+stale
+invalidated
+superseded
+pending re-evaluation
+```
+
+This is the bridge between good reasoning and long-horizon consistency.
+
+A reasoning system that cannot propagate changed premises can produce a logically coherent answer at one moment and an internally inconsistent project ten turns later.
+
+</details>
+
+---
+
+<details>
+<summary><strong>Declared state vs. effective state</strong></summary>
+
+<br />
+
+One governing rule in the current runtime is:
+
+> **Declared state is input. Effective state is computed.**
+
+An agent can declare:
+
+```text
+question = answered
+record = current
+verification = passed
+task = closed
+delivery_ready = true
+```
+
+But those declarations should not override dependency structure.
+
+For example:
+
+```text
+upstream premise = stale
+↓
+dependent inference declared "current"
+```
+
+The effective inference state should still be stale.
+
+Likewise:
+
+```text
+task declared "closed"
++
+material unresolved question
+```
+
+should not count as legitimate closure.
+
+The semantic layer therefore reasons over:
+
+```text
+typed records
+typed references
+dependency edges
+supersession
+invalidation
+materiality
+temporal scope
+verification
+closure conditions
+```
+
+rather than trusting self-declared booleans.
+
+</details>
+
+---
+
+<details>
+<summary><strong>Preserved history + canonical current state</strong></summary>
+
+<br />
+
+For durable work, the model distinguishes historical evidence from current operational state:
+
+```text
+PRESERVED HISTORY
+raw inputs
+observations
+events
+previous decisions
+        │
+        ▼
+CANONICAL CURRENT-STATE PROJECTION
+questions
+premises
+evidence
+hypotheses
+uncertainty
+decisions
+requirements
+actions
+artifacts
+verification
+effectiveness
+        │
+        ▼
+OUTPUT VIEWS
+report
+code
+slides
+UI
+handoff
+```
+
+History answers:
+
+> What happened and why?
+
+Canonical state answers:
+
+> What is currently true for the purpose of this task?
+
+This distinction helps prevent old conclusions from silently competing with updated ones.
+
+</details>
+
+---
+
+<details>
+<summary><strong>What the validators can and cannot do</strong></summary>
+
+<br />
+
+The deterministic validation layer can inspect machine-checkable properties such as:
+
+```text
+dangling references
+wrong-type references
+invalid edges
+forbidden cycles
+stale-state propagation
+unresolved closure blockers
+delivery/state disagreement
+missing verification
+failed verification
+state-version discontinuity
+raw-lineage problems
+```
+
+It does **not** prove:
+
+```text
+that a premise is true
+that the causal model is correct
+that the source is honest
+that a recommendation is wise
+that the world matches the model
+```
+
+The validators enforce semantic and structural consistency around reasoning.
+
+They are not a truth oracle.
+
+</details>
+
+---
+
+# System invariants
+
+For substantive work, Reasoning Workflow tries to preserve these qualities proportionately:
+
+| Invariant | Meaning |
+| --- | --- |
+| **Traceable** | important conclusions and actions remain connected to their basis |
+| **Readable** | a human or successor agent can understand the current model |
+| **Synchronized** | upstream changes invalidate or update dependents |
+| **Original-preserving** | raw/source material remains distinct from transformed descendants |
+| **Complete** | the original question, requirements, blockers, and checks receive explicit disposition |
+| **Consistent** | current state, evidence, answer, artifacts, and verification reconcile |
+| **Recoverable** | long-running work can preserve enough state for resume or handoff |
+| **Proportionate** | simple tasks remain lightweight |
+
+These are invariants.
+
+They are not a requirement to create a dozen files for every question.
+
+---
+
+# Specialist Skills compose with it
+
+Reasoning Workflow is intended to sit **above** specialist capabilities rather than replace them.
+
+```text
+                Reasoning Workflow
+                       │
+        framing · inquiry · reasoning
+      evidence · uncertainty · verification
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+     Coding       Product Design    Data Analysis
+       │               │                │
+       ├───────────────┼────────────────┤
+       │               │                │
+     PDFs          Retrieval        Domain Skills
+       │               │                │
+       └───────────────┼────────────────┘
+                       │
+                   User outcome
+```
+
+Examples:
+
+```text
+reasoning-workflow + coding
+reasoning-workflow + product-design
+reasoning-workflow + data-analysis
+reasoning-workflow + PDF/document tooling
+reasoning-workflow + domain research
+```
+
+The specialist capability owns the domain-specific operation.
+
+Reasoning Workflow owns the cross-cutting process:
+
+```text
+understand
+→ frame
+→ calibrate effort
+→ model
+→ investigate
+→ integrate
+→ challenge
+→ verify
+→ reconcile
+→ close
+```
+
+---
+
+# Package structure
+
+The Skill currently lives at:
+
+```text
+skills/reasoning-workflow/
+```
+
+Repository structure:
+
+```text
+.
+├── README.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── PRIVACY.md
+├── TERMS.md
+├── .codex-plugin/
+│
+└── skills/
+    └── reasoning-workflow/
+        ├── SKILL.md
+        ├── README.md
+        │
+        ├── agents/
+        │   └── openai.yaml
+        │
+        ├── assets/
+        │   └── icon.svg
+        │
+        ├── references/
+        │   ├── problem-framing-and-effort.md
+        │   ├── reasoning-structure-and-decomposition.md
+        │   ├── relationships-and-systems.md
+        │   ├── inquiry-and-research.md
+        │   ├── hypotheses-and-bias-control.md
+        │   ├── evidence-and-provenance.md
+        │   ├── retrieval-and-observation.md
+        │   ├── human-context-and-interpretation.md
+        │   ├── time-scenarios-and-forecasting.md
+        │   ├── multimodal-and-data.md
+        │   ├── decision-and-recommendation.md
+        │   ├── measurement-and-operationalization.md
+        │   ├── state-model-and-invariants.md
+        │   ├── semantic-state-contract.md
+        │   ├── synchronization-and-recovery.md
+        │   ├── runtime-and-delegation.md
+        │   ├── traceability-and-integrity.md
+        │   ├── change-governance-and-effectiveness.md
+        │   ├── synthesis-execution-and-verification.md
+        │   ├── formal-review-and-audit.md
+        │   ├── domain-patterns.md
+        │   └── worked-examples.md
+        │
+        ├── schemas/
+        │   ├── work-state.schema.json
+        │   ├── delivery-manifest.schema.json
+        │   ├── event.schema.json
+        │   ├── raw-record.schema.json
+        │   └── edge-policy.json
+        │
+        ├── scripts/
+        │   ├── semantic_core.py
+        │   ├── validate_skill.py
+        │   ├── validate_links.py
+        │   ├── validate_state.py
+        │   ├── validate_delivery.py
+        │   ├── validate_events.py
+        │   ├── validate_raw.py
+        │   └── evaluate_run.py
+        │
+        └── tests/
+            ├── test_validators.py
+            └── cases/
+```
+
+`SKILL.md` is the runtime entry point.
+
+The files under `references/` are specialist modules that are loaded when the task requires them.
+
+---
+
+# Reference routing
+
+Specialist reference modules use a compact runtime contract.
+
+Conceptually:
+
+```text
+Trigger
+Reads
+Updates
+May invalidate
+Must verify
+Exit
+Related
+Return
+```
+
+This prevents the reference directory from becoming a collection of disconnected essays.
+
+The root `SKILL.md` remains the governing router.
+
+Specialist modules perform their work and return control to it.
+
+---
+
+# Validation
+
+From the repository root:
+
+### Validate the Skill package
+
+```bash
+python skills/reasoning-workflow/scripts/validate_skill.py \
+  skills/reasoning-workflow
+```
+
+### Validate internal links
+
+```bash
+python skills/reasoning-workflow/scripts/validate_links.py \
+  skills/reasoning-workflow
+```
+
+### Install semantic validation dependency
+
+```bash
+pip install -r skills/reasoning-workflow/scripts/requirements.txt
+```
+
+### Validate durable work state
+
+```bash
+python skills/reasoning-workflow/scripts/validate_state.py \
+  path/to/work-state.json \
+  --json
+```
+
+### Validate delivery consistency
+
+```bash
+python skills/reasoning-workflow/scripts/validate_delivery.py \
+  path/to/work-state.json \
+  path/to/delivery-manifest.json \
+  --json
+```
+
+### Validate events
+
+```bash
+python skills/reasoning-workflow/scripts/validate_events.py \
+  path/to/events.json \
+  --state path/to/work-state.json \
+  --json
+```
+
+### Validate preserved raw lineage
+
+```bash
+python skills/reasoning-workflow/scripts/validate_raw.py \
+  path/to/raw-manifest.json \
+  --root . \
+  --json
+```
+
+### Run validator tests
+
+```bash
+python skills/reasoning-workflow/tests/test_validators.py
+```
+
+### Evaluate a behavioral run
+
+```bash
+python skills/reasoning-workflow/scripts/evaluate_run.py \
+  skills/reasoning-workflow/tests/cases/<case>.json \
+  path/to/run-artifact.json
+```
+
+Behavioral evaluation should rely on observable outputs, events, and state rather than hidden chain-of-thought.
+
+---
+
+# What this project is
+
+Reasoning Workflow is:
+
+```text
+a problem-first reasoning workflow
++
+a model-driven Deep Research process
++
+an evidence and uncertainty discipline
++
+a relationship / causal reasoning layer
++
+a specialist-skill orchestration layer
++
+an optional durable work-control system
++
+machine-checkable semantics for the parts that can be checked
+```
+
+It is designed to help an AI:
+
+```text
+understand before acting
+model before retrieving
+search from information needs
+challenge plausible stories
+preserve dependencies
+verify before declaring completion
+```
+
+---
+
+# What it is not
+
+It is not:
+
+```text
+a search engine
+
+a requirement to browse the web for every question
+
+a fixed checklist that every task must follow
+
+a giant "think carefully" prompt
+
+a replacement for domain-specific skills
+
+a claim that deterministic validators can prove truth
+
+a requirement to expose private chain-of-thought
+
+a mechanism that magically grants unavailable tools,
+permissions, persistence, or background execution
+```
+
+The workflow should use the smallest amount of machinery that preserves reasoning quality.
+
+---
+
+# Completion means different things in different lanes
+
+## Question / Reasoning
+
+A question is ready to close when:
+
+```text
+the original question was actually answered
+
+decomposed branches can be recomposed
+
+material claims are supported or bounded
+
+important alternatives were challenged proportionately
+
+remaining uncertainty is disclosed when material
+
+another feasible inquiry is unlikely to materially improve the answer
+```
+
+## Action / Project
+
+Persistent work may additionally require:
+
+```text
+requirements disposition
+blocker disposition
+artifact consistency
+stale-state reconciliation
+verification
+delivery readiness
+effectiveness
+```
+
+Implementation being finished does not automatically mean the intended change worked.
+
+---
+
+# Why this can be general-purpose
+
+The project does not try to contain every domain method.
+
+Its generality comes from operating one level above the domain.
+
+Almost every substantive task has some version of these questions:
+
+```text
+What is the real problem?
+
+What does the answer depend on?
+
+What am I assuming?
+
+What relationships matter?
+
+What do I not know?
+
+What evidence could change the answer?
+
+What else could explain the observation?
+
+What should I do with the result?
+
+How do I know the result is still valid?
+```
+
+Coding and market research produce different answers.
+
+Product design and historical investigation require different evidence.
+
+A short factual question and a month-long agent project require very different amounts of process.
+
+But the upstream reasoning discipline is surprisingly transferable.
+
+That is the sense in which Reasoning Workflow is general-purpose.
+
+---
+
+# Design philosophy
+
+The project began with a simple goal:
+
+> **Make Deep Research better by teaching the model how to understand a problem before searching.**
+
+Everything added later follows from the same idea.
+
+Problem decomposition exists because the agent needs to reason about complex questions.
+
+Recomposition exists because decomposition can destroy the parent problem.
+
+Relationship modeling exists because keywords do not reveal causal structure.
+
+Hypothesis competition exists because the first plausible story may be wrong.
+
+Evidence provenance exists because repeated reporting is not independent confirmation.
+
+Adaptive research exists because more search is not always more knowledge.
+
+Durable state exists because good reasoning can be lost across a long-running task.
+
+Semantic enforcement exists because an agent declaring something “done” does not necessarily make it true.
+
+The machinery is downstream of the original goal.
+
+It should never replace it.
+
+---
+
+<div align="center">
+
+## Understand the problem.
+
+## Model the relationships.
+
+## Research what actually matters.
+
+### Then act. Then verify.
+
+<br />
+
+**Reasoning Workflow**
+
+[View the Skill](./skills/reasoning-workflow/SKILL.md) ·
+[Explore the references](./skills/reasoning-workflow/references) ·
+[View the tests](./skills/reasoning-workflow/tests)
+
+<br />
+
+<sub>
+Built for agents that should do more than search harder — they should understand better.
+</sub>
+
+</div>
