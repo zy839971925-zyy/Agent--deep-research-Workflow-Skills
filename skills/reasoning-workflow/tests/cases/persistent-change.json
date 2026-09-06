@@ -1,0 +1,42 @@
+{
+  "case_id": "persistent-change",
+  "intent": "Modify a persistent consequential workflow or system",
+  "expected": {
+    "lane": [
+      "action"
+    ],
+    "effort": "controlled-or-formal",
+    "must": [
+      "baseline/delta",
+      "systematic risk sweep",
+      "readiness gate",
+      "verify/validate",
+      "define effectiveness measures"
+    ],
+    "must_not": [
+      "close at implementation"
+    ],
+    "closure_blockers": [
+      "blocking risk",
+      "missing verification",
+      "effectiveness pending if later observation required"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "lane_selected",
+        "lane": "action"
+      },
+      {
+        "event": "change_record_created"
+      },
+      {
+        "event": "verification_completed"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

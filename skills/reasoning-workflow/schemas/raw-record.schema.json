@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/raw-record.schema.json",
+  "title": "Reasoning Workflow Raw/Derived Record v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "raw_id",
+    "record_kind",
+    "source_type",
+    "source_locator",
+    "observed_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "raw_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_kind": {
+      "type": "string",
+      "enum": [
+        "raw",
+        "snapshot",
+        "derived"
+      ]
+    },
+    "source_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "local_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effective_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid_for": {},
+    "current_for_task": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "original_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version_hint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "user_provided",
+        "workspace_private",
+        "local_private",
+        "confidential_restricted"
+      ]
+    },
+    "content_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "hash_algorithm": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "sha256",
+        "sha512",
+        null
+      ]
+    },
+    "immutable_preserved": {
+      "type": "boolean"
+    },
+    "derived_from": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "transformations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_kind": {
+            "const": "raw"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "derived_from": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "content_hash"
+        ],
+        "properties": {
+          "content_hash": {
+            "type": "string"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "hash_algorithm"
+        ]
+      }
+    }
+  ]
+}

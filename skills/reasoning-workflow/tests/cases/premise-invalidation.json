@@ -1,0 +1,44 @@
+{
+  "case_id": "premise-invalidation",
+  "intent": "A material premise changes after downstream reasoning/artifacts were produced",
+  "expected": {
+    "lane": [
+      "question",
+      "action"
+    ],
+    "effort": "adaptive",
+    "must": [
+      "identify premise dependency",
+      "mark dependent inference/judgment/recommendation stale",
+      "mark dependent artifact/test stale when applicable",
+      "preserve unrelated current records",
+      "recompute before reuse"
+    ],
+    "must_not": [
+      "keep downstream conclusion silently current",
+      "restart unrelated work"
+    ],
+    "closure_blockers": [
+      "material stale premise dependency"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "effective_state_recomputed"
+      },
+      {
+        "event": "stale_propagated"
+      }
+    ],
+    "forbidden_events": [
+      {
+        "event": "stale_dependent_reused"
+      }
+    ],
+    "expected_final_state": {},
+    "expected_findings": [
+      "DECLARED_EFFECTIVE_CONFLICT"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "case_id": "uncertainty-typing",
+  "intent": "A material answer remains uncertain for more than one possible reason",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "adaptive",
+    "must": [
+      "identify source of uncertainty",
+      "separate missing evidence from model/causal/future uncertainty",
+      "reduce only uncertainty likely to change answer",
+      "preserve irreducible uncertainty explicitly"
+    ],
+    "must_not": [
+      "hide uncertainty behind generic maybe/probably",
+      "search indefinitely for inherently future uncertainty"
+    ],
+    "closure_blockers": [
+      "material uncertainty source misrepresented"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "uncertainty_typed"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

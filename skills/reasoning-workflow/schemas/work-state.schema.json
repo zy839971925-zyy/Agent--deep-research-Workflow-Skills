@@ -1,0 +1,4117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/work-state.schema.json",
+  "title": "Reasoning Workflow Semantic Work State v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "work_id",
+    "state_version",
+    "lane",
+    "declared_status",
+    "objective",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "work_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lane": {
+      "type": "string",
+      "enum": [
+        "question",
+        "action",
+        "mixed"
+      ]
+    },
+    "declared_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "blocked",
+        "awaiting_external",
+        "delivery_ready",
+        "effectiveness_pending",
+        "closed",
+        "reopened"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {},
+    "root_question_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stale_items": {
+      "$ref": "#/$defs/ref_array"
+    },
+    "blocked_items": {
+      "$ref": "#/$defs/ref_array"
+    },
+    "last_completed_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_safe_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement_record"
+      },
+      "default": []
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/acceptance_record"
+      },
+      "default": []
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/question_record"
+      },
+      "default": []
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/answer_record"
+      },
+      "default": []
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/observation_record"
+      },
+      "default": []
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_record"
+      },
+      "default": []
+    },
+    "premises": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/premise_record"
+      },
+      "default": []
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption_record"
+      },
+      "default": []
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hypothesis_record"
+      },
+      "default": []
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/uncertainty_record"
+      },
+      "default": []
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship_record"
+      },
+      "default": []
+    },
+    "inferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/inference_record"
+      },
+      "default": []
+    },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/judgment_record"
+      },
+      "default": []
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/objective_record"
+      },
+      "default": []
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/constraint_record"
+      },
+      "default": []
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/alternative_record"
+      },
+      "default": []
+    },
+    "consequences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/consequence_record"
+      },
+      "default": []
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/measurement_record"
+      },
+      "default": []
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recommendation_record"
+      },
+      "default": []
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/decision_record"
+      },
+      "default": []
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/risk_record"
+      },
+      "default": []
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/action_record"
+      },
+      "default": []
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact_record"
+      },
+      "default": []
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/verification_record"
+      },
+      "default": []
+    },
+    "effectiveness": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/effectiveness_record"
+      },
+      "default": []
+    }
+  },
+  "$defs": {
+    "ref_array": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "question_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "question"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "answered",
+            "bounded",
+            "deferred",
+            "invalidated"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_type": {
+          "type": "string",
+          "enum": [
+            "fact",
+            "explanation",
+            "verification",
+            "comparison",
+            "diagnosis",
+            "mechanism",
+            "forecast",
+            "decision",
+            "interpretation",
+            "judgment",
+            "other"
+          ]
+        },
+        "parent_question_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "child_question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "recomposition_status": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "drift_check": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "answer_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "question_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "answer"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "bounded",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "premise_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "premise"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded",
+            "historical"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "user_definition",
+            "observation",
+            "evidence",
+            "assumption",
+            "derived"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "assumption_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "assumption"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded",
+            "historical"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hypothesis_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "hypothesis"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "candidate",
+            "leading",
+            "weakened",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prediction_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "uncertainty_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "uncertainty_type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "uncertainty"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved",
+            "bounded",
+            "irreducible",
+            "deferred",
+            "invalidated"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "uncertainty_type": {
+          "type": "string",
+          "enum": [
+            "missing_evidence",
+            "source_conflict",
+            "measurement",
+            "definition_scope",
+            "model_premise",
+            "causal",
+            "future_behavior_external",
+            "other"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationship_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "from_ref",
+        "relation_type",
+        "to_ref",
+        "epistemic_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "relationship"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "from_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation_type": {
+          "type": "string",
+          "enum": [
+            "causes",
+            "correlates_with",
+            "depends_on",
+            "enables",
+            "constrains",
+            "mediates",
+            "moderates",
+            "precedes",
+            "is_part_of",
+            "is_example_of",
+            "is_alternative_to",
+            "other"
+          ]
+        },
+        "extension_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "epistemic_status": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "inferred",
+            "hypothesized",
+            "contested",
+            "superseded"
+          ]
+        },
+        "conditions": {},
+        "lag": {},
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "relation_type": {
+                "const": "other"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "extension_type"
+            ],
+            "properties": {
+              "extension_type": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "inference_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "conclusion"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "inference"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "conclusion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "premise_refs": {
+              "$ref": "#/$defs/nonempty_ref_array"
+            }
+          },
+          "required": [
+            "premise_refs"
+          ]
+        },
+        {
+          "properties": {
+            "evidence_refs": {
+              "$ref": "#/$defs/nonempty_ref_array"
+            }
+          },
+          "required": [
+            "evidence_refs"
+          ]
+        },
+        {
+          "properties": {
+            "observation_refs": {
+              "$ref": "#/$defs/nonempty_ref_array"
+            }
+          },
+          "required": [
+            "observation_refs"
+          ]
+        },
+        {
+          "properties": {
+            "hypothesis_refs": {
+              "$ref": "#/$defs/nonempty_ref_array"
+            }
+          },
+          "required": [
+            "hypothesis_refs"
+          ]
+        }
+      ]
+    },
+    "judgment_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "judgment"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "objective_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "objective"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "type": "string",
+          "enum": [
+            "user_stated",
+            "inferred",
+            "default_constraint"
+          ]
+        },
+        "weight": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraint_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "constraint_type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "constraint"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraint_type": {
+          "type": "string",
+          "enum": [
+            "hard",
+            "soft",
+            "safety",
+            "legal",
+            "feasibility",
+            "other"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "alternative_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "feasibility"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "alternative"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feasibility": {
+          "type": "string",
+          "enum": [
+            "feasible",
+            "infeasible",
+            "uncertain"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "consequence_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "alternative_refs",
+        "objective_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "consequence"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "magnitude": {},
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "measurement_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "construct",
+        "operational_measure",
+        "validity_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "measurement"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "construct": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operational_measure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validity_status": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "partial",
+            "weak",
+            "invalid",
+            "unknown"
+          ]
+        },
+        "decision_relevance": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "unknown"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "recommendation_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "objective_refs",
+        "alternative_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "recommendation"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditionality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sensitivity": {},
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "decision_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status",
+        "text",
+        "alternative_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "decision"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "challenged",
+            "stale",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selected_alternative_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authority": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/nonempty_ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirement_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "requirement"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "satisfied",
+            "not_applicable",
+            "blocked",
+            "deferred",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "acceptance_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "acceptance_criterion"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "satisfied",
+            "not_applicable",
+            "blocked",
+            "deferred",
+            "invalidated",
+            "superseded"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "observation_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "observation"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "stale",
+            "invalidated",
+            "superseded",
+            "historical"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidence_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "evidence"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "contested",
+            "stale",
+            "invalidated",
+            "superseded",
+            "historical"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "risk_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "risk"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "controlled",
+            "accepted",
+            "blocked",
+            "closed",
+            "stale"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "action_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "action"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "ready",
+            "running",
+            "completed",
+            "failed",
+            "blocked",
+            "stale"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifact_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "artifact"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "current",
+            "stale",
+            "superseded",
+            "historical"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "based_on_state_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "verification"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "failed",
+            "stale",
+            "blocked"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "target_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "effectiveness_record": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "declared_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_type": {
+          "const": "effectiveness"
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "material",
+            "supporting",
+            "incidental"
+          ],
+          "default": "supporting"
+        },
+        "closure_effect": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "nonblocking"
+          ],
+          "default": "nonblocking"
+        },
+        "valid_for": {},
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_for_task": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "depends_on": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "derived_from": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supports": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "represents": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "implements": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verifies": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "invalidates": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "declared_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "effective",
+            "ineffective",
+            "inconclusive",
+            "stale"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "answer_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "premise_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "observation_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "hypothesis_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "uncertainty_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "verification_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "objective_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "alternative_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "consequence_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "measurement_refs": {
+          "$ref": "#/$defs/ref_array"
+        },
+        "assumption_refs": {
+          "$ref": "#/$defs/ref_array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "nonempty_ref_array": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

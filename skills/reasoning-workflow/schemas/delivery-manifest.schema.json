@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/delivery-manifest.schema.json",
+  "title": "Reasoning Workflow Delivery Manifest v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "work_id",
+    "state_version",
+    "generated_at",
+    "requirements",
+    "artifacts",
+    "declared_delivery_ready",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "work_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "declared_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "declared_status": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "not_applicable",
+              "deferred",
+              "blocked",
+              "superseded"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "artifact_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "verification_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "declared_current"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "role": {
+            "type": "string"
+          },
+          "based_on_state_version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "represents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "verification_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "declared_current": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "inconsistencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocking_items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "declared_delivery_ready": {
+      "type": "boolean"
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "declared_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "declared_status": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "not_applicable",
+              "deferred",
+              "blocked",
+              "superseded"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "artifact_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "verification_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

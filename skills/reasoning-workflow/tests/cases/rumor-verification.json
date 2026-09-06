@@ -1,0 +1,36 @@
+{
+  "case_id": "rumor-verification",
+  "intent": "Weak signal or social claim may be true",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "deep",
+    "must": [
+      "separate claim existence from truth",
+      "trace earliest provenance",
+      "seek different error mechanisms",
+      "state what would upgrade/falsify"
+    ],
+    "must_not": [
+      "count reposts as independent corroboration",
+      "exclude solely for informality"
+    ],
+    "closure_blockers": [
+      "material provenance ambiguity hidden"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "provenance_traced"
+      },
+      {
+        "event": "independent_corroboration_checked"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}

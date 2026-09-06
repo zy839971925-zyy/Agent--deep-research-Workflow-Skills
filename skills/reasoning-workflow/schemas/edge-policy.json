@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "principle": "Declared state is input; effective state is computed.",
+  "edges": {
+    "premise_refs": {
+      "targets": [
+        "premise",
+        "assumption"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "depends_on": {
+      "targets": [
+        "*"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "evidence_refs": {
+      "targets": [
+        "evidence",
+        "observation"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "observation_refs": {
+      "targets": [
+        "observation"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "hypothesis_refs": {
+      "targets": [
+        "hypothesis"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "question_refs": {
+      "targets": [
+        "question"
+      ],
+      "effect": "contextual",
+      "cycle": "allow",
+      "direction": "dependency"
+    },
+    "answer_refs": {
+      "targets": [
+        "answer"
+      ],
+      "effect": "contextual",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "objective_refs": {
+      "targets": [
+        "objective"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "constraint_refs": {
+      "targets": [
+        "constraint"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "alternative_refs": {
+      "targets": [
+        "alternative"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "consequence_refs": {
+      "targets": [
+        "consequence"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "measurement_refs": {
+      "targets": [
+        "measurement"
+      ],
+      "effect": "recompute",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "implements": {
+      "targets": [
+        "requirement",
+        "decision",
+        "recommendation"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "represents": {
+      "targets": [
+        "*"
+      ],
+      "effect": "contextual",
+      "cycle": "allow",
+      "direction": "dependency"
+    },
+    "verification_refs": {
+      "targets": [
+        "verification"
+      ],
+      "effect": "contextual",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "verifies": {
+      "targets": [
+        "*"
+      ],
+      "effect": "hard",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "derived_from": {
+      "targets": [
+        "*"
+      ],
+      "effect": "contextual",
+      "cycle": "forbid",
+      "direction": "dependency"
+    },
+    "supports": {
+      "targets": [
+        "*"
+      ],
+      "effect": "recompute",
+      "cycle": "audit",
+      "direction": "dependency"
+    },
+    "contradicts": {
+      "targets": [
+        "*"
+      ],
+      "effect": "recompute",
+      "cycle": "allow",
+      "direction": "dependency"
+    },
+    "supersedes": {
+      "targets": [
+        "*"
+      ],
+      "effect": "supersede_target",
+      "cycle": "forbid",
+      "direction": "action"
+    },
+    "invalidates": {
+      "targets": [
+        "*"
+      ],
+      "effect": "invalidate_target",
+      "cycle": "forbid",
+      "direction": "action"
+    }
+  },
+  "relationship_cycle_policy": {
+    "causes": "allow",
+    "correlates_with": "allow",
+    "depends_on": "forbid",
+    "enables": "allow",
+    "constrains": "allow",
+    "mediates": "allow",
+    "moderates": "allow",
+    "precedes": "forbid",
+    "is_part_of": "forbid",
+    "is_example_of": "forbid",
+    "is_alternative_to": "allow",
+    "other": "audit"
+  }
+}

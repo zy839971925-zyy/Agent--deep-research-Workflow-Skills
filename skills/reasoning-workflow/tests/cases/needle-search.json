@@ -1,0 +1,31 @@
+{
+  "case_id": "needle-search",
+  "intent": "Hard-to-find specific fact with strong search-path dependence",
+  "expected": {
+    "lane": [
+      "question"
+    ],
+    "effort": "deep",
+    "must": [
+      "resolve entity/version",
+      "try genuinely different search routes when warranted",
+      "compare evidence not model votes"
+    ],
+    "must_not": [
+      "majority-vote agent answers"
+    ],
+    "closure_blockers": [
+      "no support for exact proposition"
+    ]
+  },
+  "observables": {
+    "expected_events": [
+      {
+        "event": "independent_search_trajectory_started"
+      }
+    ],
+    "forbidden_events": [],
+    "expected_final_state": {},
+    "expected_findings": []
+  }
+}
