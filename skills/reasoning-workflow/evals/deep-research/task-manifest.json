@@ -1,0 +1,34 @@
+{
+  "task_categories": [
+    "rumor_source_propagation",
+    "causal_market_technology_forecast",
+    "frame_uncertain_open_research",
+    "multi_source_conflict",
+    "indirect_causal_chain",
+    "negative_claim_absence_evidence",
+    "freshness_version_sensitive",
+    "decision_grade_research",
+    "source_provenance_trap",
+    "user_file_public_web",
+    "checkpoint_resume_research",
+    "serial_vs_swarm_same_plan"
+  ],
+  "negative_controls": [
+    "simple_fact",
+    "short_translation",
+    "short_rewrite",
+    "direct_calculation",
+    "simple_code_explanation",
+    "simple_file_operation"
+  ],
+  "variants": [
+    "v7_monolith",
+    "v8_portable",
+    "v8_modular",
+    "minimal_baseline"
+  ],
+  "non_inferiority_gate": {
+    "declare_before_model_runs": true,
+    "quality_rule": "Deep/Max material quality dimensions must show no practically meaningful degradation versus the frozen baseline; any numeric margin must be frozen in the concrete benchmark run plan before observing results."
+  }
+}

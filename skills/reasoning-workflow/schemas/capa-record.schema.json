@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capa-record.schema.json",
+  "title": "Workflow CAPA Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capa_id",
+    "failure_ref",
+    "containment",
+    "root_cause_class",
+    "corrective_action",
+    "regression_refs",
+    "verification_status",
+    "effectiveness_status",
+    "closure_status"
+  ],
+  "properties": {
+    "capa_id": {
+      "type": "string"
+    },
+    "failure_ref": {
+      "type": "string"
+    },
+    "containment": {
+      "type": "string"
+    },
+    "root_cause_class": {
+      "enum": [
+        "problem_misframing",
+        "wrong_depth",
+        "wrong_routing",
+        "context_overload",
+        "missing_context",
+        "evidence_failure",
+        "provenance_failure",
+        "instruction_conflict",
+        "model_capability_limit",
+        "tool_runtime_failure",
+        "validator_gap",
+        "execution_plan_error",
+        "schedule_delegation_error",
+        "checkpoint_recovery_error",
+        "success_pattern",
+        "inefficiency"
+      ]
+    },
+    "root_cause_detail": {
+      "type": "string"
+    },
+    "corrective_action": {
+      "type": "string"
+    },
+    "regression_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "verification_status": {
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ]
+    },
+    "effectiveness_status": {
+      "enum": [
+        "pending",
+        "effective",
+        "ineffective",
+        "mixed"
+      ]
+    },
+    "preventive_generalization": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "learning_candidate_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "closure_status": {
+      "enum": [
+        "open",
+        "closed",
+        "reopened"
+      ]
+    }
+  }
+}

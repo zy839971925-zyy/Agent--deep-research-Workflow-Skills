@@ -1,0 +1,4 @@
+{
+  "event": "evidence_retrieval",
+  "expect": "blocked"
+}

@@ -1,12 +1,10 @@
 # Reasoning Workflow
 
-Package release: **V5 — Semantic Enforcement Release**
-
 This README is for humans and successor Agents who need to understand, audit, extend, or hand off the package. It is intentionally **not required by the runtime routing path**. The runtime entry is `SKILL.md`.
 
-## V5 semantic enforcement
+## Semantic enforcement
 
-V5 freezes the two-Lane cognitive architecture and moves the main engineering effort into formal semantics. The governing rule is **Declared state is input. Effective state is computed.** Typed schemas define record-local meaning; a shared edge policy defines dependency/reference semantics; validators compute transitive stale/recompute states, explain closure blockers, reconcile delivery claims with canonical state, and validate event/raw lineage.
+The package freezes the two-Lane cognitive architecture and moves the main engineering effort into formal semantics. The governing rule is **Declared state is input. Effective state is computed.** Typed schemas define record-local meaning; a shared edge policy defines dependency/reference semantics; validators compute transitive stale/recompute states, explain closure blockers, reconcile delivery claims with canonical state, and validate event/raw lineage.
 
 The acceptance hierarchy is: **type validity → graph validity → effective-state computation → closure semantics → integrity → decision/measurement structure → behavioral evaluation**. Validators certify structural admissibility, not epistemic truth.
 
@@ -88,7 +86,7 @@ I3 inference           stale
 C2 conclusion          stale
 D4 decision            stale
 A1 artifact            stale
-V3 verification        rerun required
+        verification record    rerun required
 ```
 
 This is why premise/dependency tracking connects the Question lane to the Runtime layer.
@@ -429,7 +427,7 @@ The deterministic scripts validate structure and invariants, not semantic truth:
 - `validate_raw.py`
 - `evaluate_run.py` (observable behavioral run artifacts only; never hidden chain-of-thought)
 
-The existing 24 behavioral cases under `tests/cases/` remain the regression specification set. V5 does not expand the case count merely to add prose coverage; instead each case now has an `observables` contract and `evaluate_run.py` can score externally produced run artifacts against expected/forbidden events, final-state fields, and required finding codes. The package still does not claim that these cases have been executed against every model/runtime.
+The existing behavioral cases under `tests/cases/` remain the regression specification set. The package does not claim that these cases have been executed against every model/runtime.
 
 A behavioral run artifact records only observable process events, for example `lane_selected`, `orientation_started`, `effective_state_recomputed`, `stale_propagated`, `closure_attempted`, `verification_completed`, or `work_reopened`, plus public final state/findings/output references. It must never require hidden chain-of-thought. Case events can use exact fields or `_any_of` matchers.
 

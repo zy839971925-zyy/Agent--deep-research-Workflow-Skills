@@ -1,0 +1,88 @@
+{
+  "kind": "schedule",
+  "plan": {
+    "schema_version": "1.1",
+    "plan_id": "P",
+    "plan_version": 1,
+    "objective": "fixture",
+    "nodes": [
+      {
+        "node_id": "T1",
+        "objective": "fact",
+        "depends_on": [],
+        "input_refs": [],
+        "required_capabilities": [],
+        "preferred_capabilities": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "materiality": "material",
+        "parallel_policy": "allowed",
+        "context_coupling": "low",
+        "shared_state_access": "read",
+        "read_set": [],
+        "write_set": [],
+        "resource_locks": [],
+        "side_effect_class": "none",
+        "reversibility": "easy",
+        "replay_safety": "safe",
+        "node_contract_hash": "sha256:ae36ee8300f28700bd99ebd2268eae62cabd91e6055bf6bcdb6e29a5fdf3b703"
+      },
+      {
+        "node_id": "T2",
+        "objective": "route",
+        "depends_on": [
+          "T1"
+        ],
+        "input_refs": [],
+        "required_capabilities": [],
+        "preferred_capabilities": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "materiality": "material",
+        "parallel_policy": "preferred",
+        "context_coupling": "low",
+        "shared_state_access": "proposed_write",
+        "read_set": [],
+        "write_set": [
+          "state:A"
+        ],
+        "resource_locks": [],
+        "side_effect_class": "none",
+        "reversibility": "easy",
+        "replay_safety": "safe",
+        "node_contract_hash": "sha256:1964da0c83052460480671a65488374a4dec88ffcc00fbe207cb7543e75e74eb"
+      }
+    ]
+  },
+  "schedule": {
+    "schema_version": "1.1",
+    "schedule_id": "S",
+    "schedule_version": 1,
+    "plan_id": "P",
+    "based_on_plan_version": 1,
+    "mode": "parallel",
+    "scope": "wave",
+    "completed_prerequisite_refs": [
+      "T1"
+    ],
+    "deferred_nodes": [],
+    "assignments": [
+      {
+        "node_id": "T2",
+        "node_contract_hash": "sha256:1964da0c83052460480671a65488374a4dec88ffcc00fbe207cb7543e75e74eb",
+        "executor_id": "w2",
+        "executor_kind": "worker_agent",
+        "attempt_id": "A2",
+        "starts_after": [
+          "NOPE"
+        ],
+        "isolation_mode": "shared"
+      }
+    ]
+  },
+  "expected_codes": [
+    "SCHEDULE_STARTS_AFTER_UNKNOWN"
+  ]
+}

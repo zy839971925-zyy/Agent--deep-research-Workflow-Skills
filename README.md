@@ -1084,7 +1084,7 @@ J4 judgment
        ↓
 A1 artifact
        ↓
-V3 verification
+verification record
 ```
 
 If `P2` changes, the downstream records should not silently remain “current.”

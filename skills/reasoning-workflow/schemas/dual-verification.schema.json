@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dual-verification.schema.json",
+  "title": "Dual Layer Verification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verification_id",
+    "mode",
+    "solver_id",
+    "solver_context_id",
+    "layer1",
+    "reconciliation_status"
+  ],
+  "properties": {
+    "verification_id": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "minimal",
+        "single",
+        "dual",
+        "dual_orthogonal"
+      ]
+    },
+    "solver_id": {
+      "type": "string"
+    },
+    "solver_context_id": {
+      "type": "string"
+    },
+    "layer1": {
+      "type": "object",
+      "required": [
+        "verdict",
+        "verification_refs"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "pass",
+            "fail",
+            "blocked"
+          ]
+        },
+        "verification_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "layer2": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "reviewer_id": {
+          "type": "string"
+        },
+        "reviewer_context_id": {
+          "type": "string"
+        },
+        "solver_transcript_included": {
+          "type": "boolean"
+        },
+        "independence_basis": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "fresh_context",
+              "different_model",
+              "orthogonal_tool",
+              "orthogonal_evidence",
+              "human",
+              "deterministic_checker"
+            ]
+          }
+        },
+        "route_signature": {
+          "type": "string"
+        },
+        "solver_route_signature": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "fail",
+            "conflict",
+            "blocked"
+          ]
+        },
+        "disputed_node_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "reviewer_id",
+        "reviewer_context_id",
+        "solver_transcript_included",
+        "independence_basis",
+        "verdict"
+      ],
+      "additionalProperties": true
+    },
+    "reconciliation_status": {
+      "enum": [
+        "not_required",
+        "reopened",
+        "targeted_evidence_needed",
+        "reconciled",
+        "blocked"
+      ]
+    },
+    "reconciliation_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

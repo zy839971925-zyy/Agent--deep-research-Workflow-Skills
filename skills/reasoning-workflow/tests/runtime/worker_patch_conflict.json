@@ -1,0 +1,137 @@
+{
+  "kind": "worker_merge",
+  "plan": {
+    "schema_version": "1.1",
+    "plan_id": "P",
+    "plan_version": 1,
+    "objective": "fixture",
+    "nodes": [
+      {
+        "node_id": "T1",
+        "objective": "fact",
+        "depends_on": [],
+        "input_refs": [],
+        "required_capabilities": [],
+        "preferred_capabilities": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "materiality": "material",
+        "parallel_policy": "allowed",
+        "context_coupling": "low",
+        "shared_state_access": "read",
+        "read_set": [],
+        "write_set": [],
+        "resource_locks": [],
+        "side_effect_class": "none",
+        "reversibility": "easy",
+        "replay_safety": "safe",
+        "node_contract_hash": "sha256:ae36ee8300f28700bd99ebd2268eae62cabd91e6055bf6bcdb6e29a5fdf3b703"
+      },
+      {
+        "node_id": "T2",
+        "objective": "route",
+        "depends_on": [
+          "T1"
+        ],
+        "input_refs": [],
+        "required_capabilities": [],
+        "preferred_capabilities": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "materiality": "material",
+        "parallel_policy": "preferred",
+        "context_coupling": "low",
+        "shared_state_access": "proposed_write",
+        "read_set": [],
+        "write_set": [
+          "state:A"
+        ],
+        "resource_locks": [],
+        "side_effect_class": "none",
+        "reversibility": "easy",
+        "replay_safety": "safe",
+        "node_contract_hash": "sha256:1964da0c83052460480671a65488374a4dec88ffcc00fbe207cb7543e75e74eb"
+      },
+      {
+        "node_id": "T3",
+        "objective": "route",
+        "depends_on": [],
+        "input_refs": [],
+        "required_capabilities": [],
+        "preferred_capabilities": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "materiality": "material",
+        "parallel_policy": "preferred",
+        "context_coupling": "low",
+        "shared_state_access": "proposed_write",
+        "read_set": [],
+        "write_set": [
+          "state:A"
+        ],
+        "resource_locks": [],
+        "side_effect_class": "none",
+        "reversibility": "easy",
+        "replay_safety": "safe",
+        "node_contract_hash": "sha256:0c6788d9747cd3454a6ea92c43b30eb3d9993c6bb49353d8f08b8dee2bee41b0"
+      }
+    ]
+  },
+  "current_state_version": 2,
+  "proposals": [
+    {
+      "schema_version": "1.0",
+      "proposal_id": "P2",
+      "node_id": "T2",
+      "plan_version": 1,
+      "node_contract_hash": "sha256:1964da0c83052460480671a65488374a4dec88ffcc00fbe207cb7543e75e74eb",
+      "attempt_id": "AP2",
+      "executor_id": "w",
+      "input_state_version": 2,
+      "input_refs": [],
+      "evidence_refs": [],
+      "output_refs": [],
+      "proposed_state_patch": {},
+      "read_set_observed": [],
+      "write_set_proposed": [
+        "state:A"
+      ],
+      "result_fingerprint": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "uncertainty": [],
+      "failed_routes": [],
+      "conflicts": [],
+      "writes_canonical_state": false,
+      "declared_status": "proposed_complete"
+    },
+    {
+      "schema_version": "1.0",
+      "proposal_id": "P3",
+      "node_id": "T3",
+      "plan_version": 1,
+      "node_contract_hash": "sha256:0c6788d9747cd3454a6ea92c43b30eb3d9993c6bb49353d8f08b8dee2bee41b0",
+      "attempt_id": "AP3",
+      "executor_id": "w",
+      "input_state_version": 2,
+      "input_refs": [],
+      "evidence_refs": [],
+      "output_refs": [],
+      "proposed_state_patch": {},
+      "read_set_observed": [],
+      "write_set_proposed": [
+        "state:A"
+      ],
+      "result_fingerprint": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "uncertainty": [],
+      "failed_routes": [],
+      "conflicts": [],
+      "writes_canonical_state": false,
+      "declared_status": "proposed_complete"
+    }
+  ],
+  "expected_codes": [
+    "WORKER_PATCH_CONFLICT"
+  ]
+}

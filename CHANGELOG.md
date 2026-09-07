@@ -1,6 +1,6 @@
 # Changelog
 
-## V5 — Semantic Enforcement Release
+## Semantic Enforcement
 
 - Froze the two first-class lanes: Question / Reasoning and Action / Project.
 - Added a formal Semantic State Contract.
@@ -14,19 +14,19 @@
 - Added decision/recommendation and measurement/operationalization modules.
 - Kept the behavioral suite at 24 specifications and added observable run contracts.
 
-## V4 — Reasoning Structure as First-Class State
+## Reasoning Structure as First-Class State
 
 - Strengthened Question / Reasoning as an independent complete workflow.
 - Added premise management, decomposition/recomposition, question-drift checks, reasoning operators, typed relationships, and structured uncertainty.
 
-## V3 — Epistemic Systems Architecture
+## Epistemic Systems Architecture
 
 - Added system invariants, canonical work state, synchronization, recovery, raw lineage, traceability, completeness gates, schemas, validators, and behavioral specifications.
 
-## V2 — Change Governance & Effectiveness
+## Change Governance & Effectiveness
 
 - Added change records, systematic risk review, verification/validation separation, effectiveness checks, calibration, rollback, and governance depth.
 
-## V1 — Universal Reasoning Workflow
+## Universal Reasoning Workflow
 
 - Generalized deep research into an always-on, adaptive process layer for substantive tasks.

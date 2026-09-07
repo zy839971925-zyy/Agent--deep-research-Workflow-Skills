@@ -2,7 +2,7 @@
 
 Contributions should preserve the project's core distinction between **epistemic quality** and **runtime integrity**.
 
-Before adding new methodology, ask whether the behavior can already be expressed through the existing Question / Reasoning Lane, Action / Project Lane, references, semantic contract, or validators. V5 intentionally favors semantic enforcement over adding more process prose.
+Before adding new methodology, ask whether the behavior can already be expressed through the existing Question / Reasoning Lane, Action / Project Lane, references, semantic contract, or validators. The project favors semantic enforcement over adding more process prose.
 
 A useful change should normally include one or more of:
 

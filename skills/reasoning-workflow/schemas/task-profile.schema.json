@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task-profile.schema.json",
+  "title": "Reasoning Workflow Task Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_version",
+    "lane",
+    "depth_class",
+    "autonomy_class",
+    "reasoning_breadth",
+    "evidence_depth",
+    "challenge_depth",
+    "verification_depth",
+    "governance_depth",
+    "routing_confidence"
+  ],
+  "properties": {
+    "profile_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_profile_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "lane": {
+      "enum": [
+        "question",
+        "action",
+        "mixed"
+      ]
+    },
+    "depth_class": {
+      "enum": [
+        "light",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "autonomy_class": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "reasoning_breadth": {
+      "enum": [
+        "minimal",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "evidence_depth": {
+      "enum": [
+        "minimal",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "challenge_depth": {
+      "enum": [
+        "minimal",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "verification_depth": {
+      "enum": [
+        "minimal",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "governance_depth": {
+      "enum": [
+        "minimal",
+        "standard",
+        "deep",
+        "max"
+      ]
+    },
+    "frame_uncertainty": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "unknown"
+      ]
+    },
+    "freshness": {
+      "enum": [
+        "stable",
+        "time_sensitive",
+        "live",
+        "unknown"
+      ]
+    },
+    "causal_or_systemic_complexity": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "unknown"
+      ]
+    },
+    "task_coupling": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "unknown"
+      ]
+    },
+    "persistence": {
+      "enum": [
+        "none",
+        "session",
+        "durable"
+      ]
+    },
+    "external_side_effects": {
+      "enum": [
+        "none",
+        "reversible",
+        "consequential",
+        "irreversible"
+      ]
+    },
+    "routing_confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "uncertain"
+      ]
+    },
+    "recheck_triggers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "hidden_complexity",
+          "decisive_contradiction",
+          "uncertain_causal_edge",
+          "repeated_route_failure",
+          "source_conflict",
+          "entity_version_time_ambiguity",
+          "worker_conflict",
+          "user_steering",
+          "external_state_change",
+          "closure_material_uncertainty",
+          "lower_than_expected_complexity"
+        ]
+      }
+    },
+    "task_modes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "research",
+          "decision",
+          "action",
+          "audit",
+          "maintenance"
+        ]
+      }
+    },
+    "explicit_deep_research": {
+      "type": "boolean",
+      "default": false
+    },
+    "high_consequence": {
+      "type": "boolean",
+      "default": false
+    },
+    "orientation_needed": {
+      "type": "boolean",
+      "default": false
+    },
+    "problem_model_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "update_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "active_gap_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

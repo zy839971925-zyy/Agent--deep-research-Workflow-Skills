@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/capability-snapshot.schema.json",
+  "title": "Reasoning Workflow Capability Snapshot v1",
+  "type": "object",
+  "required": ["schema_version", "captured_at", "capabilities"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "captured_at": {"type": "string", "minLength": 1},
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["capability_id", "availability", "authorization"],
+        "properties": {
+          "capability_id": {"type": "string", "minLength": 1},
+          "availability": {"type": "string", "enum": ["available", "degraded", "unavailable"]},
+          "authorization": {"type": "string", "enum": ["allowed", "approval_required", "denied"]},
+          "scope": {},
+          "volatility": {"type": "string", "enum": ["stable", "session", "external"], "default": "session"},
+          "observed_at": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

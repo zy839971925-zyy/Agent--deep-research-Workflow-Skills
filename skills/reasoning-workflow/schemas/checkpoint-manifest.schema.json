@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/checkpoint-manifest.schema.json",
+  "title": "Reasoning Workflow Checkpoint Manifest v1.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "checkpoint_id",
+    "created_at",
+    "workflow",
+    "plan_version",
+    "schedule_version",
+    "state_version",
+    "required_components",
+    "components",
+    "commit_status",
+    "next_safe_action"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_checkpoint_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "policy_hash",
+        "semantic_contract_version"
+      ],
+      "properties": {
+        "name": {
+          "const": "reasoning-workflow"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_hash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_contract_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "problem_model_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "plan_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "schedule_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "event_seq_end": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "required_components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "semantic",
+          "runtime",
+          "workspace"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "semantic": {
+          "$ref": "#/$defs/component"
+        },
+        "runtime": {
+          "$ref": "#/$defs/component"
+        },
+        "workspace": {
+          "$ref": "#/$defs/component"
+        }
+      },
+      "additionalProperties": false
+    },
+    "completed_nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "running_nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "blocked_nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "unresolved_material_items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "resume_from": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_safe_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "commit_status": {
+      "type": "string",
+      "enum": [
+        "preparing",
+        "complete",
+        "invalid"
+      ]
+    },
+    "resume_lease": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "lease_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "holder_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expires_at": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "lease_id",
+        "holder_id",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "side_effect_receipt_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "saved",
+            "unavailable",
+            "failed",
+            "not_required"
+          ]
+        },
+        "ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "bindings": {
+          "type": "object",
+          "properties": {
+            "plan_version": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "schedule_version": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "state_version": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "event_seq_end": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "integrity_proof": {
+          "type": "string",
+          "enum": [
+            "hash",
+            "external_attestation"
+          ]
+        },
+        "attestation_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,282 +1,201 @@
 ---
 name: reasoning-workflow
-description: >-
-  Use as the default governing reasoning, inquiry, evidence, and work-control process for substantive tasks when installed or explicitly loaded. Apply before answering questions, analysis, interpretation, writing, planning, diagnosis, comparison, recommendation, forecasting, design, implementation, verification, audit, research, or consequential change. Treat question-answering as a first-class complete task, not a reduced project workflow. First determine the epistemic task, build a revisable problem model, manage premises and uncertainty, decompose and recompose where useful, reason through consequential relationships and competing explanations, then research only what can change the answer. Add durable state, change governance, synchronization, recovery, and effectiveness only when the work actually requires them.
+description: General-purpose governing workflow for substantive AI-agent work. Use it to understand the real task, calibrate useful depth, build and revise problem models, reason about relationships and causal chains, derive evidence needs, route specialist capabilities progressively, execute controlled work, verify outcomes, and close only when the root task is genuinely resolved.
 ---
 
 # Reasoning Workflow
 
-Use this as the governing process layer for substantive work. It owns **how the task is understood, investigated, reasoned about, controlled, checked, and completed**. It does not replace specialist domain Skills or tools that are better suited to the implementation.
+Reasoning Workflow is the default governing process for substantive questions, research, analysis, decisions, planning, writing, design, implementation, audits, and persistent agent work.
 
-When explicitly loaded from an attached archive as a governing workflow, apply it to subsequent substantive tasks in the current conversation until the user disables or replaces it. An archive does not itself grant tools, persistence, background work, or installation.
+It is not a replacement for specialist Skills. It governs **what problem is being solved, how deeply it deserves to be investigated, what context and capability should be loaded next, how results update the shared model, and what must be true before closure.**
 
-For greetings, casual conversation, or directly determined tasks, collapse to near-zero overhead. Rigor is not ceremony.
+## Instruction priority
 
-## System invariants
+The user's explicit instructions take precedence over this Skill's default workflow guidance. Do not let the Skill unnecessarily pause, re-confirm answered questions, change the requested deliverable, or turn a simple task into a project.
 
-Preserve these qualities proportionately on every substantive task:
+Hard safety, authorization, irreversible-action, and explicit closure constraints remain binding. If a Skill rule causes a pause, user question, refusal to continue, or material divergence from the requested path, make the responsible rule observable in the run record.
 
-- **Traceable:** material requirements, premises, observations, evidence, inferences, judgments, decisions, actions, artifacts, verification, and effectiveness remain connected to their basis.
-- **Readable:** a human or successor Agent can quickly understand the objective, current model, open uncertainty, rationale, state, and next action.
-- **Synchronized:** upstream changes invalidate or update dependents; stale conclusions, tests, or artifacts must not silently remain current.
-- **Original-preserving:** raw/source material stays distinct from transformed, summarized, enhanced, OCR-derived, or inferred descendants whenever technically feasible.
-- **Complete:** closure dispositions the original question or requirements, material blockers, required artifacts, and required checks; “feels done” is not a coverage test.
-- **Consistent:** authoritative state, runtime observations, documentation, answers, and required artifact representations are reconciled before being declared current.
-- **Durable/recoverable:** when the task and runtime justify it, preserve enough state for interruption, handoff, resume, and later effectiveness checks.
-- **Fast/proportionate:** use the smallest mechanism that preserves the other invariants. Simple questions remain simple.
+## Universal entry: Task Admission / Depth Gate
 
-These are invariants, not mandatory files. Materialize IDs, manifests, checkpoints, ledgers, or schemas only when task duration, consequences, side effects, multiple artifacts, delegation, handoff, or later re-evaluation justify them. Read [state model and invariants](references/state-model-and-invariants.md) for durable work.
+Every substantive task enters Reasoning Workflow, but every task starts **light**.
 
-For structured/durable state, **declared state is input; effective state is computed**. Closure and readiness use effective state, typed references, materiality, and the shared edge policy—not self-declared booleans. Read [semantic state contract](references/semantic-state-contract.md).
+Universal entry does **not** mean universal full execution.
+
+Before loading specialist references or starting heavy research, form or update a structured Task Profile. See [`schemas/task-profile.schema.json`](schemas/task-profile.schema.json) and [`routing-index.json`](routing-index.json).
+
+The profile keeps these decisions separate:
+
+- `depth_class`: `light | standard | deep | max`
+- `autonomy_class`: `A | B | C | D`
+- reasoning breadth
+- evidence depth
+- challenge depth
+- verification depth
+- governance depth
+- frame uncertainty
+- freshness / volatility
+- causal or systemic complexity
+- task coupling
+- persistence and side effects
+- routing confidence and recheck triggers
+
+Do not collapse them into a 0–100 complexity score.
+
+`Max` means **maximum useful depth**, not maximum references, searches, workers, or tokens.
+
+### Dynamic depth
+
+Depth is a revisable runtime judgment, not a one-time label. Re-evaluate when new evidence reveals hidden structure, decisive contradiction, uncertain causal edges, repeated retrieval failure, source conflict, entity/version/time ambiguity, worker conflict, user steering, external change, or material uncertainty near closure.
+
+Depth may move up **or down**. When profile version changes, the old Skill/resource route becomes stale and must be regenerated.
+
+If routing confidence is uncertain or stakes are high, a Depth Re-evaluation Gate may use an independent reviewer. Do not run a second reviewer for every task.
+
+## Universal Reasoning System
+
+The following is a dependency-aware reasoning spine, **not a fixed linear checklist**. Collapse irrelevant operations; revisit upstream modeling when new evidence changes the frame.
+
+1. Identify the real epistemic task or desired outcome.
+2. Orient when the frame itself may be wrong.
+3. Build or recover a revisable problem model / problem graph.
+4. Identify pivotal premises, assumptions, mechanisms, constraints, and unknowns.
+5. Decompose only when needed; later prove that the pieces recompose to the root question.
+6. Model consequential relationships and candidate causal chains.
+7. Generate competing explanations and reversal conditions for material conclusions.
+8. Derive explicit evidence needs from uncertain premises, causal edges, hypotheses, versions, or entities.
+9. Retrieve, observe, experiment, or reason only where the expected information gain can change the model or critical path.
+10. Update the model, propagate consequences, challenge, synthesize, and verify.
+
+A typical research loop is:
+
+`problem graph → uncertain premise/causal edge → evidence need → best evidence route → observation → model update → challenge → next information-gain decision`
+
+**Research follows the structure of the problem, not merely the wording of the prompt.**
+
+### Orientation retrieval vs evidence retrieval
+
+When frame uncertainty is high, limited `orientation_retrieval` may occur before a stable problem model, but it must have an explicit orientation goal.
+
+Formal `evidence_retrieval` requires a current explicit evidence need and a valid problem model. That state may have been created this run, restored from a verified checkpoint, read from canonical state, or supplied by a validated upstream agent.
 
 ## Two first-class lanes
 
 ### Question / Reasoning Lane
 
-`understand → identify essence → model → premises → decompose/recompose → relationships → competing explanations → uncertainty → reason/research → challenge → synthesize → answer → verify`
+`understand → model → reason/research → challenge → recompose → answer → verify`
 
-**Answering a question is a complete task.** Do not treat it as an incomplete project merely because no persistent artifact is changed.
+**Answering a question is a complete task.** Do not force Question work into project governance merely because it is intellectually difficult.
 
 ### Action / Project Lane
 
-First perform enough of the Question / Reasoning Lane to understand what should be done. Then, when persistent work or side effects warrant it:
+After enough reasoning to know what should happen:
 
-`risk → change control → execute → re-observe → verify → validate → reconcile → effectiveness → close/reopen`
+`plan → authorization/risk → schedule/delegate → execute → re-observe → verify → reconcile → effectiveness → close/reopen`
 
-The Action lane extends the cognitive lane; it does not replace it.
+Swarm is not a third lane. It is a scheduling strategy under Execution Control. The same semantic Plan must remain executable serially, in parallel, or under degraded capability.
 
-## 1. Identify the epistemic task and the real outcome
+## Skill Family routing
 
-Before choosing tools or process machinery, determine what the user actually needs to **know, explain, verify, compare, diagnose, predict, interpret, judge, decide, create, change, or accomplish**. Define what conclusion or deliverable would genuinely answer the request, including relevant constraints, audience, time horizon, and success conditions.
+The deterministic router maps the structured Task Profile to Skill Families. The model may propose an override, but must record why.
 
-A prompt's nouns are not automatically the problem structure. Do not substitute an easier search question for the user's real objective. Re-check at synthesis time that the answer has not drifted into a nearby but different question.
+- [`Core Reasoning`](families/core-reasoning.md) — available to every substantive task.
+- [`Deep Research`](families/deep-research.md) — material evidence depth, frame discovery, multi-source verification, causal/systemic uncertainty, competing explanations, or explicit Deep/Max research.
+- [`Decision Analysis`](families/decision-analysis.md) — choice, recommendation, trade-off, prioritization, allocation.
+- [`Execution Control`](families/execution-control.md) — persistent side effects, durable artifacts, delegated work, Swarm, authorization, checkpoint/resume, durable state.
+- [`Audit / Verification`](families/audit-verification.md) — deep verification, high consequence, explicit audit, Action closure, or second-layer review.
+- [`Workflow Learning`](families/workflow-learning.md) — **maintenance plane only**, never bulk-loaded into ordinary user work.
 
-Read [problem framing and effort](references/problem-framing-and-effort.md) when the task is ambiguous, multi-objective, or consequential. For statements, motives, conversational meaning, or interpersonal interpretation, read [human context and interpretation](references/human-context-and-interpretation.md).
+The maintenance-plane CAPA and controlled-learning procedure is documented in [`Workflow Learning and CAPA`](references/workflow-learning-and-capa.md) and is loaded only when that gap is active.
 
-## 2. Calibrate effort
+Reference map (navigation only; load progressively): [`change governance`](references/change-governance-and-effectiveness.md) · [`decision quality`](references/decision-and-recommendation.md) · [`domain patterns`](references/domain-patterns.md) · [`evidence and provenance`](references/evidence-and-provenance.md) · [`formal review`](references/formal-review-and-audit.md) · [`human context`](references/human-context-and-interpretation.md) · [`hypotheses and bias control`](references/hypotheses-and-bias-control.md) · [`inquiry and research`](references/inquiry-and-research.md) · [`measurement`](references/measurement-and-operationalization.md) · [`multimodal and data`](references/multimodal-and-data.md) · [`problem framing`](references/problem-framing-and-effort.md) · [`reasoning structure`](references/reasoning-structure-and-decomposition.md) · [`relationships and systems`](references/relationships-and-systems.md) · [`retrieval and observation`](references/retrieval-and-observation.md) · [`runtime and delegation`](references/runtime-and-delegation.md) · [`semantic state`](references/semantic-state-contract.md) · [`state model`](references/state-model-and-invariants.md) · [`synchronization and recovery`](references/synchronization-and-recovery.md) · [`synthesis and verification`](references/synthesis-execution-and-verification.md) · [`time and scenarios`](references/time-scenarios-and-forecasting.md) · [`traceability`](references/traceability-and-integrity.md) · [`worked examples`](references/worked-examples.md)
 
-Respect explicit user depth first. “Maximum,” “deepest,” “longest useful path,” or equivalent means maximum useful epistemic and governance effort within available capabilities, authorization, and hard limits; do not silently downgrade it because a shorter answer is easier.
+## Progressive context disclosure
 
-Otherwise calibrate five dimensions independently:
+Machine layers may be large. Model context should be small and high-signal.
 
-- **Reasoning breadth:** interpretations, mechanisms, relationships, perspectives, boundary conditions.
-- **Evidence depth:** new observation, retrieval, source diversity, measurement, reproduction.
-- **Challenge depth:** alternative explanations, premise tests, counterevidence, reversal conditions.
-- **Verification depth:** checks of claims, calculations, answers, artifacts, implementation, acceptance criteria.
-- **Governance depth:** state, traceability, review, authorization, rollback, monitoring, effectiveness for persistent work.
+1. Load this root map and the active Task Profile.
+2. Select the Skill Family route.
+3. Load the relevant Family index.
+4. Load normally **1–3 references for the current unresolved gap**, not the entire reference directory.
+5. Return to the governing router after the module.
+6. Load another reference only if the updated profile/state exposes a new material gap.
 
-Light / Standard / Deep / Max are presets, not quotas. Escalate or de-escalate as the problem changes. Never manufacture a numerical rigor score.
+`Related` links are navigation hints. **Related ≠ automatic load.**
 
-## 3. Build a revisable problem model
+Do not make the model read schemas/policies it can instead invoke through deterministic validators. `machine_enforced=true` means the model may rely on the machine contract rather than memorizing its implementation.
 
-Before jumping from prompt to answer, distinguish the roles of important propositions:
+## Next-step governing rule
 
-- **fact / observation:** directly supplied, observed, measured, or reliably retrieved;
-- **premise:** a proposition on which a reasoning step materially depends;
-- **assumption:** a premise provisionally accepted without adequate direct support;
-- **hypothesis:** a candidate explanation or model to be tested;
-- **inference:** a conclusion derived from premises/evidence;
-- **judgment:** an evaluative synthesis that need not be a directly verifiable fact;
-- **recommendation:** an action preference based on evidence, inference, judgment, and user goals;
-- **unknown:** an unresolved item that could change the answer.
+For every feasible next action—reasoning, retrieval, experiment, specialist Skill, worker, user question, checkpoint, or review—prefer the action that best reduces decisive uncertainty, advances the critical path, or protects task integrity relative to cost, risk, coupling, and reversibility.
 
-Also model relevant entities, variables, constraints, chronology, incentives, mechanisms, dependencies, feedback, and external context.
+This does not require a numerical score.
 
-The model is revisable. A new premise, changed definition, incompatible observation, or stronger alternative may overturn downstream reasoning. Do not keep searching only for support for the first plausible story.
+## User interaction
 
-For premise/hypothesis discipline and uncertainty, read [hypotheses and bias control](references/hypotheses-and-bias-control.md).
+Complexity is not permission to ask the user.
 
-When the task asks **what to do**, separate belief from choice: objectives and values are not evidence-derived facts. Model feasible alternatives, consequences, trade-offs, uncertainty, reversibility, opportunity cost, sensitivity, and the value of more information. Read [decision and recommendation quality](references/decision-and-recommendation.md). When metrics/proxies carry an argument or decision, check that the operational measure actually represents the construct that matters and is decision-relevant; read [measurement and operationalization](references/measurement-and-operationalization.md).
+- `A` — direct completion
+- `B` — deep autonomous work
+- `C` — critical clarification only when user information can materially change the model, route, conclusion, critical path, or irreversible choice and cannot be resolved from context/evidence/defaults/branching
+- `D` — authorization or approval is required
 
-## 4. Decompose only when it improves reasoning; then recompose
+Clarification and authorization are different gates. A safe inference can replace a low-value clarification; it cannot manufacture permission.
 
-Break a problem into subquestions when doing so reduces cognitive load, separates independent uncertainties, reveals dependencies, or enables specialist work. Do not mechanically force MECE or a favorite taxonomy.
+## Verification depth
 
-Check decomposition quality:
+Verification scales with the Task Profile:
 
-- **low overlap:** avoid repeated reasoning disguised as separate branches;
-- **material coverage:** do not omit a dependency that could change the parent answer;
-- **stable levels:** do not mix causes, symptoms, actors, outcomes, and implementation steps as if they were peer categories without reason;
-- **recomposition:** if every subquestion were answered perfectly, would those answers be sufficient to answer the parent question?
+- **Light:** minimal local check.
+- **Standard:** normal single-layer verification.
+- **Deep:** Layer 1 contract verification + fresh independent Layer 2 review for material conclusions.
+- **Max / high consequence:** dual-layer verification plus an orthogonal evidence/tool/model/human/deterministic route when useful and feasible.
 
-If recomposition fails, the decomposition is incomplete, mis-leveled, or aimed at the wrong parent problem.
+Layer 2 should receive the original task, final answer/artifact, evidence ledger, material assumptions, and Layer 1 results—not the solver's full reasoning transcript.
 
-Prefer understanding before classification. A useful default sequence is:
+If reviewers disagree, do not majority-vote. Identify the disputed node, reopen affected state, derive discriminating evidence/verification, and reconcile. See [`families/audit-verification.md`](families/audit-verification.md).
 
-`concrete observations → recurring pattern → consequential relationship → mechanism/essence → abstraction/taxonomy`
+## Execution and semantic runtime invariants
 
-Classification compresses understanding; it does not substitute for mechanism analysis.
+When Execution Control is active:
 
-Read [reasoning structure and decomposition](references/reasoning-structure-and-decomposition.md) when a task needs structured decomposition, logical reconstruction, or recomposition.
+- Plan semantics are invariant under scheduling.
+- Capability degradation may change route, not silently acceptance criteria.
+- Capability availability and authorization are separate.
+- Workers may propose state; canonical state commits centrally.
+- Verification credit belongs only to the exact state/content fingerprint verified.
+- Persisted state does not grant authority.
+- Resume means restore → re-observe → recompute → continue.
+- Replay safety and side-effect receipts govern retry after interruption.
+- Execution history explains current state; it does not replace canonical state.
 
-## 5. Distinguish frame uncertainty from answer uncertainty
+See [`families/execution-control.md`](families/execution-control.md).
 
-Ask two different questions:
+## Workflow adherence
 
-- **Answer uncertainty:** is the question well-framed but the answer unknown?
-- **Frame uncertainty:** might important entities, definitions, perspectives, mechanisms, adjacent domains, source ecosystems, time boundaries, or relationships be missing from the problem model?
+Do not infer compliance from polished prose or from an Agent saying it followed the Skill.
 
-When frame uncertainty is material, **orient before narrowing**. Learn vocabulary, canonical entities, chronology, major disagreements, source ecosystems, adjacent perspectives, and plausible relationship structure before committing to a search path.
+Evaluate observable protocol:
 
-Read [inquiry and research](references/inquiry-and-research.md) whenever the problem is open-ended, unfamiliar, research-heavy, frame-uncertain, contested, or explicitly Deep/Max.
+`state preconditions + required transitions + forbidden transitions + events/tool calls/resource loads + validator findings`
 
-## 6. Use existing information first; research from an information need
+A same-turn creation event is not required when valid prerequisite state already exists from a checkpoint/canonical state/validated upstream agent.
 
-Ask whether supplied information plus direct reasoning can already answer the task reliably. If yes, proceed; web search is not a quality ritual.
+Important observable events include `task_profile_committed`, `task_profile_updated`, `skill_route_selected`, `reference_loaded`, `reference_released`, orientation/evidence retrieval, delegation, verification, review, and closure events.
 
-If evidence is needed, derive retrieval from the current model:
+## Learning plane
 
-1. What do I not know?
-2. Why would that unknown change the conclusion?
-3. What observation would support, distinguish, or falsify plausible explanations?
-4. Which evidence surface is closest to that observation?
+Normal user work does not self-edit the canonical Skill.
 
-Search/retrieval should be generated by the problem model, premises, hypotheses, and relationship map—not by mechanically paraphrasing the user's keywords.
+After runs, a maintenance process may consume successful, failed, recovered, inefficient, or user-corrected trajectories plus eval/CAPA evidence and propose learnings. Intrinsic same-model reflection alone creates a candidate only.
 
-Evidence surfaces may include conversation context, user files, connected/private sources, repositories, code, logs, tests, structured data, runtime experiments, public web, literature, archives, official records, specialist reporting, interviews, or community evidence. Use actual runtime capabilities, not imagined ones.
+Canonical changes require regression, baseline comparison, independent review, held-out/offline evaluation as appropriate, and rollback. See [`families/workflow-learning.md`](families/workflow-learning.md).
 
-Read [retrieval and observation](references/retrieval-and-observation.md) and [evidence and provenance](references/evidence-and-provenance.md) when new evidence matters.
+## Closure
 
-## 7. Reason through relationships precisely
+Before closure, return to the root task rather than the most recent subtask.
 
-Do not treat every “connection” as the same kind of relation. Distinguish at least when material:
+Question closure requires a current answer/bounded disposition, material uncertainty disposition, recomposition when decomposed, and no decisive stale dependency.
 
-`causes · correlates_with · depends_on · enables · constrains · mediates · moderates · precedes · is_part_of · is_example_of · is_alternative_to`
+Action closure additionally requires current material requirements/artifacts, authorization, verification, reconciliation, and effectiveness where required.
 
-For complex problems, consider upstream causes and common causes, downstream consequences and mediators, feedback, delay, thresholds, adaptation, expectations, path dependence, selection, confounding, reverse causality, substitutes, complements, buffers, and outside forces absent from the prompt.
-
-Prune aggressively: follow a relationship only when resolving it could change interpretation, prediction, judgment, decision, design, or action. For consequential paths, ask what must be true for the path to operate and what should be observable if it is operating.
-
-Read [relationships and systems](references/relationships-and-systems.md).
-
-## 8. Use induction, abduction, and deduction as a revisable loop
-
-Reasoning may combine:
-
-- **induction:** observations → pattern / generalization / candidate regularity;
-- **abduction:** observations → plausible explanation(s);
-- **deduction:** premises / hypothesis / mechanism → implications or predictions that should follow if it is true.
-
-A useful scientific loop is:
-
-`observation → induction/abduction → competing hypotheses → deduction → discriminating predictions → evidence → revision`
-
-Do not treat the first abduction as fact. When a material observation admits several plausible explanations, ask what else could cause it, what each explanation predicts differently, and what feasible evidence best distinguishes them.
-
-Read [hypotheses and bias control](references/hypotheses-and-bias-control.md).
-
-## 9. Judge evidence by fit, information gain, and position to know
-
-Keep distinct:
-
-`raw/observation → source assertion → evidence relation → inference → judgment → recommendation`
-
-For a material claim, ask:
-
-- is this source actually in a **position to know** this proposition?
-- could its method observe or measure the relevant thing?
-- does entity/version/time/population/definition match?
-- is the source independent, or copied from the same provenance?
-- does this evidence distinguish competing explanations or merely fit all of them?
-
-Official material is strong evidence of what an institution officially states; it is not automatically independent proof of every underlying assertion. Field/community evidence may be strong for lived experience or early signals without proving population prevalence.
-
-Prefer evidence with high expected information gain over large piles of redundant sources.
-
-Read [evidence and provenance](references/evidence-and-provenance.md).
-
-## 10. Structure uncertainty and challenge material conclusions
-
-Do not hide uncertainty behind generic words like “maybe.” When useful, identify its source:
-
-- missing evidence;
-- source conflict;
-- measurement uncertainty;
-- definition/scope mismatch;
-- premise or model uncertainty;
-- causal uncertainty;
-- future behavioral/external uncertainty.
-
-Then decide whether another feasible observation can reduce it enough to matter.
-
-For a material conclusion, ask proportionately:
-
-- What evidence would make me change the answer?
-- Which premise, if false, would invalidate the conclusion?
-- Is there a counterexample, competing explanation, or contrary observation?
-- What remains uncertain even after the best available evidence?
-
-Challenge is part of normal reasoning, not only project risk review. Scale it to stakes and ambiguity.
-
-## 11. Adaptive research loop for Deep/Max work
-
-When substantial inquiry is warranted:
-
-1. identify the most answer-bearing unresolved question or frame gap;
-2. formulate competing answers/explanations when useful;
-3. derive the next evidence need from the model;
-4. choose an evidence surface and route that can discriminate;
-5. inspect the underlying material;
-6. update premises, hypotheses, uncertainty, relationships, provenance, and dependent conclusions;
-7. seek counterevidence or an orthogonal route when material uncertainty remains;
-8. spend the next unit of effort where expected answer gain is highest.
-
-For needle-in-a-haystack discovery, a few genuinely independent search trajectories can help when path dependence is the main failure mode; compare evidence rather than voting on model answers. For complex multi-claim work, prefer evidence-gap decomposition. Search counts, source counts, hops, agents, and report length are never completion criteria.
-
-Read [time, scenarios and forecasting](references/time-scenarios-and-forecasting.md) for changing facts, historical point-in-time reasoning, negative claims, or uncertain futures. Read [multimodal and data](references/multimodal-and-data.md) when claims depend on images, charts, tables, datasets, audio, video, or calculations.
-
-## 12. Enter durable work control only when warranted
-
-If the task creates persistent change, spans multiple artifacts/agents/sessions, has meaningful side effects, needs handoff/recovery, or requires later effectiveness checks, materialize enough runtime state to preserve the system invariants.
-
-Use one canonical current-state projection for operation, backed by traceable preserved raw inputs/observations and state-changing events when feasible. Upstream premise, requirement, evidence, or external-state changes should invalidate dependent inferences, decisions, artifacts, and tests rather than silently coexist.
-
-Read [state model and invariants](references/state-model-and-invariants.md), [synchronization and recovery](references/synchronization-and-recovery.md), and [traceability and integrity](references/traceability-and-integrity.md).
-
-For consequential persistent change, read [change governance and effectiveness](references/change-governance-and-effectiveness.md). Governance is an extension of sound reasoning, not a substitute for it.
-
-## 13. Use specialist Skills without surrendering process ownership
-
-`reasoning-workflow` owns framing, effort calibration, inquiry quality, state/traceability policy, integration, verification, reconciliation, and completion. A specialist Skill owns the domain-specific implementation when available.
-
-Examples: `reasoning-workflow + product-design`, `reasoning-workflow + data-analysis`, `reasoning-workflow + PDF/document tooling`, `reasoning-workflow + coding/repository tooling`.
-
-Merge specialist outputs back into the current problem/work model; do not allow competing objectives or silent parallel sources of truth.
-
-Read [runtime and delegation](references/runtime-and-delegation.md). Use [domain patterns](references/domain-patterns.md) only when a domain-specific method materially changes the work.
-
-## 14. Synthesize, answer, execute, and verify
-
-For the Question lane:
-
-- answer the **original** question, not merely the easiest researched subquestion;
-- recompose decomposed branches into a coherent parent answer;
-- keep fact, inference, judgment, and recommendation distinct where material;
-- state decisive assumptions and bounded uncertainty without exposing private chain-of-thought;
-- verify claims, calculations, definitions, dates, versions, and source-to-claim fit in proportion to consequence.
-
-For the Action lane:
-
-- execute the authorized parent task rather than stopping at analysis;
-- re-observe actual post-action state;
-- verify implementation, validate intended use/outcome where relevant, reconcile artifacts/state, and leave effectiveness pending when later observation is genuinely required.
-
-Read [synthesis, execution and verification](references/synthesis-execution-and-verification.md) and [formal review and audit](references/formal-review-and-audit.md). When a boundary case is unclear, use [worked examples](references/worked-examples.md) as illustrations, never as empirical validation.
-
-## Completion rules
-
-### Question / Reasoning closure
-
-Close when:
-
-- the final answer directly resolves the user's original epistemic task;
-- recomposition succeeds if the problem was decomposed;
-- material premises and uncertainty are supported, bounded, or disclosed;
-- consequential alternatives/reversal conditions were challenged proportionately;
-- another feasible inquiry is unlikely to materially improve the answer relative to its cost.
-
-### Action / Project closure
-
-Additionally require explicit disposition of user requirements, unresolved blockers, stale items, required artifacts, verification, reconciliation, and effectiveness state. Do not declare a persistent change effective merely because implementation completed.
-
-Match the user's language and requested format. Keep internal state/ledgers out of the final answer unless they are useful deliverables.
+A task is complete because its **effective state** satisfies the closure contract—not because an Agent declared `done`.

@@ -1,0 +1,48 @@
+{
+  "name": "Reasoning Workflow",
+  "public_release_branding": "versionless",
+  "canonical_source": "skills/reasoning-workflow",
+  "artifacts": {
+    "README.md": {
+      "size_bytes": 34351,
+      "sha256": "5fd1cae0d5179444908a791430fd71adef469826621ecad435837f884146f902"
+    },
+    "README.zh-CN.md": {
+      "size_bytes": 21399,
+      "sha256": "bc512fca730e2efe2c278ae614958051c023942ae5a9d10ead8eaf7c4e390c66"
+    },
+    "dist/reasoning-workflow-portable.zip": {
+      "size_bytes": 164373,
+      "sha256": "c1baf94fb2832bdc345e0be457e7184bda6a076e2d8db1f43e5b5bd6d4a89b0c"
+    },
+    "dist/reasoning-workflow-modular.zip": {
+      "size_bytes": 728626,
+      "sha256": "bb810b03ea0a7bba675f953901736de47887a5f365b1ece1eb6e6968cd0900e0"
+    },
+    "docs/ARCHITECTURE.md": {
+      "size_bytes": 2284,
+      "sha256": "4d5cc839525ddf670a75bdb569ce75d4cd77f17db94506d937e8c41dbe596258"
+    },
+    "docs/EVALUATION.md": {
+      "size_bytes": 6074,
+      "sha256": "17b5d88ebd1b8cc55f5cdcac46b518eee8d2d3da64042ffbbe2c46df5349f748"
+    },
+    "docs/LEARNING-POLICY.md": {
+      "size_bytes": 2594,
+      "sha256": "c8749af969c170c6b0941038efe2131bd631d3626c2bb07ab9981f77e35d9513"
+    },
+    "docs/MIGRATION.md": {
+      "size_bytes": 1138,
+      "sha256": "41a4ebf52d197107039b67e0ee01a94fbcd2bd449d94e5f57f165dc1868c1357"
+    },
+    "docs/FILE-CHANGES.md": {
+      "size_bytes": 2168,
+      "sha256": "d12ab7464dc727169e453f3ea6fe6d7a0d4d8ecc7d45b5ac96ec2ab3431eaa35"
+    },
+    "docs/TEST-RESULTS.txt": {
+      "size_bytes": 9924,
+      "sha256": "18111a9f1ec2439f6c5c687e4f4174b351af4a49c7f4e28b252ae38e45dbc94e"
+    }
+  },
+  "machine_versioning_note": "Schema/state/profile/plan/schedule revisions are retained because they are runtime integrity fields, not public release branding."
+}

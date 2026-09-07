@@ -1,0 +1,833 @@
+{
+  "schema_version": "1.0",
+  "rule": "Related links are navigation hints, never automatic-load instructions. Load references only through the active route and current unresolved gap.",
+  "families": [
+    {
+      "id": "core-reasoning",
+      "description": "Universal problem framing, decomposition, relationships, causal chains, hypotheses and interpretation."
+    },
+    {
+      "id": "deep-research",
+      "description": "Model-driven orientation, evidence needs, retrieval, provenance, freshness and research synthesis."
+    },
+    {
+      "id": "decision-analysis",
+      "description": "Objectives, alternatives, measurements, trade-offs and recommendations."
+    },
+    {
+      "id": "execution-control",
+      "description": "Plans, schedules, capabilities, workers, state, checkpoint, recovery and replay safety."
+    },
+    {
+      "id": "audit-verification",
+      "description": "Contract verification, independent review, closure, effectiveness and workflow adherence."
+    },
+    {
+      "id": "workflow-learning",
+      "description": "Post-run CAPA, experience memory, eval-gated learning promotion and rollback. Maintenance plane only."
+    }
+  ],
+  "references": [
+    {
+      "id": "problem-framing-and-effort",
+      "family": "core-reasoning",
+      "path": "references/problem-framing-and-effort.md",
+      "load_when_tags": [
+        "framing",
+        "depth",
+        "autonomy",
+        "clarification",
+        "task-profile"
+      ],
+      "load_when": "Load only when the active gap matches one of: framing, depth, autonomy, clarification, task-profile.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 1
+    },
+    {
+      "id": "reasoning-structure-and-decomposition",
+      "family": "core-reasoning",
+      "path": "references/reasoning-structure-and-decomposition.md",
+      "load_when_tags": [
+        "decomposition",
+        "recomposition",
+        "structure"
+      ],
+      "load_when": "Load only when the active gap matches one of: decomposition, recomposition, structure.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "relationships-and-systems",
+      "family": "core-reasoning",
+      "path": "references/relationships-and-systems.md",
+      "load_when_tags": [
+        "causal-chain",
+        "systems",
+        "relationships",
+        "feedback",
+        "mechanism"
+      ],
+      "load_when": "Load only when the active gap matches one of: causal-chain, systems, relationships, feedback, mechanism.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "hypotheses-and-bias-control",
+      "family": "core-reasoning",
+      "path": "references/hypotheses-and-bias-control.md",
+      "load_when_tags": [
+        "hypotheses",
+        "competing-explanations",
+        "bias",
+        "falsification"
+      ],
+      "load_when": "Load only when the active gap matches one of: hypotheses, competing-explanations, bias, falsification.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "human-context-and-interpretation",
+      "family": "core-reasoning",
+      "path": "references/human-context-and-interpretation.md",
+      "load_when_tags": [
+        "human-context",
+        "interpretation",
+        "statement"
+      ],
+      "load_when": "Load only when the active gap matches one of: human-context, interpretation, statement.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "worked-examples",
+      "family": "core-reasoning",
+      "path": "references/worked-examples.md",
+      "load_when_tags": [
+        "examples",
+        "workflow-example"
+      ],
+      "load_when": "Load only when the active gap matches one of: examples, workflow-example.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 9
+    },
+    {
+      "id": "inquiry-and-research",
+      "family": "deep-research",
+      "path": "references/inquiry-and-research.md",
+      "load_when_tags": [
+        "deep-research",
+        "evidence-need",
+        "research-loop",
+        "frame-discovery"
+      ],
+      "load_when": "Load only when the active gap matches one of: deep-research, evidence-need, research-loop, frame-discovery.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "retrieval-and-observation",
+      "family": "deep-research",
+      "path": "references/retrieval-and-observation.md",
+      "load_when_tags": [
+        "retrieval",
+        "orientation-retrieval",
+        "evidence-retrieval",
+        "observation"
+      ],
+      "load_when": "Load only when the active gap matches one of: retrieval, orientation-retrieval, evidence-retrieval, observation.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "evidence-and-provenance",
+      "family": "deep-research",
+      "path": "references/evidence-and-provenance.md",
+      "load_when_tags": [
+        "evidence",
+        "provenance",
+        "citation",
+        "source-independence"
+      ],
+      "load_when": "Load only when the active gap matches one of: evidence, provenance, citation, source-independence.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "time-scenarios-and-forecasting",
+      "family": "deep-research",
+      "path": "references/time-scenarios-and-forecasting.md",
+      "load_when_tags": [
+        "forecast",
+        "time",
+        "scenario",
+        "freshness",
+        "volatility"
+      ],
+      "load_when": "Load only when the active gap matches one of: forecast, time, scenario, freshness, volatility.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "multimodal-and-data",
+      "family": "deep-research",
+      "path": "references/multimodal-and-data.md",
+      "load_when_tags": [
+        "multimodal",
+        "data",
+        "files",
+        "images"
+      ],
+      "load_when": "Load only when the active gap matches one of: multimodal, data, files, images.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "decision-and-recommendation",
+      "family": "decision-analysis",
+      "path": "references/decision-and-recommendation.md",
+      "load_when_tags": [
+        "decision",
+        "recommendation",
+        "tradeoff",
+        "choice",
+        "allocation"
+      ],
+      "load_when": "Load only when the active gap matches one of: decision, recommendation, tradeoff, choice, allocation.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "measurement-and-operationalization",
+      "family": "decision-analysis",
+      "path": "references/measurement-and-operationalization.md",
+      "load_when_tags": [
+        "measurement",
+        "metric",
+        "proxy",
+        "operationalization"
+      ],
+      "load_when": "Load only when the active gap matches one of: measurement, metric, proxy, operationalization.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "runtime-and-delegation",
+      "family": "execution-control",
+      "path": "references/runtime-and-delegation.md",
+      "load_when_tags": [
+        "execution",
+        "delegation",
+        "swarm",
+        "schedule",
+        "worker",
+        "capability"
+      ],
+      "load_when": "Load only when the active gap matches one of: execution, delegation, swarm, schedule, worker, capability.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "synchronization-and-recovery",
+      "family": "execution-control",
+      "path": "references/synchronization-and-recovery.md",
+      "load_when_tags": [
+        "checkpoint",
+        "resume",
+        "recovery",
+        "replay",
+        "side-effect"
+      ],
+      "load_when": "Load only when the active gap matches one of: checkpoint, resume, recovery, replay, side-effect.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "state-model-and-invariants",
+      "family": "execution-control",
+      "path": "references/state-model-and-invariants.md",
+      "load_when_tags": [
+        "state",
+        "canonical-state",
+        "invariants",
+        "durable"
+      ],
+      "load_when": "Load only when the active gap matches one of: state, canonical-state, invariants, durable.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "semantic-state-contract",
+      "family": "execution-control",
+      "path": "references/semantic-state-contract.md",
+      "load_when_tags": [
+        "semantic-state",
+        "lifecycle",
+        "effective-state"
+      ],
+      "load_when": "Load only when the active gap matches one of: semantic-state, lifecycle, effective-state.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "traceability-and-integrity",
+      "family": "execution-control",
+      "path": "references/traceability-and-integrity.md",
+      "load_when_tags": [
+        "traceability",
+        "integrity",
+        "event",
+        "lineage"
+      ],
+      "load_when": "Load only when the active gap matches one of: traceability, integrity, event, lineage.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "domain-patterns",
+      "family": "execution-control",
+      "path": "references/domain-patterns.md",
+      "load_when_tags": [
+        "domain-pattern",
+        "implementation-pattern"
+      ],
+      "load_when": "Load only when the active gap matches one of: domain-pattern, implementation-pattern.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 8
+    },
+    {
+      "id": "synthesis-execution-and-verification",
+      "family": "audit-verification",
+      "path": "references/synthesis-execution-and-verification.md",
+      "load_when_tags": [
+        "verification",
+        "synthesis",
+        "closure",
+        "artifact-contract"
+      ],
+      "load_when": "Load only when the active gap matches one of: verification, synthesis, closure, artifact-contract.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "formal-review-and-audit",
+      "family": "audit-verification",
+      "path": "references/formal-review-and-audit.md",
+      "load_when_tags": [
+        "audit",
+        "review",
+        "adherence",
+        "dual-review",
+        "adversarial-review"
+      ],
+      "load_when": "Load only when the active gap matches one of: audit, review, adherence, dual-review, adversarial-review.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "change-governance-and-effectiveness",
+      "family": "audit-verification",
+      "path": "references/change-governance-and-effectiveness.md",
+      "load_when_tags": [
+        "change-governance",
+        "effectiveness",
+        "capa",
+        "high-consequence"
+      ],
+      "load_when": "Load only when the active gap matches one of: change-governance, effectiveness, capa, high-consequence.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "workflow-learning-and-capa",
+      "family": "workflow-learning",
+      "path": "references/workflow-learning-and-capa.md",
+      "load_when_tags": [
+        "learning",
+        "capa",
+        "regression",
+        "self-evolution",
+        "maintenance"
+      ],
+      "load_when": "Load only when the active gap matches one of: learning, capa, regression, self-evolution, maintenance.",
+      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
+      "prerequisites": [
+        "active_task_profile",
+        "active_route"
+      ],
+      "consumes": [
+        "task_profile",
+        "current_gap",
+        "canonical_state_as_needed"
+      ],
+      "produces": [
+        "module_result",
+        "state_patch_or_guidance_as_applicable"
+      ],
+      "return_to": "governing_router",
+      "typical_depth": [
+        "deep",
+        "max"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    }
+  ]
+}
