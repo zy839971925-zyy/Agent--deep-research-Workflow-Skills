@@ -213,7 +213,7 @@ The **Semantic Runtime** supplies typed lifecycle rules, effective-state propaga
 
 These are contracts and executable helpers, not an always-running orchestration service. A host must actually invoke the relevant runtime and validators to enforce them
 
-Read the [architecture](./docs/ARCHITECTURE.md) and [semantic contract](./skills/reasoning-workflow/references/semantic-state-contract.md)
+Read the [governing Skill](./skills/reasoning-workflow/SKILL.md) and [semantic contract](./skills/reasoning-workflow/references/semantic-state-contract.md)
 
 </details>
 

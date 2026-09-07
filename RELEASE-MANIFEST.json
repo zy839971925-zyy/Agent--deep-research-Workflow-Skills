@@ -4,12 +4,12 @@
   "canonical_source": "skills/reasoning-workflow",
   "artifacts": {
     "README.md": {
-      "size_bytes": 15696,
-      "sha256": "aafd6904c55225ad41807c21e1115d0b1cf37af2c6c9af60c499dd80b1835f5b"
+      "size_bytes": 15713,
+      "sha256": "6d5475478872c1ca85207cc9540c44b937a1a716950c87ba7e7de240a51e38f9"
     },
     "README.zh-CN.md": {
-      "size_bytes": 14226,
-      "sha256": "e23ebc583534396519ac0cbbff1a2a4f9dd1cbff4a38124a2cd85f7d82a28895"
+      "size_bytes": 14246,
+      "sha256": "530dca9b2a156d26f1047567e5d749d7910c0f236b03bf168c74dd7f85a46a4e"
     },
     "dist/reasoning-workflow-portable.zip": {
       "size_bytes": 156093,
@@ -18,10 +18,6 @@
     "dist/reasoning-workflow-modular.zip": {
       "size_bytes": 728626,
       "sha256": "10019371d08f0b1754ecd893732d440835c483bf5403b645a3078bd87bffd28e"
-    },
-    "docs/ARCHITECTURE.md": {
-      "size_bytes": 2284,
-      "sha256": "4d5cc839525ddf670a75bdb569ce75d4cd77f17db94506d937e8c41dbe596258"
     },
     "docs/EVALUATION.md": {
       "size_bytes": 1644,

@@ -201,7 +201,7 @@ Agent Swarm 属于调度，不是第三条 Lane；Audit 是验证层；Learning 
 
 这些是合同与可执行辅助工具，不是一直运行的托管编排服务，宿主必须实际调用对应 runtime 和 validator，机器约束才会生效
 
-详见 [架构](./docs/ARCHITECTURE.md) 和 [语义合同](./skills/reasoning-workflow/references/semantic-state-contract.md)
+详见 [Skill 入口](./skills/reasoning-workflow/SKILL.md) 和 [语义合同](./skills/reasoning-workflow/references/semantic-state-contract.md)
 
 </details>
 
