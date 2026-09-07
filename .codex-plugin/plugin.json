@@ -1,7 +1,7 @@
 {
   "name": "reasoning-workflow",
-  "version": "5.0.0",
-  "description": "A general-purpose reasoning and deep-research workflow with semantic state, traceability, validation, and change control.",
+  "version": "5.0.1",
+  "description": "Reusable reasoning and Deep Research with task-calibrated depth, problem-driven evidence, progressive context, and verified execution",
   "author": {
     "name": "折鸢",
     "url": "https://github.com/zy839971925-zyy"
@@ -21,8 +21,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Reasoning Workflow",
-    "shortDescription": "Reason, research, decide, execute, and verify with traceable state",
-    "longDescription": "A general governing workflow for substantive agent tasks. It treats question answering and project execution as two first-class lanes, adds adaptive inquiry and evidence reasoning, and enforces typed semantic state, transitive invalidation, closure rules, delivery reconciliation, provenance, and runtime validation.",
+    "shortDescription": "Understand first, research deliberately, verify proportionately",
+    "longDescription": "A reusable governing Skill for questions and projects. Task Admission selects Light, Standard, Deep, or Max depth and progressively routes six Skill Families. Deep Research follows uncertain premises, relationships, and causal chains to evidence needs. Runtime helpers support authorized execution, proposals, recovery, replay safety, and verification when invoked by the host. Controlled learning requires evaluation before canonical changes.",
     "developerName": "折鸢",
     "category": "Productivity",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -30,9 +30,9 @@
     "privacyPolicyURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/TERMS.md",
     "defaultPrompt": [
-      "Use Reasoning Workflow to analyze this at the deepest useful level.",
-      "Investigate this question and challenge the leading explanation.",
-      "Plan and execute this task with traceable state and verification."
+      "Use Reasoning Workflow and choose the right depth for this task",
+      "Research this question through its key premises and causal links",
+      "Execute this task within scope and verify the result"
     ]
   }
 }

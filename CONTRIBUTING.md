@@ -21,5 +21,6 @@ cd skills/reasoning-workflow
 python -m pip install -r scripts/requirements.txt
 python scripts/validate_skill.py .
 python scripts/validate_links.py .
-python -m unittest tests.test_validators -v
+python scripts/validate_workflow.py .
+python -m unittest discover -s tests -p 'test_*.py' -v
 ```

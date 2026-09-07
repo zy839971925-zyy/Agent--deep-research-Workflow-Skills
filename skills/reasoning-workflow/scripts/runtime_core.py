@@ -88,6 +88,7 @@ def validate_plan(plan, root: Path):
 
 def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
     out=validate_schema(schedule,root/'schemas'/'execution-schedule.schema.json')
+    if any(f.severity=='ERROR' for f in out): return out
     if schedule.get('plan_id')!=plan.get('plan_id'): out.append(finding('ERROR','SCHEDULE_PLAN_ID','schedule plan_id does not match execution plan'))
     if schedule.get('based_on_plan_version')!=plan.get('plan_version'): out.append(finding('ERROR','SCHEDULE_PLAN_VERSION','schedule is based on a stale/different plan_version'))
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; seen=set(); bygroup=defaultdict(list); assignments={}; order={}
@@ -125,6 +126,7 @@ def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
                 out.append(finding('ERROR','SCHEDULE_STARTS_AFTER_ORDER',f'{nid} starts_after {dep}, but serial assignment order does not place {dep} first',nid,dep))
     # Plan dependencies must be respected by schedule semantics.
     for nid,a in assignments.items():
+        if nid not in nodes: continue
         for dep in nodes[nid].get('depends_on',[]):
             if dep in assignments:
                 same_group=a.get('concurrency_group') and a.get('concurrency_group')==assignments[dep].get('concurrency_group')
@@ -229,7 +231,7 @@ def compute_ready_nodes(plan, statuses_or_ledger, capability_routes=None):
         nid=n['node_id']; st=statuses.get(nid,'planned')
         if st not in ('planned','ready','stale','blocked'): continue
         if not all(statuses.get(d)=='verified_complete' for d in n.get('depends_on',[])): continue
-        if capability_routes and not capability_routes.get(nid,{}).get('executable',False): continue
+        if capability_routes is not None and not capability_routes.get(nid,{}).get('executable',False): continue
         ready.append(nid)
     return ready
 

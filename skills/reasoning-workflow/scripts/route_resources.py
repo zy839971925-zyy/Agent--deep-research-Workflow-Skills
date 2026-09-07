@@ -3,6 +3,13 @@ import argparse,json
 from pathlib import Path
 
 def select(index,route,profile,gap_tags):
+    if route.get('profile_version') != profile.get('profile_version'):
+        raise ValueError('STALE_ROUTE')
+    limit = route.get('reference_phase_limit', 2)
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
+        raise ValueError('INVALID_REFERENCE_LIMIT')
+    if limit == 0:
+        return []
     allowed=set(route.get('required_families',[]))|set(route.get('optional_families',[])); tags=set(gap_tags or profile.get('active_gap_tags',[])); candidates=[]
     for e in index['references']:
         if e['family'] not in allowed: continue
@@ -19,7 +26,7 @@ def select(index,route,profile,gap_tags):
             if fam_items:
                 e=sorted(fam_items,key=lambda x:x['default_priority'])[0]; candidates.append((1,e['default_priority'],e,[]))
     candidates.sort(key=lambda x:(x[0],x[1],x[2]['id']))
-    limit=route.get('reference_phase_limit',2); out=[]; seen=set()
+    out=[]; seen=set()
     for _,_,e,overlap in candidates:
         if e['id'] in seen: continue
         seen.add(e['id']); out.append({'reference_id':e['id'],'family':e['family'],'path':e['path'],'load_reason':'gap_match' if overlap else 'family_entry','current_gap':','.join(overlap) if overlap else 'family_entry','profile_version':profile['profile_version'],'context_cost_class':e['context_cost_class']})

@@ -237,7 +237,7 @@ Controlled Learning 分为三个 Tier
 
 当前可复现状态
 
-- **44/44** 当前可发现的 unit / regression tests 通过
+- **58/58** 当前可发现的 unit / regression tests 通过
 - Skill 结构、内部链接与 workflow metadata 检查通过
 - Portable / Modular 共享语义一致性与 ZIP 完整性检查通过
 

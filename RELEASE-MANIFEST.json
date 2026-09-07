@@ -5,27 +5,35 @@
   "artifacts": {
     "README.md": {
       "size_bytes": 15713,
-      "sha256": "6d5475478872c1ca85207cc9540c44b937a1a716950c87ba7e7de240a51e38f9"
+      "sha256": "150db403585e0e9d56b0a3bf848a89874e20dbccd959e4aec1f1bde1349e35f0"
     },
     "README.zh-CN.md": {
       "size_bytes": 14246,
-      "sha256": "530dca9b2a156d26f1047567e5d749d7910c0f236b03bf168c74dd7f85a46a4e"
+      "sha256": "40a3192388611f41ea2c3c71455052535f5239e6bf80aaec68a97db4d34cd90c"
     },
     "dist/reasoning-workflow-portable.zip": {
-      "size_bytes": 156093,
-      "sha256": "4eef5fdaeb5b949ba89ed98d6326b5b47c0e441f6479aefe5bf25a9466755228"
+      "size_bytes": 158910,
+      "sha256": "1f380c577bd8a07f902b0a8babc185fc11928c4eb1f7210f2da4d2687dc2aa3f"
     },
     "dist/reasoning-workflow-modular.zip": {
-      "size_bytes": 728626,
-      "sha256": "10019371d08f0b1754ecd893732d440835c483bf5403b645a3078bd87bffd28e"
+      "size_bytes": 733773,
+      "sha256": "dfb5ccabe6e9a02af1f8e06a9c302dedf21e300c383246ff9069386a4d54526b"
     },
     "docs/EVALUATION.md": {
       "size_bytes": 1644,
-      "sha256": "d21f874ae5dff38d7c14fa890218fc03cce3e9e04ca8626be5e6912e2a19293b"
+      "sha256": "529c6ded81f1bd808fad4d09e15e49eb8f95e212a12bdef0d9427a48d28137a4"
     },
     "docs/LEARNING-POLICY.md": {
       "size_bytes": 2594,
       "sha256": "c8749af969c170c6b0941038efe2131bd631d3626c2bb07ab9981f77e35d9513"
+    },
+    ".codex-plugin/plugin.json": {
+      "size_bytes": 1987,
+      "sha256": "f0504786118f72fd5d5df44f3705a72469a8598366516d5bdba9051ace3f0e11"
+    },
+    "skills/reasoning-workflow/SEMANTIC_MANIFEST.json": {
+      "size_bytes": 4030,
+      "sha256": "b476154a8100da0a496e7220b56d147dc3c21947e82d81babdae34ab6346c20e"
     }
   },
   "machine_versioning_note": "Schema/state/profile/plan/schedule revisions are retained because they are runtime integrity fields, not public release branding."

@@ -249,7 +249,7 @@ See the [learning policy](./docs/LEARNING-POLICY.md)
 
 Current reproducible status:
 
-- **44/44** discovered unit and regression tests pass
+- **58/58** discovered unit and regression tests pass
 - Skill structure, local links, and workflow metadata checks pass
 - Portable/Modular shared semantic consistency and ZIP integrity checks pass
 

@@ -14,7 +14,7 @@ python scripts/build_distributions.py --source . --out-dir ../../dist
 python scripts/validate_distribution.py ../../dist/reasoning-workflow-portable.zip ../../dist/reasoning-workflow-modular.zip
 ```
 
-The current discovered suite passes **44/44 tests**. Structure, links,
+The current discovered suite passes **58/58 tests**. Structure, links,
 workflow metadata, and Portable/Modular shared semantic consistency checks pass.
 These deterministic checks cover routing, context disclosure, adherence,
 learning, research contracts, runtime, recovery, and delivery.

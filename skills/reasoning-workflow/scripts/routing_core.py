@@ -30,7 +30,7 @@ def route_task(profile):
     execution=(profile.get('lane') in ('action','mixed') or 'action' in modes or profile.get('persistence')=='durable' or profile.get('external_side_effects','none')!='none')
     if execution: families.append('execution-control')
     verify=profile.get('verification_depth','minimal')
-    audit=(verify in ('deep','max') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
+    audit=(verify in ('deep','max') or profile.get('depth_class') in ('deep','max') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
     if audit: families.append('audit-verification')
     if 'maintenance' in modes: families.append('workflow-learning')
     # learning may never silently enter ordinary user tasks

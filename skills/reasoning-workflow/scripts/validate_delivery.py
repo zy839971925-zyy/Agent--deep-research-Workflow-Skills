@@ -27,7 +27,7 @@ def validate(state,manifest,root=None):
         for ref in m.get('artifact_refs',[]) or []:
             if ref not in registry or registry[ref]['record_type']!='artifact': findings.append(finding('ERROR','REQ_ARTIFACT_REF',f'{rid} artifact_ref {ref} missing/wrong type',rid,ref))
         for ref in m.get('represents',[]) or []:
-            if ref not in registry: findings.append(finding('ERROR','ART_REPRESENTS_REF',f'{aid} represents unknown {ref}',aid,ref))
+            if ref not in registry: findings.append(finding('ERROR','REQ_REPRESENTS_REF',f'{rid} represents unknown {ref}',rid,ref))
         for ref in m.get('verification_refs',[]) or []:
             if ref not in registry or registry[ref]['record_type']!='verification': findings.append(finding('ERROR','REQ_VER_REF',f'{rid} verification_ref {ref} missing/wrong type',rid,ref))
             elif registry[ref]['effective_status']!='passed': findings.append(finding('ERROR','REQ_VER_NOT_PASSED',f'{rid} verification {ref} is {registry[ref]["effective_status"]}',rid,ref))

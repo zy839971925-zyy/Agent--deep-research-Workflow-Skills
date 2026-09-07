@@ -7,7 +7,7 @@ def validate_learning_semantics(r):
     if tier==2 and status=='promoted' and not r.get('held_out_eval_refs'):
         fs.append({'severity':'ERROR','code':'ROUTING_LEARNING_NEEDS_HELDOUT_EVAL','message':'Tier 2 promotion requires held-out eval'})
     if tier==3 and status=='promoted':
-        for field in ('regression_refs','baseline_comparison_ref','dual_review_ref','rollback_ref'):
+        for field in ('regression_refs','held_out_eval_refs','baseline_comparison_ref','dual_review_ref','rollback_ref'):
             if not r.get(field): fs.append({'severity':'ERROR','code':'CANONICAL_PROMOTION_GATE','message':f'Tier 3 promotion requires {field}'})
     return fs
 
