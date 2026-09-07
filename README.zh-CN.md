@@ -578,10 +578,7 @@ workflow-learning
 └── docs/
     ├── ARCHITECTURE.md
     ├── EVALUATION.md
-    ├── LEARNING-POLICY.md
-    ├── MIGRATION.md
-    ├── FILE-CHANGES.md
-    └── TEST-RESULTS.txt
+    └── LEARNING-POLICY.md
 ```
 
 仓库源码是唯一 canonical truth，两个发行 ZIP 都由它生成。
@@ -592,7 +589,7 @@ workflow-learning
 
 当前 deterministic build：
 
-- **79 / 79** unit / regression tests 通过；
+- **44 / 44** 当前可发现的 unit / regression tests 通过；
 - 保留 **24** 个 behavioral specifications；
 - 包含 routing、context、adherence、learning、Deep Research contract、runtime、distribution 测试；
 - Portable ↔ Modular 共享语义 hash 一致性检查通过；
@@ -609,7 +606,7 @@ workflow-learning
 - intrinsic reflection 不能直接升级 canonical learning；
 - unsafe side effect 的恢复遵守 Replay Safety。
 
-详见 [`docs/EVALUATION.md`](./docs/EVALUATION.md) 和 [`docs/TEST-RESULTS.txt`](./docs/TEST-RESULTS.txt)。
+验证命令与评估边界详见 [`docs/EVALUATION.md`](./docs/EVALUATION.md)。
 
 ## 仍然没有被证明的东西
 
