@@ -4,12 +4,12 @@
   "canonical_source": "skills/reasoning-workflow",
   "artifacts": {
     "README.md": {
-      "size_bytes": 23260,
-      "sha256": "c2c4e5ac62dd15db890ed0737ee59abfe081a3fcdf2b48d4a88600783b13944e"
+      "size_bytes": 15696,
+      "sha256": "aafd6904c55225ad41807c21e1115d0b1cf37af2c6c9af60c499dd80b1835f5b"
     },
     "README.zh-CN.md": {
-      "size_bytes": 21302,
-      "sha256": "11f47c8f9a5d99d43046533cb9e6b4bc042e516098ead1d4d41d4ae4063683e0"
+      "size_bytes": 14226,
+      "sha256": "e23ebc583534396519ac0cbbff1a2a4f9dd1cbff4a38124a2cd85f7d82a28895"
     },
     "dist/reasoning-workflow-portable.zip": {
       "size_bytes": 156093,

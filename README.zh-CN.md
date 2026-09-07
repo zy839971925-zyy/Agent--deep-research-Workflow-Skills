@@ -1,694 +1,270 @@
 <div align="center">
 
-<img src="./skills/reasoning-workflow/assets/icon.svg" width="96" height="96" alt="Reasoning Workflow" />
+<img src="./skills/reasoning-workflow/assets/icon.svg" width="88" height="88" alt="Reasoning Workflow" />
 
 # Reasoning Workflow
 
-### 先想清楚，再搜索。
+### 让 AI 在搜索之前，先学会思考
 
-**理解真正的问题 · 分配合适的深度 · 研究真正重要的证据 · 让长期任务始终保持一致**
-
-一套面向 AI Agent 的通用推理与 Deep Research 治理系统。
-
-<br />
-
-[![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827?style=flat-square)](./skills/reasoning-workflow/SKILL.md)
-[![Deep Research](https://img.shields.io/badge/Deep%20Research-Problem--Driven-2563EB?style=flat-square)](#deep-research-不是关键词搜索)
-[![Routing](https://img.shields.io/badge/Routing-Depth--Gated-7C3AED?style=flat-square)](#先判断任务深度再分配能力)
-[![Context](https://img.shields.io/badge/Context-Progressive-0F766E?style=flat-square)](#上下文渐进加载)
-[![Runtime](https://img.shields.io/badge/Runtime-Semantic%20Validation-B45309?style=flat-square)](#长期任务的语义运行时)
-[![License](https://img.shields.io/badge/License-MIT-374151?style=flat-square)](./LICENSE)
-
-<br />
+理解真正的问题 · 分配合适的深度 · 研究真正重要的证据 · 让长期任务保持一致
 
 [English](./README.md) · **简体中文**
 
-<br />
+[快速开始](#快速开始) · [实际用法](#实际用法) · [工作原理](#工作原理) · [验证与边界](#验证与边界)
 
-[快速开始](#快速开始) · [为什么存在](#为什么需要-reasoning-workflow) · [整体架构](#它如何工作) · [任务深度](#先判断任务深度再分配能力) · [Deep Research](#deep-research-不是关键词搜索) · [Skill Families](#skill-families) · [运行时](#长期任务的语义运行时) · [验证状态](#当前验证状态)
+**[下载 Portable](./dist/reasoning-workflow-portable.zip)** · [下载 Modular](./dist/reasoning-workflow-modular.zip) · [阅读 Skill](./skills/reasoning-workflow/SKILL.md)
 
 </div>
 
 ---
 
-## 30 秒理解它
+## 好的工作，从调用工具之前开始
 
-很多 AI 调研仍然是这样开始的：
+Agent 可能引用了可靠来源，却回答了错误的问题；也可能写出漂亮的计划，却漏掉关键依赖，或在证据变化后继续使用失效结论
 
-```text
-用户问题
-   ↓
-提取关键词
-   ↓
-搜索
-   ↓
-更多来源
-   ↓
-总结
-```
+Reasoning Workflow 是一套用于**推理、调研、决策与执行的 governing Skill**，帮助 Agent 判断真正需要理解什么、什么证据能改变结论、何时调用专业能力，以及完成前应该验证什么
 
-真正的问题是：
+它与编程、设计、文档等专业 Skill 协作，不替代它们，也不提供模型本身、工具访问权或操作授权
 
-> **如果模型在搜索之前就理解错了问题，搜索得越多，可能只是让错误答案看起来越可信。**
+**简单任务保持简单**：直接计算不需要研究计划，复杂调查也不应退化成关键词搜索
 
-Reasoning Workflow 把起点向前移动，而且在昂贵工作开始之前再加一层判断：
+## 快速开始
+
+### 复制这段，让 Agent 帮你安装
+
+把下面整段发给你使用的 Agent，无需先研究仓库目录
 
 ```text
-用户问题 / 任务
-        ↓
-极轻量 Task Admission / Depth Gate
-        ↓
-理解真正任务
-        ↓
-问题模型 / 问题图
-        ↓
-关键依赖 + 关系
-        ↓
-竞争解释 + 不确定性
-        ↓
-证据需求
-        ↓
-研究 / 观察 / 调用专业 Skill
-        ↓
-更新 + 反驳
-        ↓
-回答 / 决策 / 执行
-        ↓
-验证
+请在当前环境中安装并配置 Reasoning Workflow
+仓库：https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills
+
+先读取仓库 README.md 和 skills/reasoning-workflow/SKILL.md
+检查当前宿主支持的 Skill / Plugin 安装机制和是否已有同名实例
+
+已有实例时优先更新，不重复安装，也不覆盖尚未保存的本地修改
+默认选择 Portable 单一 governing Skill
+只有当前宿主适合组合多个 Family Skill 时才选择 Modular
+优先使用宿主正式支持的安装器，不要猜测安装目录或执行未经检查的远程脚本
+如果需要克隆源码，使用临时目录并保留 Skill 所需的完整相对目录结构
+
+有现成权限就直接完成
+如果需要授权、登录或重启，请说明具体阻塞和最小必要操作
+如果环境不支持持久安装，说明限制，并在可读取文件的前提下用于当前会话
+
+最后验证入口文件可读、依赖资源存在、宿主是否识别
+报告安装位置、来源 commit、实际验证结果，以及是否还需要重启
+不要把下载完成或读过文件当成安装成功
 ```
 
-> **搜索是推理的下游。深度是任务的下游。**
+这是一段**交给 Agent 执行的安装请求**，不是所有平台通用的一键安装接口，能否全自动完成取决于宿主能力与权限
 
-短翻译、直接计算应该保持很轻；复杂、争议性、因果性、时效性研究才展开为 Deep Research；长期、多产物、多 Agent 的现实任务才进一步进入 Execution Control、Checkpoint、Recovery 等运行层。
+### 选哪一种方式？
 
-系统是通用的，但投入必须是成比例的。
+| 方式 | 适合谁 | 实际得到什么 |
+| --- | --- | --- |
+| **[Portable](./dist/reasoning-workflow-portable.zip)** | 大多数用户，建议从这里开始 | 一个完整的 `reasoning-workflow/` governing Skill，内部按需路由六个 Family |
+| **[Modular](./dist/reasoning-workflow-modular.zip)** | 支持多 Skill 发现与组合的进阶运行时 | 六个 Family Skill，共享机器语义 |
+| **[仓库源码](./skills/reasoning-workflow/)** | 开发者、审计者、贡献者 | canonical Skill、资源、脚本和测试 |
 
----
+手动安装时，解压后使用宿主支持的安装方式：Portable 选择包含 `SKILL.md` 的目录，Modular 使用 `reasoning-workflow-modular/skills/` 下的六个目录，不建议为同一用途同时安装两种格式
 
-# 为什么需要 Reasoning Workflow
+仓库提供了兼容宿主可使用的 [Plugin manifest](./.codex-plugin/plugin.json)，但安装、发现、工具调用和持久化仍由宿主决定
 
-现在的 Agent 已经可以搜索、写代码、分析文件、调用工具、使用专业 Skills、委派子 Agent。真正难的是：**在调用这些能力之前，决定到底应该做什么。**
+### 暂时不安装，也可以开始
 
-Reasoning Workflow 主要解决这些常见失败：
+让能够访问本仓库的 Agent 读取入口，然后直接给任务
 
-- 围绕用户措辞回答，而没有解决真正的问题；
-- 把问题拆成很多小问题，却无法重新组合回答根问题；
-- 把相关、依赖、中介、因果、反馈混成一个“有关系”；
-- 第一种合理解释出现后就停止寻找竞争解释；
-- 直接围绕关键词搜索，而不是从证据需求产生检索；
-- 把同源转载误认为多个独立证据；
-- 简单任务过度思考、复杂任务又思考不足；
-- 因为“可能有用”就把大量 reference 一次性塞进上下文；
-- 长期任务里 Worker、文件、结论、测试和状态逐渐漂移；
-- 因为产物“看起来完成了”就宣布任务完成；
-- 从一次偶然失败中“学到经验”，然后未经验证直接改变未来行为。
+```text
+读取 skills/reasoning-workflow/SKILL.md，并用它处理以下任务
 
-这套 Workflow 把它们看成一个统一问题：**推理质量、资源分配、证据质量、运行状态、验证和学习必须保持连接。**
+任务：[你想了解或完成什么]
+约束：[范围、来源、期限或操作权限]
+交付：[需要的答案、决策或文件]
 
----
+选择与任务匹配的深度，只在需要时加载支持资源
+```
 
-# 它如何工作
+如果环境只支持上传文件，可上传解压后的文件，或在环境支持解压时上传 ZIP，再请 Agent 读取入口，**读取附件不等于持久安装**，一个无法访问的路径也不会自动加载 Skill
+
+## 实际用法
+
+不必为每个任务写很长的提示词，说明目标和真正重要的约束即可
+
+### 调查一个说法
+
+```text
+使用 Reasoning Workflow 调查 [某个说法] 是否成立
+
+区分一手证据和重复报道，考虑其他解释
+指出什么证据会改变判断，给出有来源的结论和剩余不确定性
+```
+
+### 做一个决策
+
+```text
+使用 Reasoning Workflow 比较 [方案 A] 和 [方案 B]，目标是 [目标]
+
+我的约束是 [约束]
+找出决定性的取舍，区分事实与假设，并说明什么情况下建议会改变
+```
+
+### 完成一次有边界的修改
+
+```text
+使用 Reasoning Workflow 在这个仓库中实现 [修改]
+
+保留 [不可破坏的约束]，允许修改的范围是 [范围]
+验证结果，并报告改了什么、哪些检查通过、还有什么未解决
+```
+
+小任务可以补一句“保持轻量”；调研任务应说明重要的不确定性，而不是只要求更多来源；执行任务应明确授权范围，Skill 不会自动补齐缺失的权限
+
+## 工作原理
+
+架构由 **Universal Reasoning System、Depth-Gated Skill Routing、Progressive Context Disclosure、Deterministic Semantic Runtime、Dual-Layer Verification 和 Eval-Gated Self-Learning** 组成
+
+### 1. 先决定深度，再投入成本
+
+轻量的 **Task Admission / Depth Gate** 形成 Task Profile，分别判断推理、证据、挑战、验证与治理深度，并随任务暴露的新不确定性调整
+
+| 深度 | 典型任务 | 验证方式 |
+| --- | --- | --- |
+| **Light** | 直接、清晰的小任务 | 最小必要检查 |
+| **Standard** | 有边界的分析或实现 | 常规验证 |
+| **Deep** | 重要不确定性、因果问题、争议证据 | 重要结论使用 Layer 1 + fresh Layer 2 |
+| **Max** | 明确要求最大有用深度，或高后果任务 | 两层验证，必要时增加正交路径 |
+
+**Universal entry ≠ universal full execution**：所有 substantive task 都可以进入，但不需要执行全部机制，Light 且没有 structured gap 时可以加载 **0 个 reference**，Max 也不等于最多 token、搜索或 Agent
+
+### 2. 沿着问题结构研究，而不是只沿着提问措辞搜索
+
+**Universal Reasoning Spine** 连接问题框定、建模、前提、拆解与重组、关系、不确定性、证据、挑战、综合与验证，它是可修订的推理地图，不是必须逐项执行的清单
+
+Deep Research 从 **Problem Graph** 出发，识别哪些主张、假设、依赖和因果链上的不确定性会改变答案
 
 ```mermaid
 flowchart TD
-    U["用户任务"] --> G["Task Admission / Depth Gate"]
-    G --> P["可更新的 Task Profile"]
-    P --> R["Family + Resource Router"]
-    R --> C["Universal Reasoning System"]
-
-    C --> Q["Question / Reasoning Lane"]
-    C --> A["Action / Project Lane"]
-
-    Q --> V["按深度分配验证"]
-    A --> E["仅在需要时进入 Execution Control"]
-    E --> V
-
-    V --> X["Closure"]
-    X -. 任务结束后 .-> L["Trace / Eval / CAPA / Learning Plane"]
+    P["问题图"] --> U["不确定的前提或因果边"]
+    U --> N["证据需求"]
+    N --> E["证据来源与观察"]
+    E --> M["更新模型并挑战"]
+    M --> D{"仍有决定性缺口？"}
+    D -->|有| U
+    D -->|无| S["综合并验证"]
 ```
 
-通用推理主干保持不变：
+例如，“新品发布导致销量下滑了吗？”需要检查时间顺序、指标口径、对照与其他原因，而不只是搜索新品名称
 
-```text
-真实任务 / 结果
-→ 框架不确定时先定向探索
-→ 建立可修改的问题模型
-→ 找到关键依赖
-→ 拆解 ↔ 重新组合
-→ 建立关系 / 因果链
-→ 保留竞争解释
-→ 找到决定性不确定性
-→ 形成证据需求
-→ 推理 / 调研 / 观察
-→ 更新并挑战模型
-→ 综合 / 决策
-→ 回答或执行
-→ 验证
-```
+如果问题框架本身还不清楚，可以先做 **orientation retrieval**，认识概念与背景；正式的 **evidence retrieval** 则需要明确 evidence need：哪一种观察能解决不确定前提，或区分竞争解释
 
-它是一张依赖关系地图，不是固定线性清单。新证据可以让 Agent 回到上游重新建模；不适用的步骤可以压缩到接近零开销。
+> Research should follow the structure of the problem, not merely the wording of the prompt
 
----
+### 3. 只加载当前缺口需要的资源
 
-# 先判断任务深度，再分配能力
+上下文渐进加载遵循 **Task Profile → Family Route → Current Gap → Small Reference Shortlist**，当前阶段通常只加载最相关的 **1–3 个 references**
 
-所有 substantive task 都可以进入 Reasoning Workflow，但：
-
-> **Universal entry ≠ Universal full execution**
-
-第一步只是一个很轻的 Task Profile。它把不同维度分开，而不是制造一个假的“复杂度 87 分”：
-
-```text
-任务深度
-推理广度
-证据深度
-挑战深度
-验证深度
-治理深度
-问题框架不确定性
-时效性 / 波动性
-因果 / 系统复杂度
-任务耦合程度
-持久化 / 外部副作用
-路由置信度
-自主权限 / 授权
-```
-
-四种公开深度：
-
-| 深度 | 典型行为 |
+| Skill Family | 解决什么问题 |
 | --- | --- |
-| **Light** | 直接完成。很多情况下 0 reference，不制造流程。 |
-| **Standard** | 需要时做结构化推理和正常验证。 |
-| **Deep** | 更完整的问题模型、证据工作、反驳和关键结论独立复核。 |
-| **Max** | 最大“有用”深度，不等于“全部打开”。必要时增加正交证据路线和更深验证。 |
+| [Core Reasoning](./skills/reasoning-workflow/families/core-reasoning.md) | 问题框定、模型、前提、关系与综合 |
+| [Deep Research](./skills/reasoning-workflow/families/deep-research.md) | 证据需求、调查、来源链与竞争解释 |
+| [Decision Analysis](./skills/reasoning-workflow/families/decision-analysis.md) | 选项、取舍、不确定性与建议 |
+| [Execution Control](./skills/reasoning-workflow/families/execution-control.md) | 依赖、授权修改、委派与恢复 |
+| [Audit / Verification](./skills/reasoning-workflow/families/audit-verification.md) | 合同检查、独立复核与完成判定 |
+| [Workflow Learning](./skills/reasoning-workflow/families/workflow-learning.md) | 运行后的经验、CAPA 与经过评估的改进 |
 
-深度不是一次判断永久不变。发现隐藏复杂度可以升级；发现事情其实很简单，也允许降级。
+**Related ≠ automatic load**：用完 reference 后回到 Router，重新判断缺口，不沿 related 链递归加载整个资源库，详见 [routing index](./skills/reasoning-workflow/routing-index.json)
 
-模型负责理解任务并形成结构化 Task Profile；确定性 Router 根据这个 Profile 选择 Skill Families 和资源。**原始 prompt 关键词不是确定性分类器。**
+机器密集资源遵循另一条原则：**机器使用，模型调用，模型不必背下来**
+
+### 4. 回答问题，或推进项目
+
+只有两条第一等 Lane
+
+- **Question / Reasoning Lane**：理解、调查、综合、回答、验证，一个经过验证的答案就是完整成果
+- **Action / Project Lane**：在推理之上增加计划、授权执行、重新观察、对齐与完成判定
+
+Agent Swarm 属于调度，不是第三条 Lane；Audit 是验证层；Learning 是运行后的维护
+
+<details>
+<summary><strong>长期任务：状态、委派与恢复</strong></summary>
+
+**Semantic Runtime** 提供 typed lifecycle、effective-state propagation、canonical logical dependency graph、Execution Node State Ledger 和 closure checks
+
+**Declared state is input. Effective state is computed**：前提或文件改变后，下游结果可能失效，验证只对实际检查过的状态或内容指纹有效
+
+- **Plan / Schedule separation**：Plan 定义依赖和合同，Schedule 分配时间与 Worker，调度变化不能改变 Plan 语义
+- **Agent Swarm**：综合依赖独立性、上下文独立性、共享可变状态、合并成本、失败隔离和证据多样性决定是否并行，复杂任务不自动启动 Swarm
+- **Worker Proposal**：Worker 可以独立发现，但不能独立写入 canonical reality，Manager / deterministic merger 验证 proposal 并处理冲突后，才更新权威状态
+- **Capability / Authorization separation**：工具可用不等于有权使用
+- **Checkpoint / Recovery**：恢复、重新观察、重算有效状态，再继续
+- **Replay Safety**：通过 side-effect receipt 等机制约束重试，避免中断后盲目重复副作用
+
+这些是合同与可执行辅助工具，不是一直运行的托管编排服务，宿主必须实际调用对应 runtime 和 validator，机器约束才会生效
+
+详见 [架构](./docs/ARCHITECTURE.md) 和 [语义合同](./skills/reasoning-workflow/references/semantic-state-contract.md)
+
+</details>
+
+## 验证工作本身，不只验证表达
+
+**Dual-Layer Verification** 分开回答两个问题
+
+- **Layer 1**：工作是否正确满足自己声明的 contract
+- **Layer 2**：是否真正解决原始问题，有没有问题漂移、遗漏分支、共同盲点、来源污染、新矛盾或意外后果
+
+同一个 Solver 在同一个上下文里重读答案，不自动算独立复核；Reviewer 冲突需要重新打开争议节点并针对性验证，不能通过投票结束
+
+**Skill Adherence** 与成品质量也不是同一件事，需要检查可观察的状态前提、必要与禁止的转换、事件、工具调用、资源加载和 validator findings，漂亮答案不是遵循 Workflow 的证明，既不要求也不把 private chain-of-thought 当作审计材料
+
+<details>
+<summary><strong>改进 Workflow，但不自动改写自己</strong></summary>
+
+Controlled Learning 分为三个 Tier
+
+1. **Experience Memory**：保留有边界的可用经验
+2. **Routing / Reference Heuristics**：评估资源选择策略的改进
+3. **Canonical Workflow Change**：必须经过候选、最小失败回归、offline/shadow eval、基线比较、独立复核、promote/reject，并具备回滚机制
+
+**Self-Learning ≠ Automatic Self-Editing**：单次“生成 → 反思 → 改写 Skill”不能直接晋升为正式变更
+
+重大 Workflow failure 使用 **CAPA**：遏制、根因、纠正措施、回归、验证、有效性检查、预防／泛化与关闭，单个测试通过不代表措施已经有效
+
+详见 [学习政策](./docs/LEARNING-POLICY.md)
+
+</details>
+
+## 验证与边界
+
+当前可复现状态
+
+- **44/44** 当前可发现的 unit / regression tests 通过
+- Skill 结构、内部链接与 workflow metadata 检查通过
+- Portable / Modular 共享语义一致性与 ZIP 完整性检查通过
+
+**这些是确定性实现检查，不是真实 Agent behavioral benchmark**
+
+仍未验证：真实模型 Task Profile 分类、Skill trigger precision/recall、跨模型 Family/reference routing、匹配条件下 Deep Research 质量非劣性、真实 token/latency 节省、双重复核错误减少、长期学习有效性，以及完整外部 Deep Research benchmark
+
+详见 [验证命令与边界](./docs/EVALUATION.md) 和 [Deep Research 评估定义](./skills/reasoning-workflow/evals/deep-research/)，实际效果取决于模型、宿主集成、可用证据与实际遵循情况
+
+## 开发与贡献
+
+唯一 canonical source 是 [`skills/reasoning-workflow/`](./skills/reasoning-workflow/)，Portable 与 Modular 是生成产物，不是两套分别维护的实现
+
+在 canonical 目录运行
+
+```sh
+python -m pip install -r scripts/requirements.txt
+python scripts/validate_skill.py .
+python scripts/validate_links.py .
+python scripts/validate_workflow.py .
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/build_distributions.py --source . --out-dir ../../dist
+python scripts/validate_distribution.py ../../dist/reasoning-workflow-portable.zip ../../dist/reasoning-workflow-modular.zip
+```
+
+[Semantic manifest](./skills/reasoning-workflow/SEMANTIC_MANIFEST.json) · [发行校验值](./RELEASE-MANIFEST.json) · [贡献指南](./CONTRIBUTING.md)
 
 ---
 
-# Deep Research 不是关键词搜索
-
-这套项目最初就是从一个问题开始的：
-
-> **Research should follow the structure of the problem, not merely the wording of the prompt.**
-
-研究循环是：
-
-```text
-问题图
-  ↓
-不确定前提 / 因果边 / 假设
-  ↓
-明确的证据需求
-  ↓
-最接近这个证据的来源或工具
-  ↓
-观察底层材料
-  ↓
-更新问题模型
-  ↓
-传播影响
-  ↓
-反证 / 竞争解释
-  ↓
-下一次信息增益决策
-```
-
-## 问题框架不确定 ≠ 答案不确定
-
-**答案不确定：** 问题基本正确，只是不知道答案。
-
-**问题框架不确定：** 当前问题模型可能漏掉了行为者、机制、定义、时间边界、来源生态、激励、混杂变量或相邻领域。
-
-因此在 frame uncertainty 很高时，可以先做 **orientation retrieval** 去认识领域；而进入正式 **evidence retrieval** 时，则应当已经有当前问题模型和明确证据需求。
-
-这同时避免两个极端：
-
-```text
-一上来就关键词搜索
-```
-
-以及：
-
-```text
-为了形式主义，必须先填完一套模型才允许探索
-```
-
-## 证据的目标是区分，而不是堆积
-
-重要问题会继续问：
-
-- 这个来源真的有资格知道这件事吗？
-- 实体、版本、时间、群体、定义是否一致？
-- 看起来独立的几个来源是不是都来自同一个原始消息？
-- 这个证据真的能区分两个解释，还是两个解释都说得通？
-- 什么证据出现时，我应该改变结论？
-
-```text
-20 篇重复同一来源的文章
-<
-1 个能够区分两个竞争解释的观察
-```
-
-Deep Research 的停止条件也不是来源数、搜索数、Agent 数或者报告字数，而是：下一次可行研究还能不能实质改变答案、信心、决策或关键不确定性。
-
----
-
-# Skill Families
-
-详细能力被组织为六个较粗粒度的 Family，而不是把 23 个 reference 全拆成互相竞争的 Skill。
-
-| Family | 负责什么 | 什么时候进入 |
-| --- | --- | --- |
-| **Core Reasoning** | 问题定义、深度分配、问题建模、拆解/重组、整合 | substantive task |
-| **Deep Research** | 因果/系统建模、假设、证据需求、检索、来源链、不确定性 | 外部证据、争议事实、frame uncertainty、Deep/Max 调研 |
-| **Decision Analysis** | 目标、约束、备选方案、后果、测量、权衡 | 推荐、优先级、选择、决策 |
-| **Execution Control** | Plan、Schedule、授权、委派、持久状态、checkpoint/recovery | 长任务、多产物、Swarm、外部副作用 |
-| **Audit / Verification** | 独立复核、对抗审查、Skill adherence、完成判断 | Deep/Max、高后果任务、明确审计 |
-| **Workflow Learning** | CAPA、经验记忆、路由经验、受控改进 | 只在 post-run maintenance 使用 |
-
-机器可读路由表在 [`routing-index.json`](./skills/reasoning-workflow/routing-index.json)，人类可读 Family 索引在 [`families/`](./skills/reasoning-workflow/families/)。
-
-Reasoning Workflow 负责的是：**如何理解、如何路由、如何整合、如何验证、如何完成。** 专业实现仍然交给专业 Skill。
-
----
-
-# 上下文渐进加载
-
-目标不是让仓库变小，而是让当前模型上下文保持小而高信号。
-
-```text
-Task Profile
-    ↓
-Family route
-    ↓
-当前 unresolved gap
-    ↓
-本阶段真正有用的 1–3 个 reference
-    ↓
-返回 Router
-```
-
-默认规则：
-
-- Light 且没有结构化 gap 时可以 **0 reference**；
-- 正常阶段只加载少量真正有用的 reference；
-- Max 可以逐渐加载更多，但仍然按阶段加载；
-- `Related` 只是导航提示，不会触发递归加载；
-- schema、lifecycle policy、validator 尽量留在机器层，让模型调用，而不是让模型背下来；
-- reference load 带 route / gap / profile 信息，可以真正测量“加载了但没用”的上下文浪费。
-
----
-
-# 两条一等 Lane
-
-## Question / Reasoning Lane
-
-一个问题本身就是完整任务：
-
-```text
-理解
-→ 建模
-→ 推理 / 调研
-→ 反驳
-→ 重新组合
-→ 回答
-→ 验证
-```
-
-不会因为问题很难，就强行引入项目管理状态。
-
-## Action / Project Lane
-
-只有当任务真的会改变现实状态时，才向执行扩展：
-
-```text
-推理
-→ 决定应该做什么
-→ Plan
-→ Authorization
-→ Schedule / Delegate
-→ Execute
-→ Re-observe
-→ Verify
-→ Reconcile
-→ Effectiveness
-→ Close / Reopen
-```
-
-Swarm 只是这一条 Lane 下方的调度方式，不是第三条推理 Lane。
-
----
-
-# 长期任务的语义运行时
-
-当长期执行确实需要时，模型推理外面会增加确定性的状态和验证机制。
-
-核心对象包括：
-
-```text
-Task Profile        — 这次任务应该启用多少机制
-Problem Model       — 当前到底在解决什么
-Canonical State     — 当前哪些状态真的有效
-Execution Plan      — 应该做什么
-Execution Schedule  — 谁、何时、如何做
-Node State Ledger   — 实际做到哪里
-Worker Proposal     — Worker 的候选发现/修改，不是系统真相
-Checkpoint          — 可恢复的语义/运行时/工作区绑定
-Verification        — 到底验证了哪一个状态/内容
-Learning Record     — 被验证的可复用经验
-```
-
-两个核心原则：
-
-> **Declared state is input. Effective state is computed.**
-
-> **Validator 能证明结构与内部一致性，不等于能证明现实世界中的真伪。**
-
-上游 premise、evidence、relationship、artifact fingerprint、requirement 或 verification 发生变化时，下游状态必须重新计算，不能悄悄保持 current。
-
----
-
-# 串行、Swarm、降级与恢复
-
-同一个语义 Plan 可以有不同 Schedule：
-
-```text
-同一个 Plan
-   ├── 单 Agent 串行
-   ├── 多 Worker 并行处理独立节点
-   └── 能力缺失时使用受控降级路线
-```
-
-Plan 的语义不能因为调度方式改变。
-
-Worker 可以独立发现信息，但不能独立定义 canonical reality。它返回结构化 proposal，由 controller / validator 检查版本、contract、write-set 冲突、证据和 verification 后才能合并。
-
-恢复流程是：
-
-```text
-restore
-→ 验证 checkpoint
-→ 重新检查 capability + authorization
-→ 重新观察容易变化的外部状态
-→ 检查副作用是否已经提交
-→ 重算 stale state
-→ 重新打开受影响节点
-→ resume
-```
-
-Replay Safety 区分 safe、idempotent、detectable、unsafe，避免中断后重复执行不可逆副作用。
-
----
-
-# 双层交叉验证
-
-验证也按深度分配。
-
-**第一层：Local / Contract Verification**
-
-检查它是否正确完成了自己声称完成的工作：需求、引用、计算、测试、文件 contract、版本和覆盖范围。
-
-**第二层：Independent / Adversarial Verification**
-
-问一个不同的问题：它是否真的解决了根问题？Solver 和第一层是不是共享了同一个盲区？
-
-Deep 和高后果任务可以要求 fresh reviewer；Max / 高后果任务必要时再增加正交的 evidence / tool / model / deterministic / human 路线。
-
-同一个 Agent、同一个上下文再看一遍，不自动等于独立验证。
-
-Reviewer 冲突也不是投票解决，而是重新打开争议节点，产生新的定向证据/验证需求。
-
----
-
-# Skill 是否真的被执行
-
-最终答案写得很漂亮，不代表 Agent 真按 Workflow 做过。
-
-Adherence 层检查的是可观察协议：
-
-```text
-state preconditions
-+ required transitions
-+ forbidden transitions
-+ tool / resource loads
-+ events
-+ validator findings
-```
-
-例如正式 evidence retrieval 不应该在没有 evidence need 的情况下静默发生；但一个从 checkpoint 恢复的任务，如果 canonical state 已经有有效前提，也不需要为了形式主义重新制造相同事件。
-
-它不记录模型的私有 chain-of-thought，而是检查可观察状态、行动、证据、产物和转换。
-
----
-
-# 受控自我学习
-
-Reasoning Workflow 可以从经验中学习，但一次任务不能直接改写 canonical workflow。
-
-```text
-经过验证的成功 / 失败 / 恢复 / 低效率轨迹
-        ↓
-CAPA 风格 Root Cause Analysis
-        ↓
-Candidate Learning
-        ↓
-Eval Gates
-        ↓
-Promote / Reject
-        ↓
-始终保留 Rollback
-```
-
-分三层：
-
-- **Experience Memory**：经过验证的策略、恢复和效率经验，可选择性检索；
-- **Routing Heuristics**：修改深度/路由/reference 的经验必须经过 held-out eval；
-- **Canonical Workflow Changes**：修改 Skill、schema、policy、validator、authorization、closure 必须有 regression、baseline comparison、独立审查和 rollback。
-
-同模型在没有新信息时“自己反思了一下”，最多生成 Candidate Insight，不能自己验证自己。
-
-详见 [`docs/LEARNING-POLICY.md`](./docs/LEARNING-POLICY.md)。
-
----
-
-# 快速开始
-
-## 方案一：直接使用仓库源码
-
-```text
-读取 skills/reasoning-workflow/SKILL.md，并把 Reasoning Workflow 作为这个任务的 governing workflow。
-
-我的任务：
-[写你的真实问题或任务]
-```
-
-做 Deep Research：
-
-```text
-使用这个仓库里的 Reasoning Workflow 深入研究下面的问题。
-先理解问题结构和证据需求，再决定如何检索；不要从关键词扩展直接开始。
-使用最大“有用”深度，但不要增加不能改善答案的流程。
-
-[我的问题]
-```
-
-## 方案二：Portable 单 Skill 包
-
-推荐给大多数用户和大多数 runtime：
-
-[`dist/reasoning-workflow-portable.zip`](./dist/reasoning-workflow-portable.zip)
-
-它包含一个 `reasoning-workflow` Skill，以及 thin router、六个 Family 索引、progressive references、schemas、validators、runtime、tests 和 eval adapters。
-
-安装后：
-
-```text
-Use $reasoning-workflow as the governing workflow for this task:
-
-[your task]
-```
-
-## 方案三：Modular 多 Skill 包
-
-适合原生支持 Skill discovery / composition 的高级 runtime：
-
-[`dist/reasoning-workflow-modular.zip`](./dist/reasoning-workflow-modular.zip)
-
-包含六个可独立发现的 Skill：
-
-```text
-reasoning-core
-deep-research
-decision-analysis
-execution-control
-audit-verification
-workflow-learning
-```
-
-六个 Skill 由同一个 Source of Truth 自动生成，并通过共享 machine semantics hash 检查一致性。
-
-> [!IMPORTANT]
-> Portable 和 Modular 是同一个系统的两种发行方式，不是两套独立实现。不要人工分别维护。
-
----
-
-# 我该用哪一个？
-
-| 形态 | 适合 | 特点 |
-| --- | --- | --- |
-| **Repository source** | 开发者、源码审查、继续扩展 | 完整 canonical development tree |
-| **Portable** | 绝大多数用户、上传 ZIP、单 Skill runtime、跨平台 | 一个 governing Skill 内部负责路由 |
-| **Modular** | Skill discovery / composition 很强的高级 runtime | 六个 Family 独立发现，但磁盘上会有自包含资源重复 |
-
-不知道选哪个时，选 **Portable**。
-
----
-
-# 仓库结构
-
-```text
-.
-├── README.md
-├── README.zh-CN.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── PRIVACY.md
-├── TERMS.md
-│
-├── skills/
-│   └── reasoning-workflow/       # canonical source of truth
-│       ├── SKILL.md
-│       ├── families/
-│       ├── references/
-│       ├── schemas/
-│       ├── scripts/
-│       ├── tests/
-│       ├── evals/deep-research/
-│       ├── agents/
-│       └── assets/
-│
-├── dist/
-│   ├── reasoning-workflow-portable.zip
-│   └── reasoning-workflow-modular.zip
-│
-└── docs/
-    ├── ARCHITECTURE.md
-    ├── EVALUATION.md
-    └── LEARNING-POLICY.md
-```
-
-仓库源码是唯一 canonical truth，两个发行 ZIP 都由它生成。
-
----
-
-# 当前验证状态
-
-当前 deterministic build：
-
-- **44 / 44** 当前可发现的 unit / regression tests 通过；
-- 保留 **24** 个 behavioral specifications；
-- 包含 routing、context、adherence、learning、Deep Research contract、runtime、distribution 测试；
-- Portable ↔ Modular 共享语义 hash 一致性检查通过；
-- ZIP integrity 检查通过。
-
-目前已经能机器验证的典型行为包括：
-
-- Light 任务可以保持 Light，且加载 0 reference；
-- Task Profile 改变后旧 route 自动 stale；
-- `Related` 不会引发 reference cascade；
-- evidence retrieval 需要 evidence need，但 frame uncertainty 高时仍允许 orientation；
-- Skill 默认规则不能覆盖用户明确指令（独立安全/授权约束除外）；
-- fresh review 和 orthogonal review 不会混为一谈；
-- intrinsic reflection 不能直接升级 canonical learning；
-- unsafe side effect 的恢复遵守 Replay Safety。
-
-验证命令与评估边界详见 [`docs/EVALUATION.md`](./docs/EVALUATION.md)。
-
-## 仍然没有被证明的东西
-
-Deterministic tests 能验证 workflow implementation，但不能自动证明任何模型 / runtime 都会正确执行 Skill。
-
-以下仍然需要真实 matched behavioral eval：
-
-- 模型 Task Profile 分类准确率；
-- Skill trigger、Family 和 reference selection 的 precision / recall；
-- Deep Research 真实生成质量相对冻结 baseline 的 non-inferiority；
-- 真实 token / latency / tool-call 减少；
-- Dual Review 是否真的减少高价值错误；
-- 长期自学习的有效性和 harmful-memory rate；
-- 完整外部 Deep Research benchmark；
-- 不同 runtime 下除 hash 之外的真实行为一致性。
-
-这个边界会长期保持公开。
-
----
-
-# 设计原则
-
-> **Search is downstream of reasoning.**
-
-> **Universal entry does not mean universal full execution.**
-
-> **Rigor is not ceremony.**
-
-> **Plan semantics are invariant under scheduling.**
-
-> **Workers may discover independently; they may not define canonical reality independently.**
-
-> **Declared state is input; effective state is computed.**
-
-> **Verification is valid only for the state/content it actually verified.**
-
-> **Self-learning is controlled experience reuse, not automatic self-editing.**
-
-> **漂亮的输出，不等于 Workflow 真的被执行。**
-
----
-
-# 参与开发
-
-推荐的开发方式是 regression-first：
-
-```text
-找到一个具体失败
-→ 保存最小反例
-→ 先让测试 FAIL
-→ 修改真正负责这条语义的层
-→ 让测试 PASS
-→ 跑更广泛 regression / eval
-→ 保留 rollback
-```
-
-新增规则前先问它应该属于：
-
-```text
-Reasoning Core
-专业 Family / reference
-Schema / policy / validator
-Runtime / harness
-Eval / trace system
-```
-
-详见 [`CONTRIBUTING.md`](./CONTRIBUTING.md)。
-
----
-
-# License / Privacy / Terms
-
-MIT License，见 [`LICENSE`](./LICENSE)。
-
-Reasoning Workflow 本身只是 Skill / Workflow 包，不运行自己的托管后端。见 [`PRIVACY.md`](./PRIVACY.md) 和 [`TERMS.md`](./TERMS.md)。
-
----
-
-<div align="center">
-
-**Reasoning Workflow**
-
-*先理解，再研究；按需行动；只验证当前真正有效的东西。*
-
-</div>
+[MIT License](./LICENSE) · [隐私](./PRIVACY.md) · [使用条款](./TERMS.md)

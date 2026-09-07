@@ -1,703 +1,282 @@
 <div align="center">
 
-<img src="./skills/reasoning-workflow/assets/icon.svg" width="96" height="96" alt="Reasoning Workflow" />
+<img src="./skills/reasoning-workflow/assets/icon.svg" width="88" height="88" alt="Reasoning Workflow" />
 
 # Reasoning Workflow
 
-### Teach AI how to think before it searches.
+### Teach AI how to think before it searches
 
-**Understand the real problem. Allocate the right depth. Research what matters. Keep long-running work consistent.**
-
-A general-purpose reasoning and Deep Research governing system for AI agents.
-
-<br />
-
-[![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827?style=flat-square)](./skills/reasoning-workflow/SKILL.md)
-[![Deep Research](https://img.shields.io/badge/Deep%20Research-Problem--Driven-2563EB?style=flat-square)](#deep-research-is-model-driven)
-[![Routing](https://img.shields.io/badge/Routing-Depth--Gated-7C3AED?style=flat-square)](#depth-first-routing)
-[![Context](https://img.shields.io/badge/Context-Progressive-0F766E?style=flat-square)](#progressive-context-disclosure)
-[![Runtime](https://img.shields.io/badge/Runtime-Semantic%20Validation-B45309?style=flat-square)](#semantic-runtime-for-long-running-work)
-[![License](https://img.shields.io/badge/License-MIT-374151?style=flat-square)](./LICENSE)
-
-<br />
+Understand the real problem. Allocate the right depth. Research what matters. Keep long-running work consistent
 
 **English** · [简体中文](./README.zh-CN.md)
 
-<br />
+[Get started](#get-started) · [Examples](#put-it-to-work) · [How it works](#how-it-works) · [Validation](#validation-and-limits)
 
-[Quick Start](#quick-start) · [Why](#why-this-exists) · [Architecture](#how-it-works) · [Depth](#depth-first-routing) · [Deep Research](#deep-research-is-model-driven) · [Families](#skill-families) · [Runtime](#semantic-runtime-for-long-running-work) · [Validation](#validation-status)
+**[Download Portable](./dist/reasoning-workflow-portable.zip)** · [Download Modular](./dist/reasoning-workflow-modular.zip) · [Read the Skill](./skills/reasoning-workflow/SKILL.md)
 
 </div>
 
 ---
 
-## The idea in 30 seconds
+## Better work starts before the tool call
 
-A lot of AI research still begins too late:
+An agent can collect good sources and still answer the wrong question. It can produce a convincing plan while missing a dependency, or keep using a conclusion after its evidence changes
 
-```text
-user question
-     ↓
-keywords
-     ↓
-search
-     ↓
-more sources
-     ↓
-summary
-```
+Reasoning Workflow is a **governing Skill for reasoning, research, decisions, and execution**. It helps an agent decide what needs to be understood, what evidence would matter, which capabilities to use, and what to verify before calling the task done
 
-The problem is simple:
+It works alongside specialist Skills for coding, design, documents, and other domains. It does not replace them, provide its own model, or grant tools and permissions
 
-> **If the model misunderstood the problem before it searched, more search can make the wrong answer look more convincing.**
+**Simple tasks stay simple.** A direct calculation does not need a research plan. A difficult investigation should not be reduced to a keyword search
 
-Reasoning Workflow moves the starting point upstream — and adds one more decision before expensive work begins:
+## Get started
+
+### Copy this prompt to let your agent install it
+
+Send this to your agent—no need to navigate the repository first
 
 ```text
-user question / task
-        ↓
-lightweight Task Admission / Depth Gate
-        ↓
-understand the real task
-        ↓
-problem model / graph
-        ↓
-pivotal dependencies + relationships
-        ↓
-competing explanations + uncertainty
-        ↓
-evidence needs
-        ↓
-research / observe / use specialist skills
-        ↓
-update + challenge
-        ↓
-answer / decide / execute
-        ↓
-verify
+Install and configure Reasoning Workflow in this environment
+Repository: https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills
+
+Read the repository README.md and skills/reasoning-workflow/SKILL.md first
+Inspect the host's supported Skill / Plugin installation mechanism
+Check for an existing instance before installing
+
+Update an existing instance instead of creating a duplicate
+Do not overwrite unsaved local changes
+Default to Portable, the single governing Skill
+Choose Modular only if this host supports composing multiple Family Skills
+Prefer the host's supported installer; do not guess install paths or execute
+uninspected remote scripts
+If cloning source is needed, use a temporary directory and preserve the
+complete relative resource structure required by the Skill
+
+Complete installation directly where existing permissions allow
+If authorization, sign-in, or a restart is needed, report the specific blocker
+and the smallest necessary user action
+If persistent installation is unsupported, explain the limit and use the
+files for this session only if they are accessible
+
+Verify that the entrypoint is readable, required resources exist, and the
+host recognizes the Skill
+Report the install location, source commit, actual checks, and any restart
+still required
+Do not equate downloading or reading the files with successful installation
 ```
 
-> **Search is downstream of reasoning. Depth is downstream of the task.**
+This is an **installation request for an agent**, not a universal one-click API
+Full automation depends on the host's capabilities and permissions
 
-A short translation or direct calculation should stay light. A contested, causal, time-sensitive research problem can expand into Deep Research. A long-running multi-artifact task can add execution control, checkpointing, delegation, and recovery.
+### Already working in this repository?
 
-The system is universal. The machinery is proportional.
+Give your agent this instruction, followed by your task:
 
----
+```text
+Read skills/reasoning-workflow/SKILL.md and use it to govern this task
 
-# Why this exists
+Task: [what you want to know or accomplish]
+Constraints: [relevant scope, sources, deadline, or permissions]
+Deliverable: [the answer, decision, or artifact you need]
 
-Modern agents can search, code, analyze files, call tools, use specialist Skills, and delegate work. The harder problem is deciding **what should happen before those capabilities are used**.
+Choose a proportionate depth. Load supporting resources only when needed
+```
 
-Reasoning Workflow is designed around recurring failure modes:
+The agent needs access to the actual files. Mentioning a path it cannot read does not load the Skill
 
-- answering the wording of a prompt instead of the real question;
-- decomposing a problem without being able to recompose the answer;
-- treating correlation, dependency, mediation, causality, and feedback as the same thing;
-- locking onto the first plausible explanation;
-- searching by keywords instead of by evidence needs;
-- counting repeated sources as independent confirmation;
-- overthinking simple tasks and underthinking difficult ones;
-- loading too much context because it might be relevant;
-- letting workers, artifacts, tests, and conclusions drift out of sync during long work;
-- declaring completion because the output looks finished rather than because the task is actually closed;
-- “learning” from one bad run and silently changing future behavior.
+### Using a downloaded package?
 
-The workflow treats these as one system problem: **reasoning quality, resource allocation, evidence quality, runtime integrity, verification, and learning must stay connected.**
+| Package | Choose it when… | What you get |
+| --- | --- | --- |
+| **[Portable](./dist/reasoning-workflow-portable.zip)** | You want one governing Skill; the recommended starting point | A self-contained `reasoning-workflow/` directory with internal Family routing |
+| **[Modular](./dist/reasoning-workflow-modular.zip)** | Your runtime supports composing multiple Skills | Six Family Skills with shared machine semantics |
+| **[Source](./skills/reasoning-workflow/)** | You want to inspect, validate, or contribute | The canonical Skill, resources, scripts, and tests |
 
----
+Extract the package and use your runtime's supported Skill installation mechanism. For Portable, select the directory containing `SKILL.md`; for Modular, use the six directories under `reasoning-workflow-modular/skills/`
 
-# How it works
+If your environment only supports file uploads, provide the extracted files—or the ZIP if it can unpack it—and ask it to read the entrypoint. **Reading an attachment is not persistent installation.** Avoid installing both formats for the same purpose
+
+The repository also includes a [plugin manifest](./.codex-plugin/plugin.json) for compatible hosts. Installation, discovery, tool access, and persistence depend on the host
+
+## Put it to work
+
+You do not need to write a long prompt. State the outcome and the constraints that actually matter
+
+### Investigate a claim
+
+```text
+Use Reasoning Workflow to investigate whether [claim] is true
+
+Separate firsthand evidence from repeated reporting. Consider alternative
+explanations and identify what evidence would change the conclusion
+Deliver a sourced answer with the remaining uncertainty
+```
+
+### Make a decision
+
+```text
+Use Reasoning Workflow to compare [option A] and [option B] for [goal]
+
+My constraints are [constraints]. Identify decisive trade-offs, separate
+facts from assumptions, and explain when your recommendation would change
+```
+
+### Complete a bounded change
+
+```text
+Use Reasoning Workflow to implement [change] in this repository
+
+Preserve [invariants]. You may modify [scope]
+Verify the result and report what changed, what passed, and what remains open
+```
+
+For a small task, add “Keep this light.” For an investigation, specify the important uncertainty rather than asking for more sources. For execution, make the authorized scope explicit; the Skill does not supply missing permission
+
+## How it works
+
+The architecture combines **a Universal Reasoning System, Depth-Gated Skill Routing, Progressive Context Disclosure, a Deterministic Semantic Runtime, Dual-Layer Verification, and Eval-Gated Self-Learning**
+
+### 1. Choose depth before spending effort
+
+A lightweight **Task Admission / Depth Gate** forms a Task Profile. Reasoning, evidence, challenge, verification, and governance depth are considered separately. The profile can change as the task reveals new uncertainty
+
+| Depth | Typical use | Verification |
+| --- | --- | --- |
+| **Light** | Direct, well-defined tasks | Minimal relevant check |
+| **Standard** | Bounded analysis or implementation | Normal verification |
+| **Deep** | Material uncertainty, causal questions, contested evidence | Layer 1 + fresh Layer 2 for material conclusions |
+| **Max** | Explicit maximum useful depth or high-consequence work | Both layers, plus an orthogonal route where useful |
+
+**Universal entry ≠ universal full execution.** Light tasks with no structured gap may load **zero references**. Max means maximum useful work, not maximum tokens, searches, or agents
+
+### 2. Follow the problem, not just the prompt
+
+The **Universal Reasoning Spine** connects framing, modeling, premises, decomposition and recomposition, relationships, uncertainty, evidence, challenge, synthesis, and verification. It is a revisable map, not a mandatory checklist
+
+Deep Research starts from a **Problem Graph**: the claims, hypotheses, dependencies, and causal chains whose uncertainty could change the answer
 
 ```mermaid
 flowchart TD
-    U["User task"] --> G["Task Admission / Depth Gate"]
-    G --> P["Versioned Task Profile"]
-    P --> R["Family + Resource Router"]
-    R --> C["Universal Reasoning System"]
-
-    C --> Q["Question / Reasoning Lane"]
-    C --> A["Action / Project Lane"]
-
-    Q --> V["Depth-gated verification"]
-    A --> E["Execution Control when required"]
-    E --> V
-
-    V --> X["Closure"]
-    X -. post-run only .-> L["Trace / Eval / CAPA / Learning Plane"]
+    P["Problem graph"] --> U["Uncertain premise or causal edge"]
+    U --> N["Evidence need"]
+    N --> E["Evidence surface and observation"]
+    E --> M["Model update and challenge"]
+    M --> D{"Decisive gap remains?"}
+    D -->|Yes| U
+    D -->|No| S["Synthesize and verify"]
 ```
 
-The Universal Reasoning Spine remains deliberately general:
+For example, “Did the launch cause sales to fall?” calls for checking timing, measurement, comparison groups, and competing causes—not just searching the launch name
 
-```text
-real task / outcome
-→ orient when the frame is uncertain
-→ build a revisable problem model
-→ identify pivotal dependencies
-→ decompose ↔ recompose
-→ model relationships / causal chains
-→ keep competing explanations alive
-→ identify material uncertainty
-→ derive evidence needs
-→ reason / research / observe
-→ update + challenge the model
-→ synthesize / decide
-→ answer or execute
-→ verify
-```
+When the frame itself is unclear, **orientation retrieval** can first establish vocabulary and context. Formal **evidence retrieval** then follows an explicit evidence need: what observation would resolve an uncertain premise or distinguish explanations?
 
-This is a dependency-aware map, not a mandatory linear checklist. New evidence can send the agent back upstream. Irrelevant steps can collapse to near-zero overhead.
+> Research should follow the structure of the problem, not merely the wording of the prompt
 
----
+### 3. Load only what the current gap needs
 
-# Depth-first routing
+Progressive Context Disclosure uses **Task Profile → Family Route → Current Gap → Small Reference Shortlist**. Normally, only the most relevant **1–3 references** are loaded for the current phase
 
-Every substantive task can enter Reasoning Workflow, but **universal entry does not mean universal full execution**.
-
-The first step is a lightweight Task Profile. It keeps different dimensions separate instead of inventing one fake “complexity score”:
-
-```text
-depth class
-reasoning breadth
-evidence depth
-challenge depth
-verification depth
-governance depth
-frame uncertainty
-freshness / volatility
-causal / systemic complexity
-task coupling
-persistence / side effects
-routing confidence
-autonomy / authorization
-```
-
-The public depth classes are intentionally simple:
-
-| Depth | Typical behavior |
+| Skill Family | Use it for |
 | --- | --- |
-| **Light** | Direct work. Often zero references. No ceremony. |
-| **Standard** | Structured reasoning and normal verification where useful. |
-| **Deep** | Broader modeling, evidence work, challenge, and independent review for material conclusions. |
-| **Max** | Maximum *useful* depth, not “load everything.” May add orthogonal verification and more research routes when justified. |
+| [Core Reasoning](./skills/reasoning-workflow/families/core-reasoning.md) | Framing, models, premises, relationships, and synthesis |
+| [Deep Research](./skills/reasoning-workflow/families/deep-research.md) | Evidence needs, inquiry, provenance, and competing explanations |
+| [Decision Analysis](./skills/reasoning-workflow/families/decision-analysis.md) | Options, trade-offs, uncertainty, and recommendations |
+| [Execution Control](./skills/reasoning-workflow/families/execution-control.md) | Dependencies, authorized changes, delegation, and recovery |
+| [Audit / Verification](./skills/reasoning-workflow/families/audit-verification.md) | Contract checks, independent review, and closure |
+| [Workflow Learning](./skills/reasoning-workflow/families/workflow-learning.md) | Post-run experience, CAPA, and evaluated improvements |
 
-Depth is dynamic. It may escalate when hidden complexity appears, or de-escalate when a task turns out to be simpler than expected.
+**Related ≠ automatic load.** Finish a reference, return to the router, and reassess the gap. Related links must not cascade into loading the entire library. See the [routing index](./skills/reasoning-workflow/routing-index.json)
 
-The model forms the semantic Task Profile. Deterministic routing maps that structured profile to Skill Families and resources. Raw prompt keywords are not the deterministic classifier.
+Machine-heavy resources follow a separate rule: **machine uses it; model invokes it; model does not need to memorize it**
+
+### 4. Answer questions or execute projects
+
+There are only two first-class lanes:
+
+- **Question / Reasoning Lane:** understand, investigate, synthesize, answer, and verify. A verified answer is a complete outcome
+- **Action / Project Lane:** extend that reasoning with planning, authorized execution, re-observation, reconciliation, and closure
+
+Agent Swarm is scheduling, not a third lane. Audit is a verification layer. Learning is post-run maintenance
+
+<details>
+<summary><strong>For long-running work: state, delegation, and recovery</strong></summary>
+
+The **Semantic Runtime** supplies typed lifecycle rules, effective-state propagation, a canonical logical dependency graph, an Execution Node State Ledger, and closure checks
+
+**Declared state is input. Effective state is computed.** Changed premises or artifacts can invalidate dependent results. Verification is bound to the fingerprint of the state or content actually checked
+
+- **Plan / Schedule separation:** the Plan defines dependencies and contracts; the Schedule assigns timing and workers. Plan semantics are invariant under scheduling
+- **Agent Swarm:** parallelize when dependency and context independence, shared mutable state, merge cost, failure isolation, and evidence diversity justify it—not merely because the task is complex
+- **Worker proposals:** workers can discover independently but cannot independently write canonical reality. A manager/deterministic merger validates proposals and resolves conflicts before canonical state changes
+- **Capability / Authorization separation:** an available tool is not permission to use it
+- **Checkpoint / Recovery:** restore, re-observe, recompute effective state, then continue
+- **Replay Safety:** side-effect receipts help govern retries so interrupted work is not blindly repeated
+
+These are contracts and executable helpers, not an always-running orchestration service. A host must actually invoke the relevant runtime and validators to enforce them
+
+Read the [architecture](./docs/ARCHITECTURE.md) and [semantic contract](./skills/reasoning-workflow/references/semantic-state-contract.md)
+
+</details>
+
+## Verify the work—not just the presentation
+
+**Dual-Layer Verification** asks two different questions:
+
+- **Layer 1:** does the work correctly satisfy its stated contract?
+- **Layer 2:** does it solve the original problem, without question drift, missing branches, shared blind spots, provenance contamination, or new contradictions and unintended consequences?
+
+The same solver rereading its answer in the same context is not automatically independent review. Reviewer disagreement reopens the disputed node for targeted verification; voting does not settle it
+
+**Skill Adherence** is also separate from output quality. Check observable state preconditions, required and forbidden transitions, events, tool calls, resource loads, and validator findings. A polished answer is not proof that the workflow was followed. Private chain-of-thought is neither required nor an audit artifact
+
+<details>
+<summary><strong>Improve the workflow without automatic self-editing</strong></summary>
+
+Controlled learning separates three tiers:
+
+1. **Experience Memory:** retain useful, bounded lessons
+2. **Routing / Reference Heuristics:** evaluate improvements to resource selection
+3. **Canonical Workflow Change:** require a candidate, minimal failing regression, offline/shadow evaluation, baseline comparison, independent review, promote/reject decision, and rollback
+
+**Self-Learning ≠ Automatic Self-Editing.** A single “generate → reflect → rewrite the Skill” loop cannot promote a canonical change
+
+Material workflow failures use **CAPA**: containment, root cause, corrective action, regression, verification, effectiveness check, prevention/generalization, and closure. One passing test does not establish effectiveness
+
+See the [learning policy](./docs/LEARNING-POLICY.md)
+
+</details>
+
+## Validation and limits
+
+Current reproducible status:
+
+- **44/44** discovered unit and regression tests pass
+- Skill structure, local links, and workflow metadata checks pass
+- Portable/Modular shared semantic consistency and ZIP integrity checks pass
+
+**These are deterministic implementation checks, not live-agent behavioral benchmarks**
+
+Still unvalidated: real-model Task Profile classification; Skill trigger precision/recall; cross-model Family/reference routing; matched Deep Research quality non-inferiority; real token/latency savings; dual-review error reduction; long-horizon learning effectiveness; and complete external Deep Research benchmark execution
+
+See [evaluation commands and boundaries](./docs/EVALUATION.md) and [Deep Research evaluation definitions](./skills/reasoning-workflow/evals/deep-research/). Performance depends on the model, host integration, available evidence, and actual adherence
+
+## For contributors
+
+The only canonical source is [`skills/reasoning-workflow/`](./skills/reasoning-workflow/). Portable and Modular are generated outputs, never independently maintained implementations
+
+From the canonical directory:
+
+```sh
+python -m pip install -r scripts/requirements.txt
+python scripts/validate_skill.py .
+python scripts/validate_links.py .
+python scripts/validate_workflow.py .
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/build_distributions.py --source . --out-dir ../../dist
+python scripts/validate_distribution.py ../../dist/reasoning-workflow-portable.zip ../../dist/reasoning-workflow-modular.zip
+```
+
+[Semantic manifest](./skills/reasoning-workflow/SEMANTIC_MANIFEST.json) · [Release checksums](./RELEASE-MANIFEST.json) · [Contributing](./CONTRIBUTING.md)
 
 ---
 
-# Deep Research is model-driven
-
-Reasoning Workflow began with a simple objection to keyword-first research:
-
-> **Research should follow the structure of the problem, not merely the wording of the prompt.**
-
-The core loop is:
-
-```text
-problem graph
-     ↓
-uncertain premise / causal edge / hypothesis
-     ↓
-explicit evidence need
-     ↓
-best evidence surface
-     ↓
-observe the underlying material
-     ↓
-update the problem model
-     ↓
-propagate consequences
-     ↓
-challenge / counterevidence
-     ↓
-next information-gain decision
-```
-
-## Frame uncertainty vs. answer uncertainty
-
-These are different.
-
-**Answer uncertainty:** the question is stable; the answer is unknown.
-
-**Frame uncertainty:** the problem model itself may be missing an actor, mechanism, definition, time boundary, source ecosystem, incentive, confounder, or adjacent domain.
-
-When frame uncertainty is material, the workflow allows **orientation retrieval** before a stable evidence plan exists. Once formal evidence retrieval begins, it expects a current problem model and an explicit evidence need.
-
-That distinction prevents two opposite failures:
-
-```text
-keyword search too early
-```
-
-and
-
-```text
-bureaucratic “fill the model first” behavior that blocks useful orientation
-```
-
-## Evidence should discriminate, not accumulate
-
-For a material claim, the workflow asks:
-
-- Is the source actually in a position to know?
-- Does the entity, version, time, population, and definition match?
-- Are apparently independent sources copied from the same origin?
-- Does this evidence distinguish competing explanations, or fit all of them?
-- What observation would make the current conclusion change?
-
-```text
-20 sources that repeat the same origin
-<
-1 observation that separates two live explanations
-```
-
-Deep Research stops when another feasible inquiry is unlikely to materially improve the answer, confidence, decision, or important uncertainty. Source count, search count, agent count, and report length are never completion criteria.
-
----
-
-# Skill Families
-
-Detailed guidance is organized into six coarse Families. This is deliberate: the system stays universal without turning every reference into its own competing Skill.
-
-| Family | Owns | Typical trigger |
-| --- | --- | --- |
-| **Core Reasoning** | framing, proportional depth, problem modeling, decomposition/recomposition, integration | substantive tasks |
-| **Deep Research** | causal/system modeling, hypotheses, evidence needs, retrieval, provenance, uncertainty | external evidence, contested facts, frame uncertainty, Deep/Max research |
-| **Decision Analysis** | objectives, constraints, alternatives, consequences, measurement, trade-offs | recommendation, prioritization, choice, decision |
-| **Execution Control** | Plan, Schedule, delegation, authorization, durable state, checkpoint/recovery | persistent change, multi-artifact work, Swarm, side effects, long-running tasks |
-| **Audit / Verification** | independent review, adversarial checks, workflow adherence, closure verification | Deep/Max verification, high-consequence work, explicit audit |
-| **Workflow Learning** | CAPA, experience memory, routing heuristics, controlled improvement | post-run maintenance only |
-
-The machine-readable map is [`routing-index.json`](./skills/reasoning-workflow/routing-index.json). Human-readable Family indexes live under [`families/`](./skills/reasoning-workflow/families/).
-
-Reasoning Workflow owns **how work is framed, routed, integrated, verified, and closed**. Specialist Skills still own domain-specific implementation.
-
-Examples:
-
-```text
-Reasoning Workflow + product design
-Reasoning Workflow + coding / repository tools
-Reasoning Workflow + data analysis
-Reasoning Workflow + document / PDF / spreadsheet tooling
-```
-
----
-
-# Progressive context disclosure
-
-The goal is not a smaller repository. The goal is a smaller, higher-signal **active model context**.
-
-```text
-Task Profile
-    ↓
-Family route
-    ↓
-current unresolved gap
-    ↓
-1–3 useful references for this phase
-    ↓
-return to router
-```
-
-Default behavior:
-
-- Light work with no structured gap may load **zero references**.
-- A normal phase should load only a small shortlist of useful references.
-- Max can load more over time, but still progressively.
-- `Related` links are navigation hints, not recursive load instructions.
-- schemas, lifecycle policies, and validators stay in the machine layer whenever the model can invoke them rather than memorize them.
-- reference loads can be traced with route, gap, and profile metadata so unused context can be measured instead of guessed.
-
----
-
-# Two first-class lanes
-
-## Question / Reasoning Lane
-
-A question is a complete task.
-
-```text
-understand
-→ model
-→ reason / research
-→ challenge
-→ recompose
-→ answer
-→ verify
-```
-
-This lane covers fact checking, explanation, diagnosis, comparison, rumor verification, forecasting, Deep Research, judgment, recommendation, and other answer-oriented work.
-
-It does **not** create project machinery merely because the reasoning is difficult.
-
-## Action / Project Lane
-
-Persistent change extends the reasoning lane:
-
-```text
-reason
-→ decide what should happen
-→ plan
-→ authorize
-→ schedule / delegate
-→ execute
-→ re-observe
-→ verify
-→ reconcile
-→ effectiveness
-→ close / reopen
-```
-
-Swarm is a scheduling strategy beneath this lane, not a third reasoning lane.
-
----
-
-# Semantic runtime for long-running work
-
-When durable execution is justified, the workflow adds deterministic controls around model reasoning.
-
-Core runtime concepts include:
-
-```text
-Task Profile        — how much machinery should be active
-Problem Model       — what the task currently means
-Canonical State     — what is currently considered valid
-Execution Plan      — what should be done
-Execution Schedule  — who/what should do it, and when
-Node State Ledger   — what has actually happened
-Worker Proposal     — proposed findings/patches, not canonical truth
-Checkpoint          — resumable semantic/runtime/workspace binding
-Verification        — what exact state/content was checked
-Learning Record     — validated reusable experience, not free-form self-editing
-```
-
-Two invariants matter especially:
-
-> **Declared state is input. Effective state is computed.**
-
-> **Validators certify structural admissibility and consistency — not epistemic truth.**
-
-If an upstream premise, evidence item, relationship, artifact fingerprint, requirement, or verification becomes stale or invalid, dependent state is recomputed rather than silently remaining “current.”
-
----
-
-# Serial, Swarm, degradation, and recovery
-
-The same semantic Plan can execute in different schedules:
-
-```text
-same Plan
-   ├── one Agent, serial
-   ├── multiple Workers, parallel where independent
-   └── degraded route when a capability is unavailable
-```
-
-Plan semantics are invariant under scheduling.
-
-Workers may discover independently. They may not define canonical reality independently.
-
-A Worker returns a structured proposal; a controller/validator checks version, contract, write-set conflicts, evidence, and verification before merging.
-
-Checkpoint recovery follows:
-
-```text
-restore
-→ verify checkpoint
-→ re-check capabilities + authorization
-→ re-observe volatile external state
-→ inspect committed side effects
-→ recompute stale state
-→ reopen affected nodes
-→ resume
-```
-
-Replay safety distinguishes safe, idempotent, detectable, and unsafe actions so interruption does not silently repeat irreversible side effects.
-
----
-
-# Dual-layer verification
-
-Verification depth is also proportional.
-
-**Layer 1 — local / contract verification** checks whether the work correctly satisfies what it claims to satisfy: requirements, citations, calculations, tests, artifact contracts, versions, and coverage.
-
-**Layer 2 — independent / adversarial verification** asks a different question: did the work actually solve the original problem, or did the solver and Layer 1 share the same blind spot?
-
-Deep and high-consequence tasks can require a fresh reviewer. Max/high-consequence work can additionally require an orthogonal evidence, tool, model, deterministic, or human route when useful.
-
-A second pass with the same context is not automatically independent verification.
-
-Reviewer disagreement does not close by voting. It reopens the disputed node and creates a targeted evidence or verification need.
-
----
-
-# Workflow adherence
-
-A polished final answer is not proof that the workflow was followed.
-
-The adherence layer checks observable protocol:
-
-```text
-state preconditions
-+ required transitions
-+ forbidden transitions
-+ tool / resource loads
-+ events
-+ validator findings
-```
-
-For example, formal evidence retrieval should not silently occur without a valid evidence need. A restored task, however, does not need to recreate the same event if valid canonical/checkpoint state already satisfies the prerequisite.
-
-This is deliberately different from logging private chain-of-thought. The system reasons over observable state, actions, evidence, artifacts, and transitions.
-
----
-
-# Controlled learning
-
-Reasoning Workflow can learn from experience without allowing one run to rewrite the canonical workflow.
-
-```text
-verified success / failure / recovery / inefficiency
-        ↓
-CAPA-style root-cause analysis
-        ↓
-candidate learning
-        ↓
-evaluation gates
-        ↓
-selective promotion or rejection
-        ↓
-rollback remains available
-```
-
-Three levels are separated:
-
-- **Experience Memory:** validated strategy, recovery, and optimization lessons may be selectively retrieved.
-- **Routing Heuristics:** changes to depth/reference routing require held-out evaluation and negative controls.
-- **Canonical Workflow Changes:** changes to Skill instructions, schemas, policies, validators, authorization, or closure require regression evidence, baseline comparison, independent review, and rollback.
-
-Same-model reflection without new evidence may create a **candidate insight**. It cannot validate itself.
-
-See [`docs/LEARNING-POLICY.md`](./docs/LEARNING-POLICY.md).
-
----
-
-# Quick Start
-
-## Option 1 — use the repository source
-
-```text
-Read skills/reasoning-workflow/SKILL.md and use Reasoning Workflow as the governing process for this task.
-
-My task:
-[write the actual question or task]
-```
-
-For Deep Research:
-
-```text
-Use the Reasoning Workflow in this repository to investigate the question below.
-Start from the real problem structure and evidence needs rather than keyword expansion.
-Use the deepest useful level, but do not add process that does not improve the answer.
-
-[my question]
-```
-
-## Option 2 — install the Portable package
-
-Recommended default for most runtimes.
-
-[`dist/reasoning-workflow-portable.zip`](./dist/reasoning-workflow-portable.zip)
-
-It contains one `reasoning-workflow` Skill with the thin router, all Family indexes, progressive references, schemas, validators, runtime, tests, and evaluation adapters.
-
-After installation:
-
-```text
-Use $reasoning-workflow as the governing workflow for this task:
-
-[your task]
-```
-
-## Option 3 — install the Modular package
-
-For runtimes that benefit from explicit Skill discovery and independent Family loading:
-
-[`dist/reasoning-workflow-modular.zip`](./dist/reasoning-workflow-modular.zip)
-
-It contains six installable Skills:
-
-```text
-reasoning-core
-deep-research
-decision-analysis
-execution-control
-audit-verification
-workflow-learning
-```
-
-The six Skills are generated from the same source of truth and share machine semantics by hash.
-
-> [!IMPORTANT]
-> Portable and Modular are two distribution modes for the same system. They are not two independent implementations. Do not hand-maintain them separately.
-
----
-
-# Which package should I use?
-
-| Package | Best for | Trade-off |
-| --- | --- | --- |
-| **Repository source** | contributors, auditing, extending the workflow | full development tree |
-| **Portable** | most users, archive upload, single-Skill runtimes, broad compatibility | one governing Skill owns routing internally |
-| **Modular** | advanced runtimes with strong Skill discovery/composition | more on-disk duplication for self-contained Family Skills |
-
-If you are unsure, use **Portable**.
-
----
-
-# Repository structure
-
-```text
-.
-├── README.md
-├── README.zh-CN.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── PRIVACY.md
-├── TERMS.md
-│
-├── skills/
-│   └── reasoning-workflow/       # canonical source of truth
-│       ├── SKILL.md
-│       ├── families/             # six Family indexes
-│       ├── references/           # progressive reasoning/research guidance
-│       ├── schemas/              # typed machine contracts
-│       ├── scripts/              # routing, runtime, validators, learning, build
-│       ├── tests/                # regression / runtime / routing / context tests
-│       ├── evals/deep-research/  # benchmark adapters and metric definitions
-│       ├── agents/
-│       └── assets/
-│
-├── dist/
-│   ├── reasoning-workflow-portable.zip
-│   └── reasoning-workflow-modular.zip
-│
-└── docs/
-    ├── ARCHITECTURE.md
-    ├── EVALUATION.md
-    └── LEARNING-POLICY.md
-```
-
-The repository source is canonical. Distribution ZIPs are generated from it.
-
----
-
-# Validation status
-
-The current deterministic build includes:
-
-- **44 / 44** discovered unit and regression tests passing;
-- **24** behavioral specifications preserved;
-- routing, context, adherence, learning, Deep Research contract, runtime, and distribution tests;
-- portable ↔ modular shared semantic hash checks;
-- ZIP integrity checks.
-
-The current evaluation layer also verifies behaviors such as:
-
-- Light tasks can remain light and load zero references;
-- profile changes invalidate stale routes;
-- `Related` does not cause recursive reference loading;
-- evidence retrieval requires evidence needs while orientation remains possible under frame uncertainty;
-- Skill defaults cannot override explicit user instructions outside separately governed safety/authorization constraints;
-- fresh and orthogonal review are not treated as the same thing;
-- intrinsic reflection cannot directly promote canonical learning;
-- unsafe side-effect recovery respects replay-safety rules.
-
-See [`docs/EVALUATION.md`](./docs/EVALUATION.md) for verification commands and evaluation boundaries.
-
-## What is not yet proven
-
-Deterministic tests validate the **workflow implementation**, not every model/runtime that may use it.
-
-The following still require live, matched behavioral evaluation:
-
-- real-model Task Profile classification accuracy;
-- Skill trigger and Family/reference selection precision/recall;
-- matched Deep Research generation-quality non-inferiority against the frozen baseline;
-- real token, latency, and tool-call savings;
-- measured error reduction from dual review;
-- long-horizon learning effectiveness and harmful-memory rates;
-- full external Deep Research benchmark execution;
-- cross-runtime behavioral equivalence beyond deterministic semantic hashes.
-
-The project intentionally keeps this boundary visible.
-
----
-
-# Design principles
-
-> **Search is downstream of reasoning.**
-
-> **Universal entry does not mean universal full execution.**
-
-> **Rigor is not ceremony.**
-
-> **Plan semantics are invariant under scheduling.**
-
-> **Workers may discover independently; they may not define canonical reality independently.**
-
-> **Declared state is input; effective state is computed.**
-
-> **Verification is valid only for the state/content it actually verified.**
-
-> **Self-learning is controlled experience reuse, not automatic self-editing.**
-
-> **A beautiful output is not proof that the workflow was followed.**
-
----
-
-# Contributing
-
-The preferred development pattern is regression-first:
-
-```text
-find a concrete failure
-→ preserve the smallest counterexample
-→ make the test fail
-→ change the correct layer
-→ make the test pass
-→ run broader regression / eval
-→ keep rollback possible
-```
-
-Before adding more instructions, ask whether the rule belongs in:
-
-```text
-Reasoning Core
-Specialist Family/reference
-Schema / policy / validator
-Runtime / harness
-Eval / trace system
-```
-
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
-
----
-
-# License, privacy, and terms
-
-MIT License — see [`LICENSE`](./LICENSE).
-
-Reasoning Workflow is a skill/workflow package and does not operate its own hosted backend. See [`PRIVACY.md`](./PRIVACY.md) and [`TERMS.md`](./TERMS.md).
-
----
-
-<div align="center">
-
-**Reasoning Workflow**
-
-*Understand first. Research deliberately. Act proportionately. Verify what is actually true now.*
-
-</div>
+[MIT License](./LICENSE) · [Privacy](./PRIVACY.md) · [Terms](./TERMS.md)
