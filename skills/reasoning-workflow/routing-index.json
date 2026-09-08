@@ -37,29 +37,15 @@
         "depth",
         "autonomy",
         "clarification",
-        "task-profile"
+        "task-profile",
+        "representation"
       ],
-      "load_when": "Load only when the active gap matches one of: framing, depth, autonomy, clarification, task-profile.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "light",
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -72,28 +58,15 @@
       "load_when_tags": [
         "decomposition",
         "recomposition",
-        "structure"
+        "structure",
+        "granularity",
+        "reasoning-stagnation"
       ],
-      "load_when": "Load only when the active gap matches one of: decomposition, recomposition, structure.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -110,26 +83,11 @@
         "feedback",
         "mechanism"
       ],
-      "load_when": "Load only when the active gap matches one of: causal-chain, systems, relationships, feedback, mechanism.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "high",
@@ -145,25 +103,10 @@
         "bias",
         "falsification"
       ],
-      "load_when": "Load only when the active gap matches one of: hypotheses, competing-explanations, bias, falsification.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -178,26 +121,11 @@
         "interpretation",
         "statement"
       ],
-      "load_when": "Load only when the active gap matches one of: human-context, interpretation, statement.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -211,26 +139,11 @@
         "examples",
         "workflow-example"
       ],
-      "load_when": "Load only when the active gap matches one of: examples, workflow-example.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "high",
@@ -246,25 +159,10 @@
         "research-loop",
         "frame-discovery"
       ],
-      "load_when": "Load only when the active gap matches one of: deep-research, evidence-need, research-loop, frame-discovery.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "high",
@@ -280,26 +178,11 @@
         "evidence-retrieval",
         "observation"
       ],
-      "load_when": "Load only when the active gap matches one of: retrieval, orientation-retrieval, evidence-retrieval, observation.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -315,26 +198,11 @@
         "citation",
         "source-independence"
       ],
-      "load_when": "Load only when the active gap matches one of: evidence, provenance, citation, source-independence.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "high",
@@ -349,27 +217,13 @@
         "time",
         "scenario",
         "freshness",
-        "volatility"
+        "volatility",
+        "forecast-update"
       ],
-      "load_when": "Load only when the active gap matches one of: forecast, time, scenario, freshness, volatility.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -383,28 +237,15 @@
         "multimodal",
         "data",
         "files",
-        "images"
+        "images",
+        "data-generating-process",
+        "selection"
       ],
-      "load_when": "Load only when the active gap matches one of: multimodal, data, files, images.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -419,28 +260,17 @@
         "recommendation",
         "tradeoff",
         "choice",
-        "allocation"
+        "allocation",
+        "option-set",
+        "preference-uncertainty",
+        "robustness",
+        "clarification-voi"
       ],
-      "load_when": "Load only when the active gap matches one of: decision, recommendation, tradeoff, choice, allocation.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "high",
@@ -454,28 +284,15 @@
         "measurement",
         "metric",
         "proxy",
-        "operationalization"
+        "operationalization",
+        "evaluator-validity",
+        "measurement-chain"
       ],
-      "load_when": "Load only when the active gap matches one of: measurement, metric, proxy, operationalization.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -491,28 +308,15 @@
         "swarm",
         "schedule",
         "worker",
-        "capability"
+        "capability",
+        "failure-diagnosis",
+        "replanning"
       ],
-      "load_when": "Load only when the active gap matches one of: execution, delegation, swarm, schedule, worker, capability.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -527,28 +331,14 @@
         "resume",
         "recovery",
         "replay",
-        "side-effect"
+        "side-effect",
+        "checkpoint-alignment"
       ],
-      "load_when": "Load only when the active gap matches one of: checkpoint, resume, recovery, replay, side-effect.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -564,26 +354,11 @@
         "invariants",
         "durable"
       ],
-      "load_when": "Load only when the active gap matches one of: state, canonical-state, invariants, durable.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -598,26 +373,11 @@
         "lifecycle",
         "effective-state"
       ],
-      "load_when": "Load only when the active gap matches one of: semantic-state, lifecycle, effective-state.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -633,26 +393,11 @@
         "event",
         "lineage"
       ],
-      "load_when": "Load only when the active gap matches one of: traceability, integrity, event, lineage.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "medium",
@@ -666,25 +411,10 @@
         "domain-pattern",
         "implementation-pattern"
       ],
-      "load_when": "Load only when the active gap matches one of: domain-pattern, implementation-pattern.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -700,26 +430,11 @@
         "closure",
         "artifact-contract"
       ],
-      "load_when": "Load only when the active gap matches one of: verification, synthesis, closure, artifact-contract.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -734,27 +449,14 @@
         "review",
         "adherence",
         "dual-review",
-        "adversarial-review"
+        "adversarial-review",
+        "reviewer-independence",
+        "evaluator-validity"
       ],
-      "load_when": "Load only when the active gap matches one of: audit, review, adherence, dual-review, adversarial-review.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
@@ -770,25 +472,10 @@
         "capa",
         "high-consequence"
       ],
-      "load_when": "Load only when the active gap matches one of: change-governance, effectiveness, capa, high-consequence.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": false,
       "context_cost_class": "medium",
@@ -803,31 +490,63 @@
         "capa",
         "regression",
         "self-evolution",
-        "maintenance"
+        "maintenance",
+        "negative-transfer",
+        "applicability"
       ],
-      "load_when": "Load only when the active gap matches one of: learning, capa, regression, self-evolution, maintenance.",
-      "do_not_load_when": "Do not load merely because another reference links to it or because the task is globally complex.",
-      "prerequisites": [
-        "active_task_profile",
-        "active_route"
-      ],
-      "consumes": [
-        "task_profile",
-        "current_gap",
-        "canonical_state_as_needed"
-      ],
-      "produces": [
-        "module_result",
-        "state_patch_or_guidance_as_applicable"
-      ],
-      "return_to": "governing_router",
       "typical_depth": [
         "deep",
-        "max"
+        "max",
+        "ultra"
       ],
       "machine_enforced": true,
       "context_cost_class": "high",
       "default_priority": 1
+    },
+    {
+      "id": "ultra-research",
+      "family": "deep-research",
+      "path": "references/ultra-research.md",
+      "load_when_tags": [
+        "ultra",
+        "fresh-frame",
+        "evidence-ecology",
+        "missingness",
+        "boundary",
+        "research-path-reset",
+        "pivotal-claims"
+      ],
+      "typical_depth": [
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "model-adaptation",
+      "family": "core-reasoning",
+      "path": "references/model-adaptation.md",
+      "load_when_tags": [
+        "model-adaptation",
+        "gpt-5.6",
+        "gpt-6",
+        "astra",
+        "codex",
+        "compute-allocation",
+        "multi-agent",
+        "compaction",
+        "scaffolding"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 5
     }
   ]
 }

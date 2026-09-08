@@ -8,6 +8,11 @@ from semantic_core import (load_json, validate_schema, build_registry, load_poli
 def validate(state: dict, root: Path | None = None):
     root=root or Path(__file__).resolve().parents[1]
     findings=validate_schema(state,root/'schemas/work-state.schema.json')
+    if any(f.severity=='ERROR' for f in findings):
+        reason=['State failed schema validation; effective closure cannot be computed.']
+        return findings,{},{
+            'epistemic':{'applicable':True,'computed_epistemic_closed':False,'blockers':reason,'warnings':[]},
+            'runtime':{'applicable':True,'computed_runtime_closed':False,'blockers':reason,'warnings':[]}}
     registry,fs=build_registry(state); findings+=fs
     policy=load_policy(root)
     fs,edges=typed_reference_findings(registry,policy); findings+=fs

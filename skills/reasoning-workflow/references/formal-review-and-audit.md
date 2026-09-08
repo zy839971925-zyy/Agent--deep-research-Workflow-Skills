@@ -61,6 +61,27 @@ For Question / Reasoning work, audit the reasoning architecture as well as citat
 
 A well-cited answer can still fail if its problem model or inference structure is wrong.
 
+## Reviewer independence is not reviewer count
+
+Agreement among several reviewers is weak evidence when they share the same source set, rubric, framing, model family, or blind spot. Treat reviewer count as redundancy, not automatic independence.
+
+Prefer independence that changes a potential error mechanism: different underlying evidence, measurement, tool, methodology, model/context, deterministic reproduction, or qualified human review. A fresh reviewer with the same evidence can still be useful for error detection, but do not label it orthogonal unless the route can discover errors the solver's route may systematically miss.
+
+When reviewers disagree, do not vote. Localize the disagreement to the exact claim, premise, scope, metric, method, value judgment, or evidence item and create the smallest targeted verification need that could resolve it.
+
+## Audit the evaluator too
+
+A rubric, judge, benchmark, or test harness is itself a measurement instrument. When evaluation drives a material conclusion, inspect:
+
+- what construct the evaluator actually measures;
+- whether task/environment/tool setup exposes the capability being judged;
+- whether rubric coverage matches the real success condition;
+- whether judge errors are correlated with candidate errors;
+- whether verbosity, position, style, or formatting can distort the score;
+- whether a deterministic check, direct observation, or domain-specific oracle can replace subjective judgment for part of the task.
+
+Do not equate `score = capability` without validating that measurement chain.
+
 ## Synthesis discipline
 
 Formal review quality is not citation volume. Preserve study/source dependence, incompatible estimands, methodological heterogeneity, and unresolved disagreement. Quantitative synthesis requires compatible inputs and justified methods; do not pool simply because numbers are available.

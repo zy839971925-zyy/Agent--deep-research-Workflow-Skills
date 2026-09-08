@@ -103,7 +103,9 @@ Define measures before implementation when possible:
 
 Add thresholds, baseline, expected direction/magnitude when meaningful, data source, observation window, and stop/rollback triggers. Do not retrofit success criteria after seeing the result merely to declare success.
 
-## Readiness gate before implementation or release
+## Readiness and action gate before implementation or release
+
+Evidence that a change is desirable is not authorization to perform it. Before crossing an external side-effect boundary, separately confirm the **action gate**: scope, authority, reversibility/containment, required approvals, and readiness of rollback or recovery where relevant.
 
 For controlled/formal changes, verify readiness before crossing the implementation boundary:
 

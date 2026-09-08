@@ -25,7 +25,7 @@ Before loading specialist references or starting heavy research, form or update 
 
 The profile keeps these decisions separate:
 
-- `depth_class`: `light | standard | deep | max`
+- `depth_class`: `light | standard | deep | max | ultra`
 - `autonomy_class`: `A | B | C | D`
 - reasoning breadth
 - evidence depth
@@ -41,7 +41,7 @@ The profile keeps these decisions separate:
 
 Do not collapse them into a 0–100 complexity score.
 
-`Max` means **maximum useful depth**, not maximum references, searches, workers, or tokens.
+`Max` means **maximum useful depth within the current research trajectory**, not maximum references, searches, workers, or tokens. `Ultra` means substantially higher research budget with broader reframing, relationship discovery, orthogonal exploration, and selective pivotal verification; it is not a fixed longer checklist.
 
 ### Dynamic depth
 
@@ -94,12 +94,22 @@ After enough reasoning to know what should happen:
 
 Swarm is not a third lane. It is a scheduling strategy under Execution Control. The same semantic Plan must remain executable serially, in parallel, or under degraded capability.
 
+## Governing closed loop
+
+The six Skill Families are different views of one adaptive loop rather than independent mini-workflows:
+
+`understand → decide → act → observe → evaluate → update`
+
+Core Reasoning and Deep Research improve the current model of the problem; Decision Analysis maps that model to a choice; Execution Control changes or inspects reality when authorized; Audit / Verification tests whether the result and its basis are sound; Workflow Learning changes future behavior only after evidence supports generalization. Any downstream observation can reopen an upstream model or decision.
+
+Do not activate every Family to complete this loop. A question can end after `understand → answer → verify`; a recommendation may end after `understand → decide`; durable action extends only as far as the task actually requires.
+
 ## Skill Family routing
 
 The deterministic router maps the structured Task Profile to Skill Families. The model may propose an override, but must record why.
 
 - [`Core Reasoning`](families/core-reasoning.md) — available to every substantive task.
-- [`Deep Research`](families/deep-research.md) — material evidence depth, frame discovery, multi-source verification, causal/systemic uncertainty, competing explanations, or explicit Deep/Max research.
+- [`Deep Research`](families/deep-research.md) — material evidence depth, frame discovery, multi-source verification, causal/systemic uncertainty, competing explanations, or explicit Deep/Max/Ultra research.
 - [`Decision Analysis`](families/decision-analysis.md) — choice, recommendation, trade-off, prioritization, allocation.
 - [`Execution Control`](families/execution-control.md) — persistent side effects, durable artifacts, delegated work, Swarm, authorization, checkpoint/resume, durable state.
 - [`Audit / Verification`](families/audit-verification.md) — deep verification, high consequence, explicit audit, Action closure, or second-layer review.
@@ -107,7 +117,7 @@ The deterministic router maps the structured Task Profile to Skill Families. The
 
 The maintenance-plane CAPA and controlled-learning procedure is documented in [`Workflow Learning and CAPA`](references/workflow-learning-and-capa.md) and is loaded only when that gap is active.
 
-Reference map (navigation only; load progressively): [`change governance`](references/change-governance-and-effectiveness.md) · [`decision quality`](references/decision-and-recommendation.md) · [`domain patterns`](references/domain-patterns.md) · [`evidence and provenance`](references/evidence-and-provenance.md) · [`formal review`](references/formal-review-and-audit.md) · [`human context`](references/human-context-and-interpretation.md) · [`hypotheses and bias control`](references/hypotheses-and-bias-control.md) · [`inquiry and research`](references/inquiry-and-research.md) · [`measurement`](references/measurement-and-operationalization.md) · [`multimodal and data`](references/multimodal-and-data.md) · [`problem framing`](references/problem-framing-and-effort.md) · [`reasoning structure`](references/reasoning-structure-and-decomposition.md) · [`relationships and systems`](references/relationships-and-systems.md) · [`retrieval and observation`](references/retrieval-and-observation.md) · [`runtime and delegation`](references/runtime-and-delegation.md) · [`semantic state`](references/semantic-state-contract.md) · [`state model`](references/state-model-and-invariants.md) · [`synchronization and recovery`](references/synchronization-and-recovery.md) · [`synthesis and verification`](references/synthesis-execution-and-verification.md) · [`time and scenarios`](references/time-scenarios-and-forecasting.md) · [`traceability`](references/traceability-and-integrity.md) · [`worked examples`](references/worked-examples.md)
+Reference map (navigation only; load progressively): [`change governance`](references/change-governance-and-effectiveness.md) · [`decision quality`](references/decision-and-recommendation.md) · [`domain patterns`](references/domain-patterns.md) · [`evidence and provenance`](references/evidence-and-provenance.md) · [`formal review`](references/formal-review-and-audit.md) · [`human context`](references/human-context-and-interpretation.md) · [`hypotheses and bias control`](references/hypotheses-and-bias-control.md) · [`inquiry and research`](references/inquiry-and-research.md) · [`model adaptation`](references/model-adaptation.md) · [`measurement`](references/measurement-and-operationalization.md) · [`multimodal and data`](references/multimodal-and-data.md) · [`problem framing`](references/problem-framing-and-effort.md) · [`reasoning structure`](references/reasoning-structure-and-decomposition.md) · [`relationships and systems`](references/relationships-and-systems.md) · [`retrieval and observation`](references/retrieval-and-observation.md) · [`runtime and delegation`](references/runtime-and-delegation.md) · [`semantic state`](references/semantic-state-contract.md) · [`state model`](references/state-model-and-invariants.md) · [`synchronization and recovery`](references/synchronization-and-recovery.md) · [`synthesis and verification`](references/synthesis-execution-and-verification.md) · [`time and scenarios`](references/time-scenarios-and-forecasting.md) · [`traceability`](references/traceability-and-integrity.md) · [`ultra research`](references/ultra-research.md) · [`worked examples`](references/worked-examples.md)
 
 ## Progressive context disclosure
 
@@ -124,11 +134,24 @@ Machine layers may be large. Model context should be small and high-signal.
 
 Do not make the model read schemas/policies it can instead invoke through deterministic validators. `machine_enforced=true` means the model may rely on the machine contract rather than memorizing its implementation.
 
+### Deterministic helpers when the runtime can execute local scripts
+
+The bundled Python helpers are part of the runtime surface, not reading material. Use them only when their contract is active; do not load their source into model context merely because they exist.
+
+- `scripts/route_task.py` and `scripts/route_resources.py` — deterministic Task Profile and progressive-reference routing.
+- `scripts/validate_state.py`, `validate_runtime.py`, `validate_delivery.py`, `validate_events.py`, `validate_raw.py` — semantic/runtime integrity for durable work.
+- `scripts/validate_dual_verification.py` — verification-record independence and reconciliation checks.
+- `scripts/validate_learning.py` and `retrieve_learnings.py` — maintenance-plane learning gates and selective retrieval.
+
+These helpers require `jsonschema` where schema validation is used; see `scripts/requirements.txt`. If the host cannot execute local scripts, preserve the semantic invariants in prose and do not pretend machine enforcement occurred.
+
 ## Next-step governing rule
 
 For every feasible next action—reasoning, retrieval, experiment, specialist Skill, worker, user question, checkpoint, or review—prefer the action that best reduces decisive uncertainty, advances the critical path, or protects task integrity relative to cost, risk, coupling, and reversibility.
 
-This does not require a numerical score.
+This does not require a numerical score. Do not create parallel work merely because parallelism is available. **Hire by bottleneck:** delegate when a separable branch is actually waiting on research, verification, specialist execution, another evidence ecosystem, or independent reproduction strongly enough to justify coordination cost.
+
+For GPT-5.6 and later, prefer semantic invariants, outcome constraints, and adaptive short-horizon planning over rigid long step lists. Depth controls epistemic ambition and total budget, not uniform maximum compute for every operation. Use deterministic tools for mechanical work and model tokens for judgment, synthesis, and discovery.
 
 ## User interaction
 
@@ -141,6 +164,16 @@ Complexity is not permission to ask the user.
 
 Clarification and authorization are different gates. A safe inference can replace a low-value clarification; it cannot manufacture permission.
 
+## Three different gates
+
+Keep three control questions distinct when they are relevant; they are not a mandatory three-step sequence.
+
+- **Source gate:** is this source, observation, dataset, file, or private input appropriate and admissible for the question being asked?
+- **Evidence gate:** does the inspected material actually support the proposition, scope, mechanism, or decision dependency being claimed?
+- **Action gate:** is the external side effect authorized, within scope, sufficiently reversible or controlled, and ready to execute?
+
+Passing one gate does not imply passing another. A trustworthy source can still fail to support a claim; strong evidence does not grant permission to act.
+
 ## Verification depth
 
 Verification scales with the Task Profile:
@@ -149,6 +182,7 @@ Verification scales with the Task Profile:
 - **Standard:** normal single-layer verification.
 - **Deep:** Layer 1 contract verification + fresh independent Layer 2 review for material conclusions.
 - **Max / high consequence:** dual-layer verification plus an orthogonal evidence/tool/model/human/deterministic route when useful and feasible.
+- **Ultra:** preserve Max-level verification where it matters, but spend extra budget primarily on broadening the problem space, fresh reframing, alternative evidence ecosystems, boundary discovery, and stronger synthesis before selective pivotal-claim verification.
 
 Layer 2 should receive the original task, final answer/artifact, evidence ledger, material assumptions, and Layer 1 results—not the solver's full reasoning transcript.
 
@@ -184,7 +218,7 @@ Important observable events include `task_profile_committed`, `task_profile_upda
 
 ## Learning plane
 
-Normal user work does not self-edit the canonical Skill.
+Normal user work does not self-edit the canonical Skill. Rules and reusable Skills should be **earned by evidence**, not promoted because one trajectory sounded persuasive.
 
 After runs, a maintenance process may consume successful, failed, recovered, inefficient, or user-corrected trajectories plus eval/CAPA evidence and propose learnings. Intrinsic same-model reflection alone creates a candidate only.
 

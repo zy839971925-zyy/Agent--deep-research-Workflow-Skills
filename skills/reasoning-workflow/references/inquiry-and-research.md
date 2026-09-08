@@ -1,6 +1,6 @@
 # Inquiry and research
 
-**Trigger:** Open-ended, unfamiliar, frame-uncertain, contested, multi-source, current, relationship-heavy, or explicitly Deep/Max questions.
+**Trigger:** Open-ended, unfamiliar, frame-uncertain, contested, multi-source, current, relationship-heavy, or explicitly Deep/Max/Ultra questions.
 
 **Reads:** user objective, current working model, known/given information, pivotal uncertainties, available evidence surfaces.
 
@@ -65,6 +65,12 @@ Do not translate the user prompt directly into search keywords. Derive research 
 
 Before a retrieval, be able to answer internally: `what is missing? why does it matter? what result would change the model?`
 
+## Answer gain before source count
+
+Prefer the next route that can change the answer, boundary, confidence, decision, or pivotal uncertainty. Do not chase the largest unknown if different answers would not affect the user's outcome. Treat information gain as useful only when it produces answer gain.
+
+Do not assign fake numerical scores. A qualitative priority is enough: pivotal / useful / bounded / low-value.
+
 ## Research from discriminating questions
 
 For a material uncertainty:
@@ -77,6 +83,10 @@ For a material uncertainty:
 6. identify what is now the highest-value unresolved gap.
 
 Evidence that merely repeats what every hypothesis predicts has low information value even if it comes from prestigious sources.
+
+## Reasoning-aware retrieval intent
+
+For important retrieval, keep the evidence need beside the query: global question, pivotal claim or gap, current state, live alternatives, desired observation, and the discriminating role. The search string is a lossy projection of this intent. If the interface accepts only keywords, still preserve the intent in the working model.
 
 ## Discover beyond literal keywords
 

@@ -112,4 +112,11 @@ Watch for:
 
 Do not respond by generating endless alternatives. The remedy is better premises, discriminating evidence, and explicit uncertainty.
 
+
+## Retire weak branches
+
+A hypothesis or research branch should not remain active merely because it was once plausible. Retire or downgrade it when discriminating evidence repeatedly fails, when preserving it requires ad hoc exceptions, when it cannot change the answer, or when another route explains the same observations with fewer unsupported dependencies. Preserve it as bounded uncertainty only if the remaining risk still matters.
+
+For live alternatives, derive predicted observations before retrieving when feasible: what would support it, what would weaken it, and what would fit all alternatives without discriminating.
+
 [← Return to root workflow](../SKILL.md)

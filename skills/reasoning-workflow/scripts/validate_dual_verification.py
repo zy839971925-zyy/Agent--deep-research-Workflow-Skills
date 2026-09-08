@@ -9,6 +9,9 @@ def validate(data,root):
     if jsonschema is None:return [{'severity':'ERROR','code':'JSONSCHEMA_MISSING'}]
     schema=json.loads((root/'schemas'/'dual-verification.schema.json').read_text())
     for e in jsonschema.Draft202012Validator(schema).iter_errors(data): fs.append({'severity':'ERROR','code':'SCHEMA','message':e.message})
+    if fs: return fs
+    if data.get('reconciliation_status')=='reconciled' and not data.get('reconciliation_refs'):
+        fs.append({'severity':'ERROR','code':'RECONCILIATION_EVIDENCE_REQUIRED','message':'reconciled review requires targeted verification/evidence references'})
     mode=data.get('mode'); l2=data.get('layer2')
     if mode in ('dual','dual_orthogonal') and not l2: fs.append({'severity':'ERROR','code':'SECOND_LAYER_REQUIRED','message':'dual verification requires layer2'})
     if l2:

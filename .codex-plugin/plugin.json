@@ -1,7 +1,7 @@
 {
   "name": "reasoning-workflow",
-  "version": "5.0.1",
-  "description": "Reusable reasoning and Deep Research with task-calibrated depth, problem-driven evidence, progressive context, and verified execution",
+  "version": "1.0.0",
+  "description": "Reusable reasoning and Deep Research with Light/Standard/Deep/Max/Ultra depth, problem-driven evidence, progressive context, adaptive model use, and verified execution",
   "author": {
     "name": "折鸢",
     "url": "https://github.com/zy839971925-zyy"
@@ -22,10 +22,14 @@
   "interface": {
     "displayName": "Reasoning Workflow",
     "shortDescription": "Understand first, research deliberately, verify proportionately",
-    "longDescription": "A reusable governing Skill for questions and projects. Task Admission selects Light, Standard, Deep, or Max depth and progressively routes six Skill Families. Deep Research follows uncertain premises, relationships, and causal chains to evidence needs. Runtime helpers support authorized execution, proposals, recovery, replay safety, and verification when invoked by the host. Controlled learning requires evaluation before canonical changes.",
+    "longDescription": "A reusable governing Skill for questions and projects. Task Admission selects Light, Standard, Deep, Max, or Ultra depth and progressively routes six Skill Families. Deep Research follows uncertain premises, relationships, and causal chains to evidence needs. Ultra grants substantially more research budget for reframing, relationship discovery, alternative hypotheses, cross-domain and orthogonal evidence routes, boundary/missingness analysis, and selective pivotal verification. Model-adaptation guidance targets GPT-5.6 and later while preserving a capability-based fallback. Runtime helpers support authorized execution, recovery, replay safety, and verification only when warranted.",
     "developerName": "折鸢",
     "category": "Productivity",
-    "capabilities": ["Interactive", "Read", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills",
     "privacyPolicyURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/TERMS.md",
@@ -33,6 +37,10 @@
       "Use Reasoning Workflow and choose the right depth for this task",
       "Research this question through its key premises and causal links",
       "Execute this task within scope and verify the result"
-    ]
-  }
+    ],
+    "brandColor": "#00B194",
+    "composerIcon": "./skills/reasoning-workflow/assets/icon.svg",
+    "logo": "./skills/reasoning-workflow/assets/icon.svg"
+  },
+  "license": "MIT"
 }

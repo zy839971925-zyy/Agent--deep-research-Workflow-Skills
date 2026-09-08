@@ -7,7 +7,7 @@ try:
 except ImportError:
     jsonschema=None
 
-DEPTHS=['light','standard','deep','max']
+DEPTHS=['light','standard','deep','max','ultra']
 QUAL=['minimal','standard','deep','max']
 
 def load_json(path): return json.loads(Path(path).read_text(encoding='utf-8'))
@@ -24,19 +24,19 @@ def _q(v):
 def route_task(profile):
     families=['core-reasoning']; modes=set(profile.get('task_modes',[]))
     evidence=profile.get('evidence_depth','minimal')
-    deep_research=(evidence in ('deep','max') or profile.get('frame_uncertainty')=='high' or profile.get('causal_or_systemic_complexity')=='high' or profile.get('explicit_deep_research') or 'research' in modes and profile.get('depth_class') in ('deep','max'))
+    deep_research=(evidence in ('deep','max') or profile.get('frame_uncertainty')=='high' or profile.get('causal_or_systemic_complexity')=='high' or profile.get('explicit_deep_research') or 'research' in modes and profile.get('depth_class') in ('deep','max','ultra'))
     if deep_research: families.append('deep-research')
     if 'decision' in modes: families.append('decision-analysis')
     execution=(profile.get('lane') in ('action','mixed') or 'action' in modes or profile.get('persistence')=='durable' or profile.get('external_side_effects','none')!='none')
     if execution: families.append('execution-control')
     verify=profile.get('verification_depth','minimal')
-    audit=(verify in ('deep','max') or profile.get('depth_class') in ('deep','max') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
+    audit=(verify in ('deep','max') or profile.get('depth_class') in ('deep','max','ultra') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
     if audit: families.append('audit-verification')
     if 'maintenance' in modes: families.append('workflow-learning')
     # learning may never silently enter ordinary user tasks
     if 'maintenance' not in modes and 'workflow-learning' in families: families.remove('workflow-learning')
-    if profile.get('high_consequence') or verify=='max': verification_mode='dual_orthogonal'
-    elif verify=='deep' or profile.get('depth_class') in ('deep','max'): verification_mode='dual'
+    if profile.get('high_consequence') or verify=='max' or 'orthogonal-verification' in set(profile.get('active_gap_tags',[])): verification_mode='dual_orthogonal'
+    elif verify=='deep' or profile.get('depth_class') in ('deep','max','ultra'): verification_mode='dual'
     elif profile.get('depth_class')=='light' and verify=='minimal': verification_mode='minimal'
     else: verification_mode='single'
     if not execution: runtime_level='none'
@@ -47,7 +47,7 @@ def route_task(profile):
     swarm='forbidden' if coupling=='high' else ('allowed' if coupling in ('moderate','unknown') else 'preferred')
     if profile.get('depth_class') in ('light','standard') and not deep_research: swarm='forbidden'
     if not execution and not deep_research: swarm='forbidden'
-    slots={'light':1,'standard':2,'deep':3,'max':3}[profile.get('depth_class','standard')]
+    slots={'light':1,'standard':2,'deep':3,'max':3,'ultra':3}[profile.get('depth_class','standard')]
     return {'profile_version':profile['profile_version'],'required_families':families,'optional_families':[],
             'verification_mode':verification_mode,'runtime_level':runtime_level,'swarm_admission':swarm,
             'reference_phase_limit':slots,'progressive_loading':True,'route_status':'current'}
@@ -55,9 +55,12 @@ def route_task(profile):
 def recheck_profile(profile,signals):
     signals=set(signals or []); p=copy.deepcopy(profile); current=p.get('depth_class','standard'); idx=DEPTHS.index(current); reasons=[]
     up={'hidden_complexity','decisive_contradiction','uncertain_causal_edge','repeated_route_failure','source_conflict','entity_version_time_ambiguity','worker_conflict','user_steering','external_state_change','closure_material_uncertainty'} & signals
+    ultra={'ultra_requested','max_stagnation','severe_frame_instability','evidence_ecology_gap','orthogonal_research_needed','pivotal_claim_undercoverage'} & signals
     down={'lower_than_expected_complexity'} & signals
-    if up:
-        idx=min(3,idx+1); reasons+=sorted(up)
+    if ultra and current=='max':
+        idx=4; reasons+=sorted(ultra)
+    elif up:
+        idx=max(idx,min(3,idx+1)); reasons+=sorted(up)
     elif down:
         idx=max(0,idx-1); reasons+=sorted(down)
     if idx!=DEPTHS.index(current):

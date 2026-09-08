@@ -84,4 +84,20 @@ After solving subquestions, reconstruct the parent answer explicitly enough to c
 
 A well-answered collection of subquestions is not automatically a well-answered parent question.
 
+## Adaptive granularity
+
+Start with the coarsest structure that still exposes material dependencies. Refine only the branch whose internal uncertainty currently blocks the parent answer or action.
+
+Use:
+
+`coarse map → identify blocking branch → locally refine → reason / observe → recompose`
+
+Do not create equal-depth trees for appearance. One branch may remain a single node while another needs several levels of mechanism, evidence, or execution detail.
+
+## Reasoning stagnation
+
+More reasoning is not useful when it keeps reproducing the same model. Treat a branch as stagnant when additional thought is not changing the problem representation, live hypotheses, pivotal uncertainty, material relationships, decision boundary, or next evidence need.
+
+When stagnation is material, change the **operator**, not just the wording: reframe, reverse the causal direction, inspect a boundary case, derive a discriminating prediction, seek direct observation, use another specialist method, or retire the branch. Ultra may spend much more budget, but it should not spend that budget repeating an unchanged reasoning trajectory.
+
 [← Return to root workflow](../SKILL.md)

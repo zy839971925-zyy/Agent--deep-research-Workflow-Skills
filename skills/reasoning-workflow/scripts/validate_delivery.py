@@ -13,6 +13,19 @@ def validate(state,manifest,root=None):
     state_findings,registry,closure=validate_state(state,skill_root)
     # include state semantic errors because readiness cannot outrun canonical state
     findings += [f for f in state_findings if f.severity=='ERROR']
+    if not isinstance(state,dict) or not isinstance(manifest,dict):
+        return findings,{'computed_delivery_ready':False,'epistemic_closure':closure}
+    for layer,key in (('epistemic','computed_epistemic_closed'),('runtime','computed_runtime_closed')):
+        result=closure[layer]
+        if result.get('applicable') and not result[key]:
+            findings.append(finding('ERROR','DELIVERY_CLOSURE_BLOCKED',f'{layer} closure is unresolved: {result["blockers"]}'))
+    for collection in ('requirements','acceptance_criteria','artifacts'):
+        rows=manifest.get(collection,[])
+        if not isinstance(rows,list) or any(not isinstance(x,dict) for x in rows):
+            return findings,{'computed_delivery_ready':False,'epistemic_closure':closure}
+        ids=[x.get('id') for x in rows]
+        if len(ids)!=len(set(ids)):
+            findings.append(finding('ERROR','DELIVERY_DUPLICATE_ID',f'duplicate id in {collection}'))
     if manifest.get('work_id')!=state.get('work_id'): findings.append(finding('ERROR','WORK_ID_MISMATCH','manifest.work_id does not match state.work_id'))
     if manifest.get('state_version')!=state.get('state_version'): findings.append(finding('ERROR','STATE_VERSION_MISMATCH','manifest.state_version does not match canonical state_version'))
     state_req={x['id']:x for x in state.get('requirements',[]) if isinstance(x,dict) and x.get('id')}
@@ -43,10 +56,14 @@ def validate(state,manifest,root=None):
             if ref not in registry or registry[ref]['record_type']!='verification': findings.append(finding('ERROR','ACC_VER_REF',f'{aid} verification_ref {ref} missing/wrong type',aid,ref))
             elif registry[ref]['effective_status']!='passed': findings.append(finding('ERROR','ACC_VER_NOT_PASSED',f'{aid} verification {ref} is {registry[ref]["effective_status"]}',aid,ref))
     state_art={x['id']:x for x in state.get('artifacts',[]) if isinstance(x,dict) and x.get('id')}
+    delivered={x.get('id') for x in manifest.get('artifacts',[])}
+    for aid,rec in state_art.items():
+        if rec.get('materiality')=='material' and rec.get('declared_status') not in ('historical','superseded') and aid not in delivered:
+            findings.append(finding('ERROR','ART_MISSING_MANIFEST',f'{aid} material artifact is absent from delivery manifest',aid))
     for m in manifest.get('artifacts',[]) or []:
         aid=m.get('id'); s=state_art.get(aid)
         if not s: findings.append(finding('ERROR','ART_STATE_MISSING',f'manifest artifact {aid} absent from canonical state',aid)); continue
-        eff=registry[aid]['effective_status']
+        eff=registry.get(aid,{}).get('effective_status')
         if m.get('declared_current') and eff!='current': findings.append(finding('ERROR','ART_NOT_CURRENT',f'{aid} declared current in manifest but effective status is {eff}',aid))
         for ref in m.get('represents',[]) or []:
             if ref not in registry: findings.append(finding('ERROR','ART_REPRESENTS_REF',f'{aid} represents unknown {ref}',aid,ref))

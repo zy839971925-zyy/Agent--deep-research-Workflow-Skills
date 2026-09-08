@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from collections import defaultdict
+from collections import defaultdict, Counter
 from datetime import datetime
 import hashlib, json
 
@@ -178,6 +178,11 @@ def evaluate_capabilities(plan, capability_snapshot, root: Path|None=None):
         for fb in fallbacks: by_required[fb.get('required_capability')].append(fb)
         for req in n.get('required_capabilities',[]):
             c=caps.get(req)
+            if c and c.get('authorization') in ('denied','approval_required'):
+                authorization.append(req)
+                code='AUTHORIZATION_DENIED' if c['authorization']=='denied' else 'AUTHORIZATION_REQUIRED'
+                out.append(finding('ERROR',code,f'{nid} required capability {req} is not authorized; fallback cannot bypass this gate',nid,req))
+                continue
             if c and c.get('availability') in ('available','degraded'):
                 auth=c.get('authorization')
                 if auth=='allowed': chosen.append(req); continue
@@ -199,7 +204,7 @@ def evaluate_capabilities(plan, capability_snapshot, root: Path|None=None):
                 weaker.append((req,weak[0][0],weak[0][2])); out.append(finding('WARNING','CAPABILITY_WEAKER_FALLBACK',f'{nid} uses weaker fallback {weak[0][0]} for required {req}; original acceptance/evidence contract is not silently satisfied',nid,req,weak[0][0]))
             else:
                 missing.append(req); out.append(finding('ERROR','CAPABILITY_BLOCKED',f'{nid} lacks required capability {req} and no authorized equivalent fallback is available',nid,req))
-        routes[nid]={'chosen':chosen,'weaker':weaker,'missing':missing,'authorization_blocked':authorization,'executable':not missing and not authorization}
+        routes[nid]={'chosen':chosen,'weaker':weaker,'missing':missing,'authorization_blocked':authorization,'executable':not missing and not authorization and not weaker}
     return out,routes
 
 def validate_node_ledger(plan, ledger, root: Path):
@@ -217,7 +222,7 @@ def validate_node_ledger(plan, ledger, root: Path):
         if s.get('effective_status')=='leased' and not s.get('lease_id'): out.append(finding('ERROR','NODE_LEDGER_LEASE_REQUIRED',f'{nid} is leased without lease_id',nid))
         if s.get('effective_status')=='verified_complete' and nodes[nid].get('verification_contract') and not s.get('verification_refs'):
             out.append(finding('ERROR','NODE_LEDGER_VERIFICATION_REQUIRED',f'{nid} is verified_complete but has no verification_refs for a non-empty verification contract',nid))
-        replay=s.get('replay_safety') or nodes[nid].get('replay_safety','safe')
+        replay=effective_replay_safety(nodes[nid],s)
         if replay in ('detectable','unsafe') and s.get('effective_status') in ('proposed_complete','verifying','verified_complete') and nodes[nid].get('side_effect_class')!='none' and not s.get('side_effect_receipts'):
             out.append(finding('ERROR','SIDE_EFFECT_RECEIPT_REQUIRED',f'{nid} replay_safety={replay} and side effects require a receipt before completion can be trusted',nid))
     return out
@@ -254,9 +259,16 @@ def validate_worker_proposal(plan, proposal, root: Path|None=None, current_state
 
 def classify_worker_proposals(plan, proposals, root: Path|None=None, current_state_version: int|None=None):
     findings=[]; accepted=[]; stale=[]; conflicting=set()
+    counts=Counter(p.get('proposal_id') for p in proposals if isinstance(p,dict))
     for p in proposals:
         fs=validate_worker_proposal(plan,p,root,current_state_version); findings += fs
         if any(f.severity=='ERROR' for f in fs): stale.append(p.get('proposal_id')); continue
+        if counts[p.get('proposal_id')]>1:
+            findings.append(finding('ERROR','WORKER_DUPLICATE_PROPOSAL','duplicate proposal IDs cannot be merged',p.get('proposal_id')))
+            stale.append(p.get('proposal_id')); continue
+        if p.get('declared_status')!='proposed_complete':
+            findings.append(finding('ERROR','WORKER_RESULT_NOT_COMPLETE','only proposed_complete results may be merged',p.get('proposal_id')))
+            stale.append(p.get('proposal_id')); continue
         accepted.append(p)
     for i in range(len(accepted)):
         for j in range(i+1,len(accepted)):
@@ -276,6 +288,8 @@ def _component_payload(ref, root: Path, resolver=None):
         except Exception: return None
     p=Path(ref)
     if not p.is_absolute(): p=root/ref
+    try: p.resolve().relative_to(root.resolve())
+    except ValueError: return None
     if p.is_file(): return p.read_bytes()
     return None
 
@@ -285,8 +299,9 @@ def _payload_hash(payload):
     if isinstance(payload,str): return _sha_bytes(payload.encode())
     return _sha_bytes(_canon(payload).encode())
 
-def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: dict|None=None, component_resolver=None, parent_index: dict|None=None):
+def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: dict|None=None, component_resolver=None, parent_index: dict|None=None, attestation_verifier=None):
     out=validate_schema(checkpoint,root/'schemas'/'checkpoint-manifest.schema.json')
+    if any(f.severity=='ERROR' for f in out): return out
     comps=checkpoint.get('components',{}); required=checkpoint.get('required_components',[])
     for name in required:
         comp=comps.get(name)
@@ -301,11 +316,18 @@ def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: 
         if comp.get('integrity_proof','hash')=='hash':
             payload=_component_payload(comp.get('ref'),root,component_resolver); actual=_payload_hash(payload)
             if actual is None:
-                out.append(finding('WARNING','CHECKPOINT_HASH_UNVERIFIED',f'{name} hash is declared but component content could not be resolved by this validator',name))
+                out.append(finding('ERROR','CHECKPOINT_HASH_UNVERIFIED',f'{name} hash is declared but component content could not be resolved by this validator',name))
             elif actual!=comp.get('hash'):
                 out.append(finding('ERROR','CHECKPOINT_HASH_MISMATCH',f'{name} component hash does not match referenced content',name))
         elif comp.get('integrity_proof')=='external_attestation' and not comp.get('attestation_ref'):
             out.append(finding('ERROR','CHECKPOINT_ATTESTATION_MISSING',f'{name} uses external_attestation without attestation_ref',name))
+        elif comp.get('integrity_proof')=='external_attestation':
+            verified=False
+            if attestation_verifier is not None:
+                try: verified=attestation_verifier(comp.get('attestation_ref'),comp) is True
+                except Exception: verified=False
+            if not verified:
+                out.append(finding('ERROR','CHECKPOINT_ATTESTATION_UNVERIFIED',f'{name} attestation must be verified by a trusted host callback',name))
     groups={'completed':set(checkpoint.get('completed_nodes',[]) or []),'running':set(checkpoint.get('running_nodes',[]) or []),'blocked':set(checkpoint.get('blocked_nodes',[]) or [])}
     names=list(groups)
     for i in range(len(names)):
@@ -343,13 +365,21 @@ def validate_checkpoint_chain(checkpoints, root: Path):
     for cyc in _cycles(idx,parent_adj): out.append(finding('ERROR','CHECKPOINT_LINEAGE_CYCLE',f'checkpoint lineage cycle: {" -> ".join(cyc)}',*cyc))
     return out
 
+def effective_replay_safety(node, ledger_entry):
+    order={'safe':0,'idempotent':1,'detectable':2,'unsafe':3}
+    declared=node.get('replay_safety','safe')
+    observed=ledger_entry.get('replay_safety') or declared
+    if declared not in order or observed not in order:
+        return 'unsafe'
+    return max((declared,observed),key=order.get)
+
 def compute_resume_actions(plan, ledger, checkpoint):
     """Return deterministic resume obligations. Restore is never equivalent to continue."""
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; state={n.get('node_id'):n for n in (ledger or {}).get('nodes',[]) if isinstance(n,dict)}; actions=[]
     for nid in checkpoint.get('running_nodes',[]) or []:
         node=nodes.get(nid); ns=state.get(nid,{})
         if not node: continue
-        replay=ns.get('replay_safety') or node.get('replay_safety','safe')
+        replay=effective_replay_safety(node,ns)
         receipts=ns.get('side_effect_receipts',[]) or []
         if replay=='safe': actions.append({'node_id':nid,'resume_action':'rerun_allowed'})
         elif replay=='idempotent': actions.append({'node_id':nid,'resume_action':'rerun_with_idempotency_key'})

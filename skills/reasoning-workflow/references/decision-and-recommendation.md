@@ -34,6 +34,27 @@ Do not invent a precise value function. When important value weights are unknown
 
 `If X matters more → A; if Y matters more → B.`
 
+## Build a decision-complete option set
+
+Do not assume the alternatives named in the prompt are the full feasible set. Before optimizing among options, ask whether a materially different strategy, staged option, combination, deferral, experiment, or reversible probe could dominate the apparent choice.
+
+Use proportionately:
+
+`generate materially different feasible options → remove infeasible options → prune clearly dominated options → deeply compare the live set`
+
+This is not a brainstorming quota. Stop generating alternatives when new options are variations that do not change the decision frontier.
+
+## Separate uncertainty types
+
+Keep at least these uncertainties conceptually distinct when they affect the choice:
+
+- **state uncertainty:** what will happen in the world;
+- **model uncertainty:** whether the consequence model or causal mechanism is right;
+- **value uncertainty:** what the user actually values or how objectives trade off;
+- **option uncertainty:** whether a materially better alternative has not yet entered the set.
+
+More factual research does not resolve value uncertainty by itself. When value weights are genuinely unresolved, give conditional recommendations or ask only when the missing preference is decision-sensitive.
+
 ## Decision path
 
 Use only as much structure as the decision warrants:
@@ -53,6 +74,30 @@ Ask:
 ## Value of information
 
 Do not research an uncertainty merely because it exists. More information is valuable when resolving it can improve the decision. If the same action is robust across plausible values, further research may have low decision value even when epistemic uncertainty remains.
+
+## Robustness region and switch conditions
+
+Sensitivity analysis should identify where the recommendation remains valid, not merely whether one parameter can move. When useful, describe a **robustness region** and the conditions that switch the recommendation:
+
+```text
+A remains preferred while conditions stay within R;
+A/B are both reasonable near boundary B;
+choose B once condition C crosses the decision threshold.
+```
+
+Prefer ranges, ordering, and switch conditions to invented precision.
+
+## Clarification as value of information
+
+A missing user preference or constraint does not automatically justify interruption. Ask when the expected improvement in the decision is material relative to the cost of interruption and the information cannot be safely inferred.
+
+`missing information → could it change the chosen action? → by enough to matter? → ask / infer / proceed conditionally`
+
+This is distinct from authorization: low clarification value can justify proceeding, but no amount of inference can manufacture permission for a consequential action.
+
+## Probability discipline
+
+Do not treat a model's verbalized numeric confidence as a calibrated probability merely because it is precise. Use probabilities as decision inputs only when they come from justified data, a defensible model, calibrated forecasting, or an explicitly hypothetical scenario. Otherwise prefer qualitative confidence, ranges, scenario conditions, and sensitivity.
 
 ## Typed decision records
 
