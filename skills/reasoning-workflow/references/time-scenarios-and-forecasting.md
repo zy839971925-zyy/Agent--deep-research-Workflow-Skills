@@ -52,4 +52,12 @@ Do not force Bull/Base/Bear or three-scenario symmetry. The point is to expose d
 
 For markets, announcements, adoption, behavior, or strategic response, distinguish an event from its surprise relative to prior expectations. Do not infer expectations or positioning without evidence.
 
+## Forecast update contract
+
+A material forecast should expose what future observation would cause revision and in which direction. Keep this lightweight:
+
+`forecast/scenario → signpost → expected interpretation → update direction`
+
+For example, failure of a prerequisite by a relevant date may weaken one scenario; a regulatory implementation or observed adoption threshold may strengthen another. Update rules should follow the causal model and evidence, not arbitrary calendar checkpoints. Do not force numeric probabilities when the evidence cannot support calibration.
+
 [← Return to root workflow](../SKILL.md)

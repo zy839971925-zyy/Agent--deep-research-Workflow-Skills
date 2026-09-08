@@ -40,7 +40,8 @@
         "light",
         "standard",
         "deep",
-        "max"
+        "max",
+        "ultra"
       ]
     },
     "autonomy_class": {
@@ -160,7 +161,13 @@
           "user_steering",
           "external_state_change",
           "closure_material_uncertainty",
-          "lower_than_expected_complexity"
+          "lower_than_expected_complexity",
+          "ultra_requested",
+          "max_stagnation",
+          "severe_frame_instability",
+          "evidence_ecology_gap",
+          "orthogonal_research_needed",
+          "pivotal_claim_undercoverage"
         ]
       }
     },

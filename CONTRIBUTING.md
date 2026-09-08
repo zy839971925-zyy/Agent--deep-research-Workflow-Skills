@@ -1,26 +1,19 @@
 # Contributing
 
-Contributions should preserve the project's core distinction between **epistemic quality** and **runtime integrity**.
+Reasoning Workflow is intentionally kept as a small public workflow package rather than a dump of its private development harness.
 
-Before adding new methodology, ask whether the behavior can already be expressed through the existing Question / Reasoning Lane, Action / Project Lane, references, semantic contract, or validators. The project favors semantic enforcement over adding more process prose.
+The canonical Portable edition lives in [`skills/reasoning-workflow/`](skills/reasoning-workflow/). The [`modular/`](modular/) tree is a lightweight, human-browsable decomposition of the same semantics for hosts that prefer several focused Skills.
 
-A useful change should normally include one or more of:
+When proposing a change:
 
-- a concrete failure mode;
-- a schema or semantic-contract change;
-- a validator rule;
-- a regression specification or validator unit test;
-- a documentation update explaining changed behavior.
+- start from a concrete failure mode, missing capability, or materially better simplification;
+- preserve the six existing Skill Families unless there is strong evidence that a new boundary is necessary;
+- prefer semantic invariants and conditional strategies over fixed step counts, source quotas, agent counts, or mandatory ceremonies;
+- add Python or schema files only when deterministic runtime enforcement is genuinely useful — not merely to document an idea;
+- keep Portable and Modular meaningfully aligned when shared semantics change;
+- keep `README.md` and `README.zh-CN.md` synchronized for user-facing behavior;
+- do not add private traces, chain-of-thought, credentials, proprietary eval sets, internal test harnesses, or generated build artifacts to the public repository.
 
-Do not record private chain-of-thought in tests or behavioral traces. Prefer observable events, typed state, findings, artifacts, and final outputs.
+A public pull request should be understandable from the changed workflow files themselves. If a change requires validation evidence, summarize the observable failure mode and the validation result in the pull request rather than committing a private engineering harness into the repository.
 
-Before proposing a change, run:
-
-```bash
-cd skills/reasoning-workflow
-python -m pip install -r scripts/requirements.txt
-python scripts/validate_skill.py .
-python scripts/validate_links.py .
-python scripts/validate_workflow.py .
-python -m unittest discover -s tests -p 'test_*.py' -v
-```
+The public repository is versionless in product branding. Machine-format revisions may exist where interoperability requires them, but do not turn internal revisions into separate public product names.

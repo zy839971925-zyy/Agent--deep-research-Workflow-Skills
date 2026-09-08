@@ -107,6 +107,12 @@ def _find_cycles(nodes, adj):
 
 def cycle_findings(registry, edges, policy):
     out=[]
+    logical=defaultdict(list)
+    for src,field,target,spec in edges:
+        if spec.get('direction')=='dependency' and spec.get('cycle')=='forbid' and spec.get('effect') in ('hard','recompute'):
+            logical[src].append(target)
+    for cyc in _find_cycles(registry.keys(),logical):
+        out.append(finding("ERROR","LOGICAL_DEPENDENCY_CYCLE",f"dependency cycle across edge types: {' -> '.join(cyc)}",*cyc))
     # field dependency cycles
     byfam=defaultdict(lambda:defaultdict(list))
     for src,field,target,spec in edges:
@@ -133,32 +139,39 @@ def cycle_findings(registry, edges, policy):
     return out
 
 def compute_effective(registry, edges):
-    # direct action effects first
+    # Monotone severity joins make the fixed point independent of edge order.
+    rank={'needs_recompute':1,'stale':2,'superseded':3,'invalidated':4}
     reasons=defaultdict(list)
+    for node in registry.values():
+        node['effective_status']=node['declared_status']
+    def promote(rid,status,reason):
+        if rank.get(status,0) <= rank.get(registry[rid]['effective_status'],0):
+            return False
+        registry[rid]['effective_status']=status
+        reasons[rid].append(reason)
+        return True
     for src,field,target,spec in edges:
         if spec.get('effect')=='invalidate_target':
-            registry[target]['effective_status']='invalidated'; reasons[target].append((src,field,'invalidated'))
-        elif spec.get('effect')=='supersede_target' and registry[target]['effective_status']!='invalidated':
-            registry[target]['effective_status']='superseded'; reasons[target].append((src,field,'superseded'))
+            promote(target,'invalidated',(src,field,'invalidated'))
+        elif spec.get('effect')=='supersede_target':
+            promote(target,'superseded',(src,field,'superseded'))
     # explicit declared stale/invalid/superseded and task-temporal applicability
     for rid,node in registry.items():
-        if node['declared_status'] in ('stale','invalidated','superseded'):
-            node['effective_status']=node['declared_status']
-        elif node['record'].get('current_for_task') is False and node['declared_status'] not in ('historical','superseded','invalidated'):
-            node['effective_status']='stale'; reasons[rid].append(('temporal_scope','current_for_task','stale'))
+        if node['record'].get('current_for_task') is False and node['declared_status'] not in ('historical','superseded','invalidated'):
+            promote(rid,'stale',('temporal_scope','current_for_task','stale'))
     changed=True
     while changed:
         changed=False
         for downstream,field,upstream,spec in edges:
             if spec.get('direction')!='dependency': continue
             us=registry[upstream]['effective_status']; ds=registry[downstream]['effective_status']; eff=spec.get('effect')
-            bad=us in ('stale','invalidated','superseded')
+            bad=us in BAD_EFFECTIVE
             if not bad: continue
             new=None
             if eff=='hard': new='invalidated' if us=='invalidated' else 'stale'
             elif eff=='recompute': new='needs_recompute'
-            if new and ds not in ('invalidated','stale') and ds!=new:
-                registry[downstream]['effective_status']=new; reasons[downstream].append((upstream,field,new)); changed=True
+            if new and promote(downstream,new,(upstream,field,new)):
+                changed=True
     for rid,node in registry.items(): node['reasons']=reasons.get(rid,[])
     return registry
 
@@ -230,12 +243,14 @@ def compute_runtime_closure(state, registry):
             allowed = es in ('satisfied','not_applicable','superseded') or (es=='deferred' and ce=='nonblocking')
             if not allowed: blockers.append(f'{rid} material {rt} is {es}.')
         elif rt in ('artifact',):
-            if es in ('stale','invalidated','needs_recompute'): blockers.append(f'{rid} material artifact is {es}.')
+            if es not in ('current','historical','superseded'): blockers.append(f'{rid} material artifact is {es}.')
         elif rt=='verification':
             if ce=='blocking' and es!='passed': blockers.append(f'{rid} material blocking verification is {es}.')
         elif rt=='effectiveness':
             if ce=='blocking' and es not in ('effective',): blockers.append(f'{rid} material blocking effectiveness is {es}.')
-        elif rt in ('action','decision','recommendation','judgment','inference'):
+        elif rt=='action':
+            if es!='completed': blockers.append(f'{rid} material action is {es}.')
+        elif rt in ('decision','recommendation','judgment','inference'):
             if es in ('stale','invalidated','needs_recompute','failed','blocked'): blockers.append(f'{rid} material {rt} is {es}.')
     if state.get('blocked_items'): blockers.append('canonical blocked_items is non-empty.')
     return {'applicable':True,'computed_runtime_closed':not blockers,'blockers':blockers,'warnings':warnings}

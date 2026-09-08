@@ -77,4 +77,13 @@ For Question / Reasoning work, verify the answer against the original epistemic 
 
 A polished synthesis that answers the wrong question is a failed result.
 
+
+## Pivotal-claim synthesis
+
+For Deep, Max, and Ultra research, synthesize in two passes when the answer depends on multiple material claims. First construct an epistemic synthesis: what is known, inferred, judged, recommended, contested, bounded, or unknown. Then write the user-facing answer.
+
+Before strengthening a conclusion, inspect the weakest material dependency. A conclusion cannot be more certain than the pivotal premise, measurement, causal edge, source fit, or evidence route it depends on.
+
+Final verification should focus on pivotal claims: does the cited source entail the claim, merely contextualize it, partially support it, or fail to support it? Does the entity/version/time/population/definition match? Is the wording stronger than the evidence permits?
+
 [← Return to root workflow](../SKILL.md)

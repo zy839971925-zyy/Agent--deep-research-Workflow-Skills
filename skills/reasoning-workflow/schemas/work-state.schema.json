@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/reasoning-workflow/work-state.schema.json",
-  "title": "Reasoning Workflow Semantic Work State v2",
+  "title": "Reasoning Workflow Semantic Work State",
   "type": "object",
   "required": [
     "schema_version",

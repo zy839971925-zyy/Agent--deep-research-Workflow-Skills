@@ -16,6 +16,10 @@
 
 Use when external claims, multiple sources, weak signals, disputes, or high-consequence conclusions need traceable support.
 
+## Source gate and evidence gate are different
+
+A source may be admissible, authentic, firsthand, or authoritative and still fail to support the proposition being claimed. First ask whether the source/observation is appropriate to inspect for this question; then ask whether the inspected material actually entails or materially bears on the claim. Do not let source prestige substitute for claim-level support.
+
 ## Separate observation, assertion, and inference
 
 Do not let a source citation blur distinct propositions. Split compound claims when support differs. Useful records are:
@@ -82,5 +86,14 @@ Use calibrated natural language. Do not invent numerical probabilities unless a 
 
 Citations belong near the exact claim they support. Preserve locators for tables, figures, code, filings, posts, transcripts, or passages when material. Do not make a paragraph-end citation appear to support unrelated clauses. Unread or inaccessible material cannot silently support a strong claim.
 
+
+
+## Failure-mode independence
+
+Independent evidence means more than different URLs or publishers. Ask whether two sources could fail in the same way: copied origin, shared dataset, shared incentive, same measurement blind spot, same sampling frame, same language/source ecosystem, or the same institutional narrative. Prefer evidence routes whose errors would be exposed by different mechanisms.
+
+## Source conflict resolution
+
+When credible evidence conflicts, first check whether the sources assert the same proposition. Align entity, version, time, population, definition, metric, method, provenance, and incentive. Many conflicts are scope mismatches. If conflict remains real, do not average or vote; narrow the claim, preserve bounded disagreement, and derive the next discriminating evidence need if the disagreement is material.
 
 [← Return to root workflow](../SKILL.md)

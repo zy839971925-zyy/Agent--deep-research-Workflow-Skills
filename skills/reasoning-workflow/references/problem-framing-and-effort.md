@@ -80,7 +80,7 @@ Increase when mistakes are costly or hard to reverse, when exact numbers/dates/v
 
 Increase when work changes persistent state, affects other people or systems, is difficult to reverse, crosses interfaces, requires authorization, or needs later monitoring. Governance depth controls traceability, change records, review independence, approval/readiness gates, rollout/rollback discipline, and effectiveness checks. Pure analysis or ephemeral drafts usually need little or none.
 
-User-specified depth controls all relevant dimensions. “Maximum” means expand the useful epistemic frontier, not repeat searches or expose private reasoning.
+User-specified depth controls all relevant dimensions. “Maximum” means expand the useful epistemic frontier, not repeat searches or expose private reasoning. Ultra allows substantially more total reasoning and research budget, but should spend it on useful breadth, reframing, relationship discovery, and explanatory depth before redundant confirmation.
 
 ## Escalation and de-escalation
 
@@ -89,5 +89,13 @@ Escalate when new evidence reveals hidden complexity, a pivotal contradiction, e
 De-escalate when direct evidence settles the pivotal issue, remaining uncertainty cannot change the user's outcome, another route would only duplicate the same provenance, or execution now creates more value than additional analysis.
 
 Do not equate long output with deep work. A deeply investigated task can still have a concise answer.
+
+## Competing problem representations
+
+When the framing itself is decision-sensitive, keep more than one plausible **problem representation** alive long enough to compare them. This is upstream of hypothesis competition: hypotheses ask what explains a problem inside one model; representation competition asks what kind of problem this is in the first place.
+
+Do not force multiple frames for routine work. Use this only when different representations would change decomposition, evidence needs, causal interpretation, feasible actions, or the user's decision. Compare frames by what they explain, what they omit, what observations would distinguish them, and whether one frame merely restates a convenient proxy.
+
+Prefer a provisional frame when evidence is incomplete. Collapse to one representation only after alternatives have low answer value or the differences no longer matter.
 
 [← Return to root workflow](../SKILL.md)

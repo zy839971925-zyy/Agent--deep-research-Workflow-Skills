@@ -1,6 +1,6 @@
 # Deep Research
 
-Activate for material evidence depth, frame uncertainty, multi-source verification, causal/systemic uncertainty, competing explanations, or an explicit Deep/Max research request.
+Activate for material evidence depth, frame uncertainty, multi-source verification, causal/systemic uncertainty, competing explanations, or an explicit Deep/Max/Ultra research request.
 
 > Return to the governing router after the current module. `Related` never means auto-load.
 
@@ -10,3 +10,5 @@ Activate for material evidence depth, frame uncertainty, multi-source verificati
 - [`retrieval-and-observation`](../references/retrieval-and-observation.md) — Load only when the active gap matches one of: retrieval, orientation-retrieval, evidence-retrieval, observation.
 - [`time-scenarios-and-forecasting`](../references/time-scenarios-and-forecasting.md) — Load only when the active gap matches one of: forecast, time, scenario, freshness, volatility.
 - [`multimodal-and-data`](../references/multimodal-and-data.md) — Load only when the active gap matches one of: multimodal, data, files, images.
+
+- [`ultra-research`](../references/ultra-research.md) — Load only for explicit Ultra depth or gaps involving fresh-frame, evidence-ecology, missingness, boundary, research-path reset, or pivotal-claim coverage.

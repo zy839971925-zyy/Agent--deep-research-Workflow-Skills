@@ -1,5 +1,0 @@
-{
-  "event": "orientation_retrieval",
-  "orientation_goal": "map frame",
-  "expect": "allowed"
-}

@@ -47,4 +47,12 @@ Durable work can store:
 
 Use measurements as evidence only within their validated scope. Do not upgrade a convenient proxy into the construct itself.
 
+## Measurement chains
+
+For high-consequence metrics, benchmarks, graders, surveys, or proxies, trace enough of the measurement chain to know where validity can fail:
+
+`construct → observable signal → collection/selection → transformation → metric/rubric → interpretation → decision`
+
+A benchmark or judge is not outside the workflow; it is another measurement system. If a material audit, recommendation, or learning promotion depends on its score, validate the measurement's scope and failure modes before treating the score as ground truth.
+
 [← Return to root workflow](../SKILL.md)

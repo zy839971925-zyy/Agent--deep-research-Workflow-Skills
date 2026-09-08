@@ -38,4 +38,12 @@ Inspect missingness, selection, revisions, measurement changes, and overlap. Do 
 
 A transcript can support spoken words within transcription limits, not visual actions. Sparse frames do not establish continuous behavior. Preserve consequential uncertainty about speaker, timing, cuts, or editing. Use native media capabilities where available instead of pretending a text transcript captures the full evidence.
 
+## Data-generating process and selection path
+
+Before treating a dataset as a window onto reality, ask how reality became the observed data:
+
+`real event/population → measurement → collection → eligibility/selection → recording → cleaning/transformation → stored dataset → analysis`
+
+A numerically correct analysis can still be substantively wrong when the selection path excludes the cases that matter. Inspect non-observation, non-reporting, survivorship, changed definitions, instrumentation changes, missing groups, duplicated units, and incentives that affect what gets recorded. Use this only when selection could change a material claim; do not turn every small table into a full causal data audit.
+
 [← Return to root workflow](../SKILL.md)

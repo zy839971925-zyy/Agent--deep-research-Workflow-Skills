@@ -12,6 +12,7 @@ def validate_learning_semantics(r):
     return fs
 
 def retrievable(r,task_tags,gap_tags):
+    if validate_learning_semantics(r): return False
     if r.get('status') not in ('validated','promoted'): return False
     if r.get('status') in ('stale','deprecated'): return False
     tags=set(task_tags)|set(gap_tags); sig=set(r.get('task_signature',[])); app=set(r.get('applicability_conditions',[])); anti=set(r.get('anti_conditions',[]))

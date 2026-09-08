@@ -8,6 +8,8 @@ Use this module only in the maintenance plane, after a run or evaluation has pro
 
 Self-learning is not self-editing. A model criticizing its own answer without new evidence may create a **candidate insight**, but cannot validate or promote a canonical learning.
 
+Treat reusable rules and Skills as **earned, not merely written**: a useful-looking heuristic from one run remains a candidate until outcome evidence, counterexamples, regression comparison, and applicability boundaries justify promotion.
+
 ## CAPA failure loop
 
 For material workflow nonconformity use:
@@ -39,6 +41,26 @@ Never promote a Tier 3 change from a single trajectory.
 ## Memory hygiene
 
 Validated memory may be promoted, downgraded, deprecated or marked stale. Deprecated/stale lessons are not runtime-retrievable. Prefer compact transferable heuristics over transcript storage. Preserve provenance and counterexamples.
+
+## Applicability challenge and negative transfer
+
+Retrieval is not permission to apply a lesson. Before using a remembered strategy, compare the lesson's applicability conditions and anti-conditions with the current Task Profile, environment, model/runtime capabilities, objective, and failure mode.
+
+Use the smallest decision:
+
+`use | adapt | ignore`
+
+Prefer ignoring a superficially similar lesson when the differences affect its mechanism. Track harmful reuse as negative-transfer evidence and downgrade or narrow the lesson rather than adding compensating prompt text around it.
+
+## Learn from three outcome shapes
+
+Reusable lessons can come from:
+
+- **clean success:** strategy or routing lesson;
+- **failure → recovery → success:** recovery lesson;
+- **successful but wasteful trajectory:** optimization lesson.
+
+Do not reward a strategy merely because the final task succeeded if it consumed unnecessary context, calls, retries, or review. Efficiency lessons still require regression/quality gates so optimization cannot silently reduce answer quality.
 
 ## Learning and CAPA integration
 
