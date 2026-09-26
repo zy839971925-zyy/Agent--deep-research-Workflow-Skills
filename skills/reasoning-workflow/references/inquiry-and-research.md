@@ -88,6 +88,8 @@ Evidence that merely repeats what every hypothesis predicts has low information 
 
 For important retrieval, keep the evidence need beside the query: global question, pivotal claim or gap, current state, live alternatives, desired observation, and the discriminating role. The search string is a lossy projection of this intent. If the interface accepts only keywords, still preserve the intent in the working model.
 
+If the decomposition yields topics instead of answer dependencies, or you cannot say where the decisive difference should appear, use [information target navigation](information-target-navigation.md) for that gap before trying another query.
+
 ## Discover beyond literal keywords
 
 Do not rely on prompt-keyword matching. Change the research route when useful through:

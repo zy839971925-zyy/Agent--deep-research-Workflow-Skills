@@ -204,6 +204,19 @@ class RoutingContracts(unittest.TestCase):
         self.assertIn("ultra-research", [item["reference_id"] for item in selected])
         self.assertLessEqual(len(selected), route_task(p)["reference_phase_limit"])
 
+    def test_information_target_gap_routes_to_navigation_without_crowding_ultra(self):
+        index = json.loads((ROOT / "routing-index.json").read_text())
+        for depth in ("deep", "ultra"):
+            with self.subTest(depth=depth):
+                p = profile(depth_class=depth, active_gap_tags=["information-target"])
+                selected = select(index, route_task(p), p, [])
+                ids = [item["reference_id"] for item in selected]
+                self.assertIn("information-target-navigation", ids)
+                self.assertTrue((ROOT / "references/information-target-navigation.md").is_file())
+                if depth == "ultra":
+                    self.assertIn("ultra-research", ids)
+                self.assertLessEqual(len(ids), route_task(p)["reference_phase_limit"])
+
     def test_custom_index_missing_ultra_overlay_explains_failure(self):
         p = profile()
         index = json.loads((ROOT / "routing-index.json").read_text())

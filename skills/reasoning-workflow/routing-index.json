@@ -169,6 +169,25 @@
       "default_priority": 1
     },
     {
+      "id": "information-target-navigation",
+      "family": "deep-research",
+      "path": "references/information-target-navigation.md",
+      "load_when_tags": [
+        "information-target",
+        "problem-decomposition",
+        "response-field",
+        "search-path-stagnation"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 0
+    },
+    {
       "id": "retrieval-and-observation",
       "family": "deep-research",
       "path": "references/retrieval-and-observation.md",

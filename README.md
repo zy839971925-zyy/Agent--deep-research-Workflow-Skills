@@ -219,6 +219,8 @@ Spend the extra budget broadly before converging:
 reframe the problem when useful, search for hidden relationships and omitted variables,
 explore materially different hypotheses and evidence ecosystems,
 and reset the research path if it becomes homogeneous or anchored.
+Decompose by answer dependencies. Choose an information target and the field where
+competing explanations would leave different traces before forming search queries.
 
 Do not spend most of the extra budget repeatedly verifying the same claim.
 Verify the pivotal claims strongly, then give me the calibrated answer and what could still change it.

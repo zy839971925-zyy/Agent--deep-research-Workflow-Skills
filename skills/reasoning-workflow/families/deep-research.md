@@ -6,6 +6,7 @@ Activate for material evidence depth, frame uncertainty, multi-source verificati
 
 ## References
 - [`inquiry-and-research`](../references/inquiry-and-research.md) — Load only when the active gap matches one of: deep-research, evidence-need, research-loop, frame-discovery.
+- [`information-target-navigation`](../references/information-target-navigation.md) — Load only when the active gap is information-target, problem-decomposition, response-field, or search-path-stagnation. Turn a decisive unknown into an observable difference before generating a query.
 - [`evidence-and-provenance`](../references/evidence-and-provenance.md) — Load only when the active gap matches one of: evidence, provenance, citation, source-independence.
 - [`retrieval-and-observation`](../references/retrieval-and-observation.md) — Load only when the active gap matches one of: retrieval, orientation-retrieval, evidence-retrieval, observation.
 - [`time-scenarios-and-forecasting`](../references/time-scenarios-and-forecasting.md) — Load only when the active gap matches one of: forecast, time, scenario, freshness, volatility.
