@@ -242,6 +242,8 @@ npx skills add zy839971925-zyy/Agent--deep-research-Workflow-Skills --skill deci
 关键结论仍然要强验证，但先尽可能找出当前 Max 路线可能根本没有看到的东西。
 ```
 
+研究检索要从问题模型推导：先找答案依赖，确定可能改变结论的信息靶，再定位不同解释会留下不同信号的信息反应场。检索词放到最后生成。详见[信息靶导航](./skills/reasoning-workflow/references/information-target-navigation.md)。
+
 ### 做决策
 
 ```text

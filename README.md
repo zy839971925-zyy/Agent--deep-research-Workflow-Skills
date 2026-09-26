@@ -226,6 +226,8 @@ Do not spend most of the extra budget repeatedly verifying the same claim.
 Verify the pivotal claims strongly, then give me the calibrated answer and what could still change it.
 ```
 
+Research derives its next query from the problem model: identify the answer-bearing dependency, set an information target that could change the conclusion, then find the evidence field where competing explanations predict different traces. See [Information target navigation](./skills/reasoning-workflow/references/information-target-navigation.md).
+
 ### Decision / recommendation
 
 ```text
