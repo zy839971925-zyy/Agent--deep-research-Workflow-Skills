@@ -19,7 +19,7 @@ def main():
     plan=load_json(Path(a.plan)); findings=validate_plan(plan,root)
     ledger=load_json(Path(a.ledger)) if a.ledger else None
     schedule=load_json(Path(a.schedule)) if a.schedule else None
-    if ledger: findings += validate_node_ledger(plan,ledger,root)
+    if ledger and not schedule: findings += validate_node_ledger(plan,ledger,root)
     if schedule: findings += validate_schedule(plan,schedule,root,ledger)
     if a.capabilities:
         snap=load_json(Path(a.capabilities)); findings += validate_capability_snapshot(snap,root); fs,_=evaluate_capabilities(plan,snap); findings += fs

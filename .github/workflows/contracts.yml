@@ -1,0 +1,25 @@
+name: Public workflow contracts
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install schema validator
+        run: python -m pip install -r skills/reasoning-workflow/scripts/requirements.txt
+      - name: Compile and run synthetic contracts
+        run: |
+          python -m compileall -q skills/reasoning-workflow/scripts
+          python -m unittest discover -s tests -v

@@ -14,6 +14,8 @@ def validate(data,root):
         fs.append({'severity':'ERROR','code':'RECONCILIATION_EVIDENCE_REQUIRED','message':'reconciled review requires targeted verification/evidence references'})
     mode=data.get('mode'); l2=data.get('layer2')
     if mode in ('dual','dual_orthogonal') and not l2: fs.append({'severity':'ERROR','code':'SECOND_LAYER_REQUIRED','message':'dual verification requires layer2'})
+    if (data['layer1']['verdict'] in ('fail','blocked') or l2 and l2.get('verdict') in ('fail','conflict','blocked')) and data.get('reconciliation_status')=='not_required':
+        fs.append({'severity':'ERROR','code':'REVIEW_CONFLICT_UNRESOLVED','message':'failed or blocked verification must reopen, reconcile, or remain blocked'})
     if l2:
         if l2.get('reviewer_context_id')==data.get('solver_context_id'): fs.append({'severity':'ERROR','code':'REVIEW_NOT_FRESH','message':'layer2 reviewer must not reuse solver context'})
         if l2.get('solver_transcript_included'): fs.append({'severity':'ERROR','code':'SOLVER_TRANSCRIPT_CONTAMINATION','message':'layer2 review should not receive full solver reasoning transcript'})

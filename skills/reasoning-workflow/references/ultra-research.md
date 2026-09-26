@@ -76,20 +76,7 @@ A same-model fresh pass is useful for re-framing. It is not automatically indepe
 
 ## Reasoning-aware retrieval
 
-A search query is a lossy projection of an evidence need. When the runtime permits, preserve the retrieval intent alongside the query:
-
-```text
-global question
-current pivotal claim
-current state
-specific gap
-live competing explanations
-desired observation
-discriminating role
-query / route
-```
-
-The query should be the final projection, not the starting point. If the available interface accepts only keywords, generate keywords from the evidence need and keep the need in the internal working model.
+A search query is a lossy projection of an evidence need. First test whether the current representation and decomposition expose an answer-bearing dependency. Specify what observation would separate live alternatives, and where the world would leave that trace; only then choose a method and form a query if search is the method. For a stuck or homogeneous route, set the active gap to `information-target` or `response-field` and load [information target navigation](information-target-navigation.md) on the next reference phase. Keep its working card internal unless the user needs to see the research method.
 
 ## Divergence before convergence
 

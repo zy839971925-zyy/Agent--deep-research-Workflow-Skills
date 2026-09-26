@@ -12,7 +12,7 @@ When proposing a change:
 - add Python or schema files only when deterministic runtime enforcement is genuinely useful — not merely to document an idea;
 - keep Portable and Modular meaningfully aligned when shared semantics change;
 - keep `README.md` and `README.zh-CN.md` synchronized for user-facing behavior;
-- do not add private traces, chain-of-thought, credentials, proprietary eval sets, internal test harnesses, or generated build artifacts to the public repository.
+- keep public regressions synthetic and small under `tests/`; do not add private traces, chain-of-thought, credentials, proprietary eval sets, internal test harnesses, or generated build artifacts.
 
 A public pull request should be understandable from the changed workflow files themselves. If a change requires validation evidence, summarize the observable failure mode and the validation result in the pull request rather than committing a private engineering harness into the repository.
 

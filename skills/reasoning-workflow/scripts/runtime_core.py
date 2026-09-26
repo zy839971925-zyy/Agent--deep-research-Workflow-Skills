@@ -89,6 +89,9 @@ def validate_plan(plan, root: Path):
 def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
     out=validate_schema(schedule,root/'schemas'/'execution-schedule.schema.json')
     if any(f.severity=='ERROR' for f in out): return out
+    if node_ledger is not None:
+        out += validate_node_ledger(plan,node_ledger,root)
+        if any(f.severity=='ERROR' for f in out): return out
     if schedule.get('plan_id')!=plan.get('plan_id'): out.append(finding('ERROR','SCHEDULE_PLAN_ID','schedule plan_id does not match execution plan'))
     if schedule.get('based_on_plan_version')!=plan.get('plan_version'): out.append(finding('ERROR','SCHEDULE_PLAN_VERSION','schedule is based on a stale/different plan_version'))
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; seen=set(); bygroup=defaultdict(list); assignments={}; order={}
@@ -111,7 +114,7 @@ def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
         if nid in assignments: out.append(finding('ERROR','SCHEDULE_NODE_BOTH_ASSIGNED_DEFERRED',f'{nid} is both assigned and deferred',nid))
     for nid in precompleted:
         if nid not in nodes: out.append(finding('ERROR','SCHEDULE_UNKNOWN_PREREQUISITE',f'completed_prerequisite_refs contains unknown node {nid}',nid))
-        elif node_ledger and ledger_status.get(nid)!='verified_complete': out.append(finding('ERROR','SCHEDULE_PREREQUISITE_NOT_VERIFIED',f'{nid} is declared as completed prerequisite but ledger status is {ledger_status.get(nid)!r}',nid))
+        elif ledger_status.get(nid)!='verified_complete': out.append(finding('ERROR','SCHEDULE_PREREQUISITE_NOT_VERIFIED',f'{nid} is declared as completed prerequisite but ledger status is {ledger_status.get(nid)!r}',nid))
     if schedule.get('scope')=='full_plan':
         covered=set(assignments)|set(deferred)
         missing=set(nodes)-covered
@@ -153,8 +156,11 @@ def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
                 aw=set(na.get('write_set',[])); bw=set(nb.get('write_set',[])); ar=set(na.get('read_set',[])); br=set(nb.get('read_set',[]))
                 lock_overlap=set(na.get('resource_locks',[])) & set(nb.get('resource_locks',[]))
                 rw_conflict=(aw & (bw|br)) | (bw & ar)
-                safely_isolated=a.get('isolation_mode') in ('isolated_workspace','transactional') and b.get('isolation_mode') in ('isolated_workspace','transactional')
-                if (rw_conflict or lock_overlap) and not safely_isolated:
+                # Resource locks name shared external resources, not files in a workspace.
+                # Only disjoint, named workspaces can isolate local read/write conflicts.
+                safely_isolated=(a.get('isolation_mode')=='isolated_workspace' and b.get('isolation_mode')=='isolated_workspace'
+                                 and a.get('workspace_ref') and b.get('workspace_ref') and a['workspace_ref']!=b['workspace_ref'])
+                if lock_overlap or (rw_conflict and not safely_isolated):
                     refs=sorted(rw_conflict|lock_overlap)
                     out.append(finding('ERROR','PARALLEL_STATE_CONFLICT',f'concurrency group {group} has shared mutable/resource conflict between {a["node_id"]} and {b["node_id"]}: {refs}',a['node_id'],b['node_id']))
     return out
@@ -209,6 +215,7 @@ def evaluate_capabilities(plan, capability_snapshot, root: Path|None=None):
 
 def validate_node_ledger(plan, ledger, root: Path):
     out=validate_schema(ledger,root/'schemas'/'execution-node-state.schema.json')
+    if any(f.severity=='ERROR' for f in out): return out
     if ledger.get('plan_id')!=plan.get('plan_id'): out.append(finding('ERROR','NODE_LEDGER_PLAN_ID','node ledger plan_id does not match plan'))
     if ledger.get('plan_version')!=plan.get('plan_version'): out.append(finding('ERROR','NODE_LEDGER_PLAN_VERSION','node ledger is based on stale plan_version'))
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; seen=set()

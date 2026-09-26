@@ -158,7 +158,7 @@ Portable is the full governing workflow. It contains:
 - a small set of runtime Python helpers for deterministic routing and validation;
 - host metadata and the project icon.
 
-It intentionally **does not** contain development-only tests, eval fixtures, build reports, generated distributions, or internal engineering artifacts.
+The installable Skill folder excludes tests, private eval fixtures, build reports, generated distributions, and internal engineering artifacts. The repository's small synthetic [`tests/`](./tests/) suite is outside that folder.
 
 ### Modular is intentionally lighter
 
@@ -219,10 +219,14 @@ Spend the extra budget broadly before converging:
 reframe the problem when useful, search for hidden relationships and omitted variables,
 explore materially different hypotheses and evidence ecosystems,
 and reset the research path if it becomes homogeneous or anchored.
+Decompose by answer dependencies. Choose an information target and the field where
+competing explanations would leave different traces before forming search queries.
 
 Do not spend most of the extra budget repeatedly verifying the same claim.
 Verify the pivotal claims strongly, then give me the calibrated answer and what could still change it.
 ```
+
+Research derives its next query from the problem model: identify the answer-bearing dependency, set an information target that could change the conclusion, then find the evidence field where competing explanations predict different traces. See [Information target navigation](./skills/reasoning-workflow/references/information-target-navigation.md).
 
 ### Decision / recommendation
 
@@ -441,7 +445,7 @@ The Portable Skill currently contains dozens of small files because responsibili
 
 ## Why there are Python files and schemas
 
-The public Skill does not ship a development test/eval harness. The Python and JSON files in Portable remain because they are part of the **runtime workflow itself**, not test infrastructure.
+The installable Skill does not ship a private development or real-agent eval harness. Portable's Python and JSON files are optional **runtime workflow** contracts. The repository now also includes a small, synthetic public contract suite outside the installable Skill at [`tests/`](./tests/).
 
 The runtime helpers cover:
 
@@ -452,8 +456,11 @@ The runtime helpers cover:
 - delivery/event/raw-lineage integrity;
 - dual-verification record checks;
 - maintenance-plane learning gates and selective retrieval.
+- an optional host adapter for tool authorization and replay receipts.
 
 They are optional in the sense that a host without local script execution can still follow the semantic workflow. In that environment, the agent must not claim machine enforcement occurred.
+
+[`harness integration`](./skills/reasoning-workflow/references/harness-integration.md) explains the boundary between Skill guidance and host-enforced activation, authorization, external state, compaction, and trace collection. `harness_bridge.py` has to be called by a trusted host adapter; installing the Skill alone does not intercept tools. From the repository root, run `python -m unittest discover -s tests -v` after installing `scripts/requirements.txt` to check the public contracts.
 
 The only Python dependency is declared in [`scripts/requirements.txt`](./skills/reasoning-workflow/scripts/requirements.txt): `jsonschema` for schema validation.
 
@@ -533,7 +540,7 @@ The public repository contains the open-source workflow itself, the runtime file
 
 ### Public-repository boundary
 
-The repository intentionally excludes development-only material that is not required to understand, install, or run Reasoning Workflow: private test/eval harnesses, benchmark fixtures, generated distribution archives, build reports, distribution tooling, and contracts with no runtime consumer.
+The repository excludes private traces, held-out evals, benchmark fixtures, generated distribution archives, build reports, and internal distribution tooling. It includes only synthetic public contract regressions at `tests/`; these are not bundled with the installable Skill.
 
 That keeps the public surface focused on the workflow rather than on the author's engineering workspace.
 
@@ -588,7 +595,7 @@ The project deliberately uses progressive disclosure: keep the entrypoint high-s
 
 ## Validation status
 
-Deterministic checks cover routing, semantic propagation, authorization, recovery, delivery closure, review records, and controlled learning; development tests run outside the installable public tree
+Deterministic contract tests cover routing, scheduling conflicts, delivery closure, review records, tool-boundary authorization/retry behavior, and controlled learning. They run outside the installable Skill tree in CI. Host integration remains opt-in.
 
 Real-model Task Profile classification, Skill trigger precision/recall, cross-model routing, matched Deep Research quality, token/latency savings, dual-review error reduction, long-horizon learning, and external Deep Research benchmarks remain unvalidated
 

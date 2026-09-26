@@ -65,6 +65,13 @@ def validate(state,manifest,root=None):
         if not s: findings.append(finding('ERROR','ART_STATE_MISSING',f'manifest artifact {aid} absent from canonical state',aid)); continue
         eff=registry.get(aid,{}).get('effective_status')
         if m.get('declared_current') and eff!='current': findings.append(finding('ERROR','ART_NOT_CURRENT',f'{aid} declared current in manifest but effective status is {eff}',aid))
+        if s.get('materiality')=='material' and eff=='current':
+            if not m.get('declared_current'):
+                findings.append(finding('ERROR','ART_NOT_CURRENT',f'{aid} is a current material artifact but manifest does not declare it current',aid))
+            if not m.get('path'):
+                findings.append(finding('ERROR','ART_PATH_REQUIRED',f'{aid} current material artifact requires a path',aid))
+            elif root is None:
+                findings.append(finding('ERROR','ART_ROOT_REQUIRED',f'{aid} current material artifact cannot be verified without --root',aid))
         for ref in m.get('represents',[]) or []:
             if ref not in registry: findings.append(finding('ERROR','ART_REPRESENTS_REF',f'{aid} represents unknown {ref}',aid,ref))
         for ref in m.get('verification_refs',[]) or []:
@@ -75,7 +82,7 @@ def validate(state,manifest,root=None):
             try: p.relative_to(rr)
             except ValueError: findings.append(finding('ERROR','ART_PATH_ESCAPE',f'{aid} path escapes root',aid))
             else:
-                if not p.exists(): findings.append(finding('ERROR','ART_FILE_MISSING',f'{aid} current artifact file missing: {m["path"]}',aid))
+                if not p.is_file(): findings.append(finding('ERROR','ART_FILE_MISSING',f'{aid} current artifact file missing or not a file: {m["path"]}',aid))
     computed_ready=not any(f.severity=='ERROR' for f in findings) and not manifest.get('blocking_items') and not manifest.get('inconsistencies')
     if manifest.get('declared_delivery_ready') and not computed_ready: findings.append(finding('ERROR','DECLARED_READY_FALSE','declared_delivery_ready=true but computed_delivery_ready=false'))
     return findings, {'computed_delivery_ready':computed_ready,'epistemic_closure':closure}
