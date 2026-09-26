@@ -19,7 +19,7 @@ def retrievable(r,task_tags,gap_tags):
     if anti & tags:return False
     return bool((sig|app)&tags)
 
-def retrieve(records,task_tags,gap_tags,limit=3):
-    c=[r for r in records if retrievable(r,task_tags,gap_tags)]
+def retrieve(records,task_tags,gap_tags,limit=3,maintenance=False):
+    c=[r for r in records if (maintenance or r.get('tier')==1) and retrievable(r,task_tags,gap_tags)]
     c.sort(key=lambda r:(-(r.get('usage') or {}).get('helped',0), (r.get('usage') or {}).get('harmed',0),r.get('learning_id','')))
     return c[:max(0,min(limit,5))]

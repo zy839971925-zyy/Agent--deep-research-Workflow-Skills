@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 from pathlib import Path
-import json, copy
+import json, copy, hashlib
 try:
     import jsonschema
 except ImportError:
@@ -9,6 +9,14 @@ except ImportError:
 
 DEPTHS=['light','standard','deep','max','ultra']
 QUAL=['minimal','standard','deep','max']
+INDEX_PATH=Path(__file__).resolve().parents[1]/'routing-index.json'
+
+def fingerprint(value):
+    payload=json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode('utf-8')
+    return 'sha256:'+hashlib.sha256(payload).hexdigest()
+
+def compute_index_fingerprint(index=None):
+    return fingerprint(index if index is not None else load_json(INDEX_PATH))
 
 def load_json(path): return json.loads(Path(path).read_text(encoding='utf-8'))
 
@@ -21,7 +29,7 @@ def _q(v):
     try:return QUAL.index(v)
     except:return 0
 
-def route_task(profile):
+def route_task(profile, index=None):
     families=['core-reasoning']; modes=set(profile.get('task_modes',[]))
     evidence=profile.get('evidence_depth','minimal')
     deep_research=(evidence in ('deep','max') or profile.get('frame_uncertainty')=='high' or profile.get('causal_or_systemic_complexity')=='high' or profile.get('explicit_deep_research') or 'research' in modes and profile.get('depth_class') in ('deep','max','ultra'))
@@ -48,7 +56,8 @@ def route_task(profile):
     if profile.get('depth_class') in ('light','standard') and not deep_research: swarm='forbidden'
     if not execution and not deep_research: swarm='forbidden'
     slots={'light':1,'standard':2,'deep':3,'max':3,'ultra':3}[profile.get('depth_class','standard')]
-    return {'profile_version':profile['profile_version'],'required_families':families,'optional_families':[],
+    return {'profile_version':profile['profile_version'],'profile_fingerprint':fingerprint(profile),
+            'index_fingerprint':compute_index_fingerprint(index),'required_families':families,'optional_families':[],
             'verification_mode':verification_mode,'runtime_level':runtime_level,'swarm_admission':swarm,
             'reference_phase_limit':slots,'progressive_loading':True,'route_status':'current'}
 
@@ -57,7 +66,7 @@ def recheck_profile(profile,signals):
     up={'hidden_complexity','decisive_contradiction','uncertain_causal_edge','repeated_route_failure','source_conflict','entity_version_time_ambiguity','worker_conflict','user_steering','external_state_change','closure_material_uncertainty'} & signals
     ultra={'ultra_requested','max_stagnation','severe_frame_instability','evidence_ecology_gap','orthogonal_research_needed','pivotal_claim_undercoverage'} & signals
     down={'lower_than_expected_complexity'} & signals
-    if ultra and current=='max':
+    if 'ultra_requested' in signals or ultra and current=='max':
         idx=4; reasons+=sorted(ultra)
     elif up:
         idx=max(idx,min(3,idx+1)); reasons+=sorted(up)
@@ -71,4 +80,8 @@ def recheck_profile(profile,signals):
         if up and 'closure_material_uncertainty' in up and p.get('verification_depth') in ('minimal','standard'): p['verification_depth']='deep'
     return p
 
-def route_is_stale(route,profile): return route.get('profile_version')!=profile.get('profile_version')
+def route_is_stale(route,profile,index_fingerprint=None):
+    expected=route_task(profile)
+    if index_fingerprint is not None:
+        expected['index_fingerprint']=index_fingerprint
+    return any(route.get(key)!=value for key,value in expected.items())

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse,json
 from pathlib import Path
+from routing_core import compute_index_fingerprint, route_is_stale
 
 def select(index,route,profile,gap_tags):
-    if route.get('profile_version') != profile.get('profile_version'):
+    if route_is_stale(route,profile,compute_index_fingerprint(index)):
         raise ValueError('STALE_ROUTE')
     limit = route.get('reference_phase_limit', 2)
     if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
@@ -15,7 +16,16 @@ def select(index,route,profile,gap_tags):
         if e['family'] not in allowed: continue
         if profile.get('depth_class') not in e.get('typical_depth',[]): continue
         overlap=tags & set(e.get('load_when_tags',[]))
-        if overlap: candidates.append((0,e['default_priority'],e,sorted(overlap)))
+        if overlap:
+            # An explicit Ultra research request must not be crowded out by
+            # several generic tags sharing the same small reference budget.
+            essential = e['id']=='ultra-research' and profile.get('depth_class')=='ultra' and 'deep-research' in allowed
+            candidates.append((-1 if essential else 0,e['default_priority'],e,sorted(overlap)))
+    if profile.get('depth_class')=='ultra' and 'deep-research' in allowed and not any(item[2]['id']=='ultra-research' for item in candidates):
+        overlay=next((e for e in index['references'] if e['id']=='ultra-research'),None)
+        if overlay is None:
+            raise ValueError('ULTRA_REFERENCE_MISSING')
+        candidates.append((-1,overlay['default_priority'],overlay,['ultra']))
     # Light tasks with no unresolved structured gap need no reference beyond the root map.
     if not candidates and profile.get('depth_class')=='light' and not tags:
         return []
@@ -34,8 +44,8 @@ def select(index,route,profile,gap_tags):
     return out
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('profile'); ap.add_argument('route'); ap.add_argument('--index',default='routing-index.json'); ap.add_argument('--gap-tag',action='append',default=[]); a=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument('profile'); ap.add_argument('route'); ap.add_argument('--index',default=str(Path(__file__).resolve().parents[1]/'routing-index.json')); ap.add_argument('--gap-tag',action='append',default=[]); a=ap.parse_args()
     profile=json.loads(Path(a.profile).read_text()); route=json.loads(Path(a.route).read_text()); index=json.loads(Path(a.index).read_text())
-    if route.get('profile_version')!=profile.get('profile_version'): print(json.dumps({'passed':False,'code':'STALE_ROUTE'},indent=2)); return 1
+    if route_is_stale(route,profile,compute_index_fingerprint(index)): print(json.dumps({'passed':False,'code':'STALE_ROUTE'},indent=2)); return 1
     selected=select(index,route,profile,a.gap_tag); print(json.dumps({'passed':True,'selected_references':selected},indent=2)); return 0
 if __name__=='__main__': raise SystemExit(main())

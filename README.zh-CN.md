@@ -170,7 +170,7 @@ Portable 是完整的 Reasoning Workflow，也是 canonical implementation。它
 - 少量用于确定性路由和校验的 Python runtime helper；
 - OpenAI host metadata、图标和随 Skill 分发的 MIT License。
 
-它不包含单元测试、regression/eval fixtures、benchmark harness、distribution build 工具、本地 build report 或生成的 ZIP。这些材料不属于用户运行 Workflow 所需的公开 Skill 表面。
+可安装的 Skill 文件夹不包含单元测试、私有 eval、benchmark harness、distribution build 工具、本地构建报告或生成的 ZIP。仓库根目录的 [`tests/`](./tests/) 只放脱敏的公开合约回归用例，不随 Skill 安装。
 
 ### Modular：轻量模块版
 
@@ -479,7 +479,7 @@ Portable 里保留几十个小文件，是为了让职责清楚地拆开，而�
 
 ## 为什么还保留 Python 和 schema？
 
-公开 Skill 不携带开发用 tests / evals / build harness。保留的 Python 和 JSON 属于 Workflow 本身的可选机器能力：
+可安装 Skill 不携带私有开发测试或真实 Agent 评测。Portable 内的 Python 和 JSON 属于 Workflow 本身的可选机器能力；仓库另有少量公开合约测试：
 
 - Task Profile / Family 的确定性路由；
 - progressive reference selection；
@@ -488,8 +488,11 @@ Portable 里保留几十个小文件，是为了让职责清楚地拆开，而�
 - delivery / event / raw-lineage integrity；
 - dual verification record 校验；
 - Workflow Learning 的 promotion gate 和选择性 retrieval。
+- 可选的宿主适配器，用于工具授权与副作用重试收据。
 
 如果 host 本身不能执行本地 Python，Workflow 仍然可以只靠语义规则工作；但是 Agent 不能假装“机器 validator 已经执行”。
+
+[`Harness 接入说明`](./skills/reasoning-workflow/references/harness-integration.md) 区分 Skill 指导与宿主实际控制的触发、授权、外部状态、上下文压缩和 trace。`harness_bridge.py` 只有被可信宿主主动接入后才能约束工具调用；仅安装 Skill 不会拦截工具。安装 `scripts/requirements.txt` 后，在仓库根目录运行 `python -m unittest discover -s tests -v` 可以检查公开合约。
 
 Python 唯一额外依赖写在 [`scripts/requirements.txt`](./skills/reasoning-workflow/scripts/requirements.txt) 中：用于 JSON Schema 校验的 `jsonschema`。
 
@@ -577,7 +580,7 @@ self-reflection 本身只能产生 candidate，不能单独完成 promotion。
 
 ### 公开仓库的边界
 
-仓库不包含那些对理解、安装或运行 Reasoning Workflow 没有直接作用的开发材料：私有 test/eval harness、benchmark fixtures、生成的 distribution 压缩包、构建报告、distribution tooling，以及没有 runtime consumer 的 contracts。
+仓库不包含私有 trace、留出评测集、benchmark fixtures、生成的 distribution 压缩包、构建报告或内部 distribution tooling。根目录 `tests/` 只包含合成的公开合约回归用例，不随可安装 Skill 打包。
 
 这样 GitHub 公开面保持为“工作流本身”，而不是作者的完整工程工作区。
 
@@ -634,7 +637,7 @@ Reasoning Workflow 遵循开放的 Agent Skills 基本结构：`SKILL.md` 作为
 
 ## 验证状态
 
-确定性检查覆盖路由、语义状态传播、授权、恢复、交付闭合、审查记录和受控学习；开发测试在可安装的公开目录之外运行
+确定性合约测试覆盖路由、并发调度冲突、交付闭合、审查记录、工具调用边界的授权与重试，以及受控学习。测试在 Skill 安装目录之外由 CI 运行；宿主接入仍是可选步骤。
 
 真实模型的 Task Profile 分类、Skill 触发准确率与召回率、跨模型路由、同条件 Deep Research 质量、token 与延迟节省、双重审查错误降低、长期学习效果及外部 Deep Research benchmark 仍未验证
 
