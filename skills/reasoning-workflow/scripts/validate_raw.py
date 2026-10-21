@@ -5,12 +5,18 @@ from pathlib import Path
 from semantic_core import validate_schema,finding
 
 def load_records(path):
-    x=json.loads(Path(path).read_text(encoding='utf-8')); return x if isinstance(x,list) else x.get('records',[])
+    x=json.loads(Path(path).read_text(encoding='utf-8'))
+    if isinstance(x,list): return x
+    if isinstance(x,dict) and set(x)=={'records'} and isinstance(x['records'],list): return x['records']
+    raise ValueError('RAW_ENVELOPE: expected array or exactly {records: array}; explicit [] is valid')
 
 def validate(records,root_dir=None,skill_root=None):
     skill_root=skill_root or Path(__file__).resolve().parents[1]; fs=[]; reg={}
+    if not isinstance(records,list): return [finding('ERROR','RAW_ENVELOPE','records must be an array')]
     for r in records:
-        fs+=validate_schema(r,skill_root/'schemas/raw-record.schema.json'); rid=r.get('raw_id')
+        errors=validate_schema(r,skill_root/'schemas/raw-record.schema.json'); fs+=errors
+        if any(f.severity=='ERROR' for f in errors): continue
+        rid=r.get('raw_id')
         if rid in reg: fs.append(finding('ERROR','RAW_DUP_ID',f'duplicate raw_id {rid}',rid))
         reg[rid]=r
     adj={rid:list(r.get('derived_from',[]) or []) for rid,r in reg.items()}
@@ -45,7 +51,9 @@ def validate(records,root_dir=None,skill_root=None):
     return fs
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('raw_manifest'); ap.add_argument('--root'); ap.add_argument('--json',action='store_true'); a=ap.parse_args(); rec=load_records(a.raw_manifest); fs=validate(rec,a.root)
+    ap=argparse.ArgumentParser(); ap.add_argument('raw_manifest'); ap.add_argument('--root'); ap.add_argument('--json',action='store_true'); a=ap.parse_args()
+    try: rec=load_records(a.raw_manifest); fs=validate(rec,a.root)
+    except (ValueError,OSError) as e: fs=[finding('ERROR','RAW_INPUT',str(e))]
     if a.json: print(json.dumps({'findings':[f.as_dict() for f in fs]},indent=2))
     else:
         for f in fs: print(f'{f.severity} [{f.code}] {f.message}')

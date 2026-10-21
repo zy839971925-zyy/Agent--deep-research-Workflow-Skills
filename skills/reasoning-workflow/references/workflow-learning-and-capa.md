@@ -1,3 +1,5 @@
+> Upgrade 2.1: read the updated [host contracts](host-adapter.md) and [migration rules](../UPGRADE.md) for executable admission, review and storage semantics. The shorter root SKILL is the active entry. Older examples are descriptive and must satisfy the current schemas.
+
 # Workflow Learning and CAPA
 
 [← Back to Workflow Learning family](../families/workflow-learning.md) · [Back to root workflow](../SKILL.md)

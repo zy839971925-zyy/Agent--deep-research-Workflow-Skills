@@ -1,3 +1,5 @@
+> Upgrade 2.1: read the updated [host contracts](host-adapter.md) and [migration rules](../UPGRADE.md) for executable admission, review and storage semantics. The shorter root SKILL is the active entry. Older examples are descriptive and must satisfy the current schemas.
+
 # Runtime and delegation
 
 **Trigger:** Tool-rich, cross-surface, private, delegated, sandboxed, capability-limited, or long-running tasks.
@@ -93,3 +95,7 @@ Not every failed action invalidates the plan.
 Trigger broad replanning from model-changing evidence, not from every transient tool error. Preserve unaffected plan semantics and completed work.
 
 [← Return to root workflow](../SKILL.md)
+
+## 2.1.1 ordering clarification
+
+`parallel_policy=forbidden` cannot be bypassed by omitting `concurrency_group` or using different group names. In parallel/hybrid schedules a forbidden node must be explicitly ordered against every other assigned node through an acyclic dependency/`starts_after` chain; serial schedules retain ordered semantics. Group labels are descriptive, not host-enforced isolation or sequencing. Independent allowed nodes remain eligible for parallel scheduling.

@@ -221,6 +221,14 @@
         }
       },
       "additionalProperties": false
+    },
+    "validation_evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
     }
   }
 }

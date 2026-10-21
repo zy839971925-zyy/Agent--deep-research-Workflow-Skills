@@ -1,0 +1,13 @@
+{
+  "verification_id": "review_old",
+  "mode": "single",
+  "solver_id": "synthetic_solver",
+  "solver_context_id": "synthetic_solver_context",
+  "layer1": {
+    "verdict": "pass",
+    "verification_refs": [
+      "unresolved-verification-ref"
+    ]
+  },
+  "reconciliation_status": "not_required"
+}

@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse, json
 from runtime_core import (load_json, validate_plan, validate_schedule, validate_checkpoint,
                           validate_node_ledger, validate_capability_snapshot, evaluate_capabilities,
-                          validate_worker_proposal)
+                          validate_worker_proposal, finding)
 
 def main():
     ap=argparse.ArgumentParser(description='Validate Reasoning Workflow execution-control artifacts')
@@ -19,12 +19,13 @@ def main():
     plan=load_json(Path(a.plan)); findings=validate_plan(plan,root)
     ledger=load_json(Path(a.ledger)) if a.ledger else None
     schedule=load_json(Path(a.schedule)) if a.schedule else None
-    if ledger and not schedule: findings += validate_node_ledger(plan,ledger,root)
-    if schedule: findings += validate_schedule(plan,schedule,root,ledger)
+    if ledger is not None: findings += validate_node_ledger(plan,ledger,root)
+    if schedule is not None: findings += validate_schedule(plan,schedule,root,ledger)
     if a.capabilities:
         snap=load_json(Path(a.capabilities)); findings += validate_capability_snapshot(snap,root); fs,_=evaluate_capabilities(plan,snap); findings += fs
     if a.worker_proposal:
         prop=load_json(Path(a.worker_proposal)); current_state_version=(ledger or {}).get('state_version'); findings += validate_worker_proposal(plan,prop,root,current_state_version)
+        findings.append(finding('ERROR','WORKER_HOST_CONTEXT_REQUIRED','CLI is static validation only; live submission needs trusted host callback and atomic commit'))
     if a.checkpoint:
         findings += validate_checkpoint(load_json(Path(a.checkpoint)),root,plan,schedule)
     if a.json: print(json.dumps({'findings':[f.as_dict() for f in findings]},indent=2))

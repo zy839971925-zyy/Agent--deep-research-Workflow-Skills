@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "computed_delivery_ready": false,
+  "errors": [
+    "ART_CURRENT_DOWNGRADE: art1 canonical current/required artifact cannot be downgraded by manifest flag",
+    "DECLARED_READY_FALSE: declared_delivery_ready=true but computed_delivery_ready=false",
+    "current/required artifact missing or downgraded art1"
+  ],
+  "host_execution_verified": false
+}

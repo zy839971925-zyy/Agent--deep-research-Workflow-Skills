@@ -1,0 +1,18 @@
+{
+  "profile_version": 1,
+  "lane": "question",
+  "depth_class": "standard",
+  "autonomy_class": "A",
+  "reasoning_breadth": "standard",
+  "evidence_depth": "standard",
+  "challenge_depth": "standard",
+  "verification_depth": "standard",
+  "governance_depth": "minimal",
+  "routing_confidence": "high",
+  "task_modes": [
+    "research"
+  ],
+  "task_coupling": "low",
+  "persistence": "none",
+  "external_side_effects": "none"
+}

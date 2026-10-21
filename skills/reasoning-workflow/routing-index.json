@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "rule": "Related links are navigation hints, never automatic-load instructions. Load references only through the active route and current unresolved gap.",
+  "rule": "Related links are navigation hints, never automatic-load instructions. Load references through the current deterministic route and real unresolved gaps; required_reference_ids (including explicit Ultra methods) cannot be dropped by phase limits or missing tags.",
   "families": [
     {
       "id": "core-reasoning",
@@ -447,7 +447,8 @@
         "verification",
         "synthesis",
         "closure",
-        "artifact-contract"
+        "artifact-contract",
+        "orthogonal-verification"
       ],
       "typical_depth": [
         "standard",
@@ -470,7 +471,8 @@
         "dual-review",
         "adversarial-review",
         "reviewer-independence",
-        "evaluator-validity"
+        "evaluator-validity",
+        "orthogonal-verification"
       ],
       "typical_depth": [
         "deep",

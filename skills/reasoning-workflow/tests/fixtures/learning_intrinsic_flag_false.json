@@ -1,0 +1,28 @@
+{
+  "learning_id": "synthetic:contradictory-intrinsic",
+  "tier": 1,
+  "source_run_refs": [
+    "synthetic:run"
+  ],
+  "source_eval_refs": [],
+  "task_signature": [
+    "deep_research"
+  ],
+  "failure_mode": "synthetic source selection failure",
+  "root_cause_class": "evidence_failure",
+  "lesson_type": "strategy",
+  "heuristic": "Synthetic inert text: inspect primary evidence.",
+  "applicability_conditions": [
+    "deep_research"
+  ],
+  "anti_conditions": [],
+  "provenance": {
+    "feedback_types": [
+      "intrinsic_reflection"
+    ],
+    "intrinsic_reflection_only": false
+  },
+  "status": "validated",
+  "created_at": "2026-10-21T00:00:00Z",
+  "rollback_ref": "synthetic:rollback"
+}

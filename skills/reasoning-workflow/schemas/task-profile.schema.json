@@ -213,6 +213,16 @@
         "minLength": 1
       },
       "uniqueItems": true
+    },
+    "requested_depth": {
+      "enum": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "description": "Explicit owner depth retained across rechecks; remove/update only on owner steering."
     }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "verification_id": "review_old",
+  "mode": "dual",
+  "solver_id": "synthetic_solver",
+  "solver_context_id": "synthetic_solver_context",
+  "layer1": {
+    "verdict": "fail",
+    "verification_refs": [
+      "unresolved-verification-ref"
+    ]
+  },
+  "reconciliation_status": "not_required",
+  "layer2": {
+    "reviewer_id": "r",
+    "reviewer_context_id": "r-context",
+    "solver_transcript_included": false,
+    "independence_basis": [
+      "fresh_context"
+    ],
+    "verdict": "fail"
+  }
+}

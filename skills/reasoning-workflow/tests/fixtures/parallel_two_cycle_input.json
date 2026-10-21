@@ -1,0 +1,67 @@
+{
+  "plan": {
+    "schema_version": "1.1",
+    "plan_id": "audit09-plan",
+    "plan_version": 1,
+    "objective": "local synthetic test only",
+    "nodes": [
+      {
+        "node_id": "A",
+        "objective": "audit test A",
+        "depends_on": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "parallel_policy": "allowed",
+        "replay_safety": "safe",
+        "side_effect_class": "none",
+        "node_contract_hash": "sha256:815f0fdbe2dc134fa5f4dfad2edbd3823089bafd4d124741f2272076e6e1a6f5"
+      },
+      {
+        "node_id": "B",
+        "objective": "audit test B",
+        "depends_on": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "parallel_policy": "allowed",
+        "replay_safety": "safe",
+        "side_effect_class": "none",
+        "node_contract_hash": "sha256:8e92f1564a34c0383b474a16c3c624e989889d7befa94031a5541512ef439371"
+      }
+    ]
+  },
+  "schedule": {
+    "schema_version": "1.1",
+    "schedule_id": "audit09-schedule",
+    "schedule_version": 1,
+    "plan_id": "audit09-plan",
+    "based_on_plan_version": 1,
+    "mode": "parallel",
+    "scope": "full_plan",
+    "assignments": [
+      {
+        "node_id": "A",
+        "node_contract_hash": "sha256:815f0fdbe2dc134fa5f4dfad2edbd3823089bafd4d124741f2272076e6e1a6f5",
+        "executor_id": "synthetic-worker-A",
+        "executor_kind": "worker_agent",
+        "attempt_id": "a1",
+        "starts_after": [
+          "B"
+        ]
+      },
+      {
+        "node_id": "B",
+        "node_contract_hash": "sha256:8e92f1564a34c0383b474a16c3c624e989889d7befa94031a5541512ef439371",
+        "executor_id": "synthetic-worker-B",
+        "executor_kind": "worker_agent",
+        "attempt_id": "a1",
+        "starts_after": [
+          "A"
+        ]
+      }
+    ],
+    "completed_prerequisite_refs": [],
+    "deferred_nodes": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "profile_version": 1,
+  "lane": "action",
+  "depth_class": "light",
+  "autonomy_class": "D",
+  "reasoning_breadth": "standard",
+  "evidence_depth": "minimal",
+  "challenge_depth": "minimal",
+  "verification_depth": "minimal",
+  "governance_depth": "max",
+  "routing_confidence": "high",
+  "task_modes": [],
+  "task_coupling": "low",
+  "external_side_effects": "irreversible",
+  "persistence": "none",
+  "active_gap_tags": [
+    "delegation"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "plan": {
+    "schema_version": "1.1",
+    "plan_id": "audit09-plan",
+    "plan_version": 1,
+    "objective": "local synthetic test only",
+    "nodes": [
+      {
+        "node_id": "N",
+        "objective": "audit test N",
+        "depends_on": [],
+        "output_contract": {},
+        "completion_contract": {},
+        "verification_contract": {},
+        "parallel_policy": "allowed",
+        "replay_safety": "safe",
+        "side_effect_class": "none",
+        "node_contract_hash": "sha256:d2d9afc40af45144c6b4b278b321330a72786fafac02a0bd90e7df8fa46e218a"
+      }
+    ]
+  },
+  "ledger": {
+    "schema_version": "1.0",
+    "plan_id": "audit09-plan",
+    "plan_version": 1,
+    "state_version": 2,
+    "nodes": [
+      {
+        "node_id": "N",
+        "node_contract_hash": "sha256:d2d9afc40af45144c6b4b278b321330a72786fafac02a0bd90e7df8fa46e218a",
+        "effective_status": "cancelled",
+        "active_attempt_id": "attempt-current",
+        "executor_id": "worker-current",
+        "updated_at": "2026-10-21T00:00:00Z",
+        "side_effect_receipts": []
+      }
+    ]
+  },
+  "checkpoint": {
+    "schema_version": "1.1",
+    "checkpoint_id": "audit09-cp",
+    "created_at": "2026-10-21T00:00:00Z",
+    "workflow": {
+      "name": "reasoning-workflow",
+      "version": "audit-only",
+      "policy_hash": "audit-only",
+      "semantic_contract_version": "1"
+    },
+    "plan_version": 1,
+    "schedule_version": 1,
+    "state_version": 1,
+    "event_seq_end": 1,
+    "required_components": [
+      "runtime"
+    ],
+    "components": {
+      "runtime": {
+        "status": "saved",
+        "ref": "audit09_component.json",
+        "hash": "sha256:ff6d83b59360e0ad01cc98fbdae968c559a9bd736ea57582c4be317b120784bd",
+        "bindings": {
+          "plan_version": 1,
+          "schedule_version": 1,
+          "state_version": 1,
+          "event_seq_end": 1
+        },
+        "integrity_proof": "hash"
+      }
+    },
+    "commit_status": "complete",
+    "next_safe_action": "reconcile current ledger",
+    "running_nodes": [
+      "N"
+    ],
+    "completed_nodes": [],
+    "blocked_nodes": []
+  }
+}

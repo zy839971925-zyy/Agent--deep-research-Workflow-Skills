@@ -26,7 +26,7 @@ def validate_schema(data, schema_path: Path):
     if jsonschema is None:
         return [finding('ERROR','SCHEMA_RUNTIME_MISSING','Python package jsonschema is required for Draft 2020-12 validation')]
     schema=load_json(schema_path); v=jsonschema.Draft202012Validator(schema); out=[]
-    for e in sorted(v.iter_errors(data), key=lambda x:list(x.absolute_path)):
+    for e in sorted(v.iter_errors(data), key=lambda x:tuple(map(str,x.absolute_path))):
         loc='/'.join(str(x) for x in e.absolute_path) or '$'
         out.append(finding('ERROR','SCHEMA',f'{loc}: {e.message}'))
     return out
@@ -77,7 +77,7 @@ def validate_plan(plan, root: Path):
             if fb.get('required_capability') not in required:
                 out.append(finding('ERROR','FALLBACK_UNBOUND_REQUIREMENT',f'{nid} fallback maps unknown/non-required capability {fb.get("required_capability")}',nid,fb.get('required_capability')))
         if n.get('side_effect_class') in ('consequential','irreversible') and n.get('replay_safety','safe')=='safe':
-            out.append(finding('WARNING','REPLAY_SAFETY_SUSPICIOUS',f'{nid} has {n.get("side_effect_class")} side effects but replay_safety=safe; confirm this is genuinely replay-safe',nid))
+            out.append(finding('ERROR','REPLAY_SAFETY_SUSPICIOUS',f'{nid} has {n.get("side_effect_class")} side effects but replay_safety=safe; confirm this is genuinely replay-safe',nid))
     deps=defaultdict(list)
     for nid,n in nodes.items():
         for d in n.get('depends_on',[]):
@@ -106,8 +106,6 @@ def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
         seen.add(nid)
         if nid not in nodes: out.append(finding('ERROR','SCHEDULE_UNKNOWN_NODE',f'assignment references unknown node {nid}',nid)); continue
         if a.get('node_contract_hash')!=nodes[nid].get('node_contract_hash'): out.append(finding('ERROR','SCHEDULE_STALE_CONTRACT',f'{nid} assignment uses stale node contract hash',nid))
-        if nodes[nid].get('parallel_policy')=='forbidden' and schedule.get('mode') in ('parallel','hybrid') and a.get('concurrency_group'):
-            out.append(finding('ERROR','PARALLEL_FORBIDDEN',f'{nid} forbids parallel execution',nid))
         if a.get('concurrency_group'): bygroup[a['concurrency_group']].append(a)
     for nid in deferred:
         if nid not in nodes: out.append(finding('ERROR','SCHEDULE_UNKNOWN_DEFERRED_NODE',f'deferred_nodes references unknown node {nid}',nid))
@@ -141,25 +139,35 @@ def validate_schedule(plan, schedule, root: Path, node_ledger: dict|None=None):
                     out.append(finding('ERROR','SCHEDULE_DEP_ORDER_UNDECLARED',f'{nid} depends on {dep}; parallel/hybrid schedule must declare starts_after dependency',nid,dep))
             elif dep not in precompleted and ledger_status.get(dep)!='verified_complete':
                 out.append(finding('ERROR','SCHEDULE_DEP_UNSATISFIED',f'{nid} depends on {dep}, which is neither scheduled nor verified complete',nid,dep))
+    joint={nid:list(n.get('depends_on',[])) for nid,n in nodes.items()}
+    for nid,a in assignments.items():
+        if nid in nodes: joint[nid] += [d for d in a.get('starts_after',[]) if d in nodes]
+    for cyc in _cycles(nodes,joint):
+        out.append(finding('ERROR','SCHEDULE_WAIT_CYCLE','combined dependency/wait cycle: '+' -> '.join(cyc),*cyc))
     ancestors=_ancestors(nodes)
+    joint_ancestors=_ancestors({nid:{'depends_on':joint[nid]} for nid in nodes})
+    # Missing/different display groups do not prove temporal isolation.
+    if schedule.get('mode') in ('parallel','hybrid'):
+        bygroup['__unsequenced_candidates__']=list(assignments.values())
     for group,items in bygroup.items():
         ids=[a['node_id'] for a in items if a.get('node_id') in nodes]
         for i in range(len(ids)):
             for j in range(i+1,len(ids)):
                 a,b=ids[i],ids[j]
+                if group=='__unsequenced_candidates__': continue
                 if a in ancestors.get(b,set()) or b in ancestors.get(a,set()):
                     out.append(finding('ERROR','PARALLEL_DEPENDENCY_CONFLICT',f'concurrency group {group} contains ancestor/descendant nodes {a} and {b}',a,b))
         for i in range(len(items)):
             for j in range(i+1,len(items)):
                 a,b=items[i],items[j]; na,nb=nodes.get(a.get('node_id')),nodes.get(b.get('node_id'))
                 if not na or not nb: continue
+                if group=='__unsequenced_candidates__' and (a['node_id'] in joint_ancestors.get(b['node_id'],set()) or b['node_id'] in joint_ancestors.get(a['node_id'],set())): continue
+                if schedule.get('mode') in ('parallel','hybrid') and ('forbidden' in (na.get('parallel_policy'),nb.get('parallel_policy'))):
+                    out.append(finding('ERROR','PARALLEL_FORBIDDEN',f'potential overlap between {a["node_id"]} and {b["node_id"]}; forbidden nodes require explicit sequencing',a['node_id'],b['node_id']))
                 aw=set(na.get('write_set',[])); bw=set(nb.get('write_set',[])); ar=set(na.get('read_set',[])); br=set(nb.get('read_set',[]))
                 lock_overlap=set(na.get('resource_locks',[])) & set(nb.get('resource_locks',[]))
                 rw_conflict=(aw & (bw|br)) | (bw & ar)
-                # Resource locks name shared external resources, not files in a workspace.
-                # Only disjoint, named workspaces can isolate local read/write conflicts.
-                safely_isolated=(a.get('isolation_mode')=='isolated_workspace' and b.get('isolation_mode')=='isolated_workspace'
-                                 and a.get('workspace_ref') and b.get('workspace_ref') and a['workspace_ref']!=b['workspace_ref'])
+                safely_isolated=(a.get('isolation_mode')=='isolated_workspace' and b.get('isolation_mode')=='isolated_workspace' and a.get('workspace_ref') and b.get('workspace_ref') and a['workspace_ref']!=b['workspace_ref'])
                 if lock_overlap or (rw_conflict and not safely_isolated):
                     refs=sorted(rw_conflict|lock_overlap)
                     out.append(finding('ERROR','PARALLEL_STATE_CONFLICT',f'concurrency group {group} has shared mutable/resource conflict between {a["node_id"]} and {b["node_id"]}: {refs}',a['node_id'],b['node_id']))
@@ -249,7 +257,9 @@ def compute_ready_nodes(plan, statuses_or_ledger, capability_routes=None):
 
 def validate_worker_proposal(plan, proposal, root: Path|None=None, current_state_version: int|None=None):
     out=[]
-    if root is not None: out += validate_schema(proposal,root/'schemas'/'worker-proposal.schema.json')
+    root = root or Path(__file__).resolve().parents[1]
+    out += validate_schema(proposal,root/'schemas'/'worker-proposal.schema.json')
+    if any(f.severity=='ERROR' for f in out): return out
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; nid=proposal.get('node_id')
     if proposal.get('plan_version')!=plan.get('plan_version'): out.append(finding('ERROR','WORKER_STALE_PLAN','worker proposal is based on stale plan_version',nid))
     if nid not in nodes: out.append(finding('ERROR','WORKER_UNKNOWN_NODE',f'worker proposal targets unknown node {nid}',nid)); return out
@@ -260,11 +270,21 @@ def validate_worker_proposal(plan, proposal, root: Path|None=None, current_state
     if current_state_version is not None and proposal.get('input_state_version')!=current_state_version:
         out.append(finding('ERROR','WORKER_STALE_INPUT_STATE',f'{nid} proposal is based on state_version {proposal.get("input_state_version")}, current is {current_state_version}',nid))
     allowed_writes=set(node.get('write_set',[])); proposed=set(proposal.get('write_set_proposed',[]) or [])
+    patch=proposal.get('proposed_state_patch')
+    if not isinstance(patch,dict):
+        out.append(finding('ERROR','WORKER_PATCH_FORMAT','patch must be an object of complete collection replacements',nid)); patch={}
+    actual=set(patch)
+    known={'requirements','acceptance_criteria','questions','answers','observations','evidence','premises','assumptions','hypotheses','uncertainties','relationships','inferences','judgments','objectives','constraints','alternatives','consequences','measurements','recommendations','decisions','risks','actions','artifacts','verification','effectiveness'}
+    if actual-known or any(not isinstance(v,list) for v in patch.values()):
+        out.append(finding('ERROR','WORKER_PATCH_FORMAT','only canonical collection-array replacements are supported; no scalar/header/path mutations',nid))
+    if actual != proposed:
+        out.append(finding('ERROR','WORKER_PATCH_DECLARATION','declared write set must equal actual replacement collections',nid))
+    proposed |= actual
     extra=proposed-allowed_writes
     if extra: out.append(finding('ERROR','WORKER_WRITE_SCOPE',f'{nid} proposal writes outside node write_set: {sorted(extra)}',nid,*sorted(extra)))
     return out
 
-def classify_worker_proposals(plan, proposals, root: Path|None=None, current_state_version: int|None=None):
+def classify_worker_proposals(plan, proposals, root: Path|None=None, current_state_version: int|None=None, submission_verifier=None):
     findings=[]; accepted=[]; stale=[]; conflicting=set()
     counts=Counter(p.get('proposal_id') for p in proposals if isinstance(p,dict))
     for p in proposals:
@@ -276,10 +296,18 @@ def classify_worker_proposals(plan, proposals, root: Path|None=None, current_sta
         if p.get('declared_status')!='proposed_complete':
             findings.append(finding('ERROR','WORKER_RESULT_NOT_COMPLETE','only proposed_complete results may be merged',p.get('proposal_id')))
             stale.append(p.get('proposal_id')); continue
+        if submission_verifier is None:
+            findings.append(finding('ERROR','WORKER_HOST_CONTEXT_REQUIRED','trusted host must verify live identity, attempt, lease, authorization, cancellation and CAS before admission',p.get('proposal_id')))
+            stale.append(p.get('proposal_id')); continue
+        try: host_ok=submission_verifier(p,plan,current_state_version) is True
+        except Exception: host_ok=False
+        if not host_ok:
+            findings.append(finding('ERROR','WORKER_HOST_CONTEXT_REJECTED','trusted live submission verifier rejected proposal',p.get('proposal_id')))
+            stale.append(p.get('proposal_id')); continue
         accepted.append(p)
     for i in range(len(accepted)):
         for j in range(i+1,len(accepted)):
-            a,b=accepted[i],accepted[j]; overlap=set(a.get('write_set_proposed',[])) & set(b.get('write_set_proposed',[]))
+            a,b=accepted[i],accepted[j]; overlap=set(a.get('proposed_state_patch',{})) & set(b.get('proposed_state_patch',{}))
             if overlap:
                 conflicting.update([a.get('proposal_id'),b.get('proposal_id')])
                 findings.append(finding('ERROR','WORKER_PATCH_CONFLICT',f'worker proposals {a.get("proposal_id")} and {b.get("proposal_id")} overlap write set {sorted(overlap)}',a.get('proposal_id'),b.get('proposal_id')))
@@ -374,7 +402,7 @@ def validate_checkpoint_chain(checkpoints, root: Path):
 
 def effective_replay_safety(node, ledger_entry):
     order={'safe':0,'idempotent':1,'detectable':2,'unsafe':3}
-    declared=node.get('replay_safety','safe')
+    declared=node.get('replay_safety', 'unsafe' if node.get('side_effect_class','none')!='none' else 'safe')
     observed=ledger_entry.get('replay_safety') or declared
     if declared not in order or observed not in order:
         return 'unsafe'
@@ -386,10 +414,19 @@ def compute_resume_actions(plan, ledger, checkpoint):
     for nid in checkpoint.get('running_nodes',[]) or []:
         node=nodes.get(nid); ns=state.get(nid,{})
         if not node: continue
+        status=ns.get('effective_status')
+        if status in ('cancelled','verified_complete','failed'):
+            actions.append({'node_id':nid,'resume_action':'blocked_terminal_state','effective_status':status}); continue
+        if not ns or (ledger or {}).get('plan_id') != plan.get('plan_id') or checkpoint.get('state_version') != (ledger or {}).get('state_version') or checkpoint.get('plan_version') != plan.get('plan_version') or (ledger or {}).get('plan_version') != plan.get('plan_version'):
+            actions.append({'node_id':nid,'resume_action':'reconcile_required'}); continue
+        if status!='running':
+            actions.append({'node_id':nid,'resume_action':'reconcile_required'}); continue
         replay=effective_replay_safety(node,ns)
         receipts=ns.get('side_effect_receipts',[]) or []
+        if node.get('side_effect_class','none')!='none' and replay=='safe':
+            actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts)}); continue
         if replay=='safe': actions.append({'node_id':nid,'resume_action':'rerun_allowed'})
-        elif replay=='idempotent': actions.append({'node_id':nid,'resume_action':'rerun_with_idempotency_key'})
+        elif replay=='idempotent': actions.append({'node_id':nid,'resume_action':'verify_bound_idempotency_key_before_retry'})
         elif replay=='detectable': actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts)})
         else: actions.append({'node_id':nid,'resume_action':'external_confirmation_required','receipt_present':bool(receipts)})
     return actions

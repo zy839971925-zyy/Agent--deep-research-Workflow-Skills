@@ -152,7 +152,41 @@
       "then": {
         "required": [
           "hash_algorithm"
+        ],
+        "properties": {
+          "hash_algorithm": {
+            "enum": [
+              "sha256",
+              "sha512"
+            ]
+          },
+          "content_hash": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "record_kind": {
+            "const": "derived"
+          }
+        },
+        "required": [
+          "record_kind"
         ]
+      },
+      "then": {
+        "required": [
+          "derived_from"
+        ],
+        "properties": {
+          "derived_from": {
+            "minItems": 1
+          }
+        }
       }
     }
   ]

@@ -1,0 +1,48 @@
+{
+  "schema_version": "2.0",
+  "work_id": "SYNTHETIC-DR-16",
+  "state_version": 7,
+  "generated_at": "2026-10-21T10:00:00Z",
+  "requirements": [
+    {
+      "id": "req1",
+      "declared_status": "satisfied",
+      "artifact_refs": [
+        "art1"
+      ],
+      "verification_refs": [
+        "v1"
+      ]
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "acc1",
+      "declared_status": "satisfied",
+      "artifact_refs": [
+        "art1"
+      ],
+      "verification_refs": [
+        "v1"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "art1",
+      "path": "answer.txt",
+      "role": "answer",
+      "based_on_state_version": 7,
+      "verification_refs": [
+        "v1"
+      ],
+      "represents": [
+        "a1"
+      ],
+      "declared_current": true
+    }
+  ],
+  "declared_delivery_ready": true,
+  "blocking_items": [],
+  "inconsistencies": []
+}

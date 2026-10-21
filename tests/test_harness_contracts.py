@@ -137,13 +137,14 @@ class DeliveryContracts(unittest.TestCase):
         manifest = copy.deepcopy(self.manifest)
         manifest["artifacts"][0]["declared_current"] = False
         findings, computed = validate_delivery(self.state, manifest)
-        self.assertIn("ART_NOT_CURRENT", codes(findings))
+        self.assertIn("ART_CURRENT_DOWNGRADE", codes(findings))
         self.assertFalse(computed["computed_delivery_ready"])
 
     def test_existing_current_artifact_can_be_delivered(self):
         with tempfile.TemporaryDirectory() as directory:
             Path(directory, "report.txt").write_text("result")
             self.manifest["artifacts"][0]["path"] = "report.txt"
+            self.state["artifacts"][0].update(path="report.txt", role="deliverable")
             findings, computed = validate_delivery(self.state, self.manifest, Path(directory))
             self.assertNotIn("ART_FILE_MISSING", codes(findings))
             self.assertTrue(computed["computed_delivery_ready"])
@@ -234,7 +235,12 @@ class LearningContracts(unittest.TestCase):
             {"learning_id": "one", "tier": 1, "status": "validated", "task_signature": ["research"]},
             {"learning_id": "two", "tier": 2, "status": "validated", "task_signature": ["research"]},
         ]
-        selected = retrieve(records, ["research"], [], limit=3)
+        base = json.loads((ROOT / "tests/fixtures/learning_intrinsic_flag_false.json").read_text())
+        for r in records:
+            for k,v in base.items(): r.setdefault(k, v)
+            r['provenance']={'feedback_types':['deterministic_verifier'],'intrinsic_reflection_only':False}
+            r['source_eval_refs']=['trusted-eval']
+        selected = retrieve(records, ["research"], [], limit=3, validation_resolver=lambda ref: ref=='trusted-eval')
         self.assertEqual([item["learning_id"] for item in selected], ["one"])
 
 

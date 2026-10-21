@@ -23,7 +23,7 @@ def validate(state: dict, root: Path | None = None):
     runtime_closure=compute_runtime_closure(state,registry)
     if state.get('declared_status')=='closed' and state.get('lane') in ('question','mixed') and not closure['computed_epistemic_closed']:
         for b in closure['blockers']: findings.append(finding('ERROR','EPISTEMIC_CLOSURE_BLOCKED',b,state.get('root_question_ref') or ''))
-    if state.get('declared_status')=='closed' and state.get('lane') in ('action','mixed') and not runtime_closure['computed_runtime_closed']:
+    if state.get('declared_status')=='closed' and runtime_closure['applicable'] and not runtime_closure['computed_runtime_closed']:
         for b in runtime_closure['blockers']: findings.append(finding('ERROR','RUNTIME_CLOSURE_BLOCKED',b))
     # material effective stale items are blockers for declared delivery/closure
     if state.get('declared_status') in ('closed','delivery_ready'):

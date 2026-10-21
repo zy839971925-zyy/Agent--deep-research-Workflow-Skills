@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/reasoning-workflow/worker-proposal.schema.json",
-  "title": "Reasoning Workflow Worker Proposal v1",
+  "title": "Worker Proposal v1.1 (collection-array replacements)",
   "type": "object",
   "required": [
     "schema_version",
@@ -22,29 +22,135 @@
     "declared_status"
   ],
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "proposal_id": {"type": "string", "minLength": 1},
-    "node_id": {"type": "string", "minLength": 1},
-    "plan_version": {"type": "integer", "minimum": 1},
-    "node_contract_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
-    "attempt_id": {"type": "string", "minLength": 1},
-    "executor_id": {"type": "string", "minLength": 1},
-    "input_state_version": {"type": "integer", "minimum": 0},
-    "input_refs": {"$ref": "#/$defs/strs"},
-    "evidence_refs": {"$ref": "#/$defs/strs"},
-    "output_refs": {"$ref": "#/$defs/strs"},
-    "proposed_state_patch": {"type": "object"},
-    "read_set_observed": {"$ref": "#/$defs/strs"},
-    "write_set_proposed": {"$ref": "#/$defs/strs"},
-    "result_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
-    "uncertainty": {"type": "array", "items": {"type": "object"}},
-    "failed_routes": {"type": "array", "items": {"type": "object"}},
-    "conflicts": {"type": "array", "items": {"type": "object"}},
-    "writes_canonical_state": {"type": "boolean", "const": false},
-    "declared_status": {"type": "string", "enum": ["running", "blocked", "failed", "proposed_complete"]}
+    "schema_version": {
+      "const": "1.1"
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "node_contract_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_state_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "input_refs": {
+      "$ref": "#/$defs/strs"
+    },
+    "evidence_refs": {
+      "$ref": "#/$defs/strs"
+    },
+    "output_refs": {
+      "$ref": "#/$defs/strs"
+    },
+    "proposed_state_patch": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "requirements",
+          "acceptance_criteria",
+          "questions",
+          "answers",
+          "observations",
+          "evidence",
+          "premises",
+          "assumptions",
+          "hypotheses",
+          "uncertainties",
+          "relationships",
+          "inferences",
+          "judgments",
+          "objectives",
+          "constraints",
+          "alternatives",
+          "consequences",
+          "measurements",
+          "recommendations",
+          "decisions",
+          "risks",
+          "actions",
+          "artifacts",
+          "verification",
+          "effectiveness"
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "read_set_observed": {
+      "$ref": "#/$defs/strs"
+    },
+    "write_set_proposed": {
+      "$ref": "#/$defs/strs"
+    },
+    "result_fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "failed_routes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "writes_canonical_state": {
+      "type": "boolean",
+      "const": false
+    },
+    "declared_status": {
+      "type": "string",
+      "enum": [
+        "running",
+        "blocked",
+        "failed",
+        "proposed_complete"
+      ]
+    }
   },
   "additionalProperties": false,
   "$defs": {
-    "strs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+    "strs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
   }
 }

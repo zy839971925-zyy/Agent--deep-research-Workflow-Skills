@@ -1,0 +1,136 @@
+{
+  "release": "2.1.1",
+  "baseline_archive_sha256": "9dbb6641cd060b90e1eeface7f05fc120a9dd4cce1390c00f9a9993b5d563898",
+  "baseline_files": 104,
+  "removed_files": [],
+  "original_regression_script_unchanged": true,
+  "original_39_cases_retained": true,
+  "changed_baseline_files": [
+    {
+      "path": "CHANGELOG.md",
+      "before_sha256": "e8b4f68b400ac03b1a2fcab0c9eb578039eb866b89d88b6f9b97d2d468d3dd67",
+      "after_sha256": "f244a5c415d25db3309225afbf38d5ee4000e63df45c3a148b5eed0d703ba69b"
+    },
+    {
+      "path": "README.md",
+      "before_sha256": "bff55ac8487ffa1ad91f2ed2f038ad009283cc363ec2a434eac9b87bd455dcfb",
+      "after_sha256": "d79f91fd725405dffc96845fe6eb4ec0d8ea22aa1eccb70befd814acca5ce9e4"
+    },
+    {
+      "path": "SHA256SUMS",
+      "before_sha256": "a050c96e657bdc49c9d0487ccc53024882cd0e87c45dc94be9db05b9235fe270",
+      "after_sha256": null,
+      "reason": "Final SHA256SUMS includes this inventory; omit cyclic digest. Final bytes are covered by the outer ZIP digest."
+    },
+    {
+      "path": "SKILL.md",
+      "before_sha256": "00a3aca674bced83d04f0af70a3552bf1626b8c746d33c1ca7ed7414432e4f7c",
+      "after_sha256": "dad48bb9af9185b44763e0cd0c0b9a44c7aca6e361640ccc6926c3bb817283be"
+    },
+    {
+      "path": "TEST_REPORT.md",
+      "before_sha256": "93a8648f78f36d0b219b6b6c559019fe325fa225774d73351ef0c4a340ea66d3",
+      "after_sha256": "ef62eafe41d124337ff1d9ff266a65c602385e3fe06bbb942f27e1f391a51bf9"
+    },
+    {
+      "path": "UPGRADE.md",
+      "before_sha256": "6a9de25236eb44932a021fe1ea2b0e09d9d06f576c7ac9bac647a6aa3dc2dc09",
+      "after_sha256": "e7b72bff7eb570682dd8a6972f24e7d4d0079c0429fc0c95f2da24157b8e3f91"
+    },
+    {
+      "path": "docs/BUILD_SOURCE_COMPARISON.json",
+      "before_sha256": "0aed487cd305c0efbc26ba493980788376f123054ba143a34b73e3f09c54c493",
+      "after_sha256": "efcfc5f755ee72d8a67afbbedfc09318c2768f4c07073aa1d608a8a9eaff3d26"
+    },
+    {
+      "path": "docs/PACKAGE_VALIDATION.json",
+      "before_sha256": "0a411d114f2a3de99220866f897cb8c82c38807193a4fb2dfc223cbbe0abb803",
+      "after_sha256": "4dbf5f839392b8126a27b0d6aae58e5e5993cbf17ae6da3ec1c8cbe1f6619193"
+    },
+    {
+      "path": "references/host-adapter.md",
+      "before_sha256": "98191174a42b2062c318534b571553aebc5c4d08ee6b11551d1dd3ac11bcaeb7",
+      "after_sha256": "f6c504813aaa4dd9a1b0c4247cb019b40784756de8f429982bba9adc198ebf67"
+    },
+    {
+      "path": "references/runtime-and-delegation.md",
+      "before_sha256": "b0afbc0d85ab65aca990b82ac3d181e0d588a6caae811ae235be346dfe2d2a84",
+      "after_sha256": "96c6973a37d4d60c453706c6808fb5f5f070aeb346045e059d0b0f4765bd7e73"
+    },
+    {
+      "path": "routing-index.json",
+      "before_sha256": "a76e56f1e7702bc24f1187c1dc7b4fa4506af13ccd8a29738a0ab29d468ed625",
+      "after_sha256": "3760932f734f882ac846c8311ad067c6a2eb77e60cf67b78d067ea59f7c45a3a"
+    },
+    {
+      "path": "schemas/delivery-manifest.schema.json",
+      "before_sha256": "207f7d41cd8556b6dc24d5e8320d3d63a210afa39cf9665a88eea2c9fd773c37",
+      "after_sha256": "7f08991861eaaad5c5bed1095e66b0051e32f7c6d0ca64a1366c7708dd1b26cb"
+    },
+    {
+      "path": "scripts/learning_core.py",
+      "before_sha256": "d673c807885ccb9e892f322f1f432f93f51b78e17e474bdcfb5d16d6dfa0a05c",
+      "after_sha256": "3072b1cfec45c484f61a4f913c4baba2d782fc76fa900609a857046108df1ee9"
+    },
+    {
+      "path": "scripts/route_resources.py",
+      "before_sha256": "3efa9b09c22835dfcade89ee9ed2fb41fb8c419d34835c0041e0f94499ca8482",
+      "after_sha256": "1dc2479138ed984e82ff91f8df3d0be6390cfae507d65f71d7ac315f29dc8a95"
+    },
+    {
+      "path": "scripts/routing_core.py",
+      "before_sha256": "f2d1c978b842f1efd0c9677ab923cbe8d5af52d8f21a1be5d9814990c6e55083",
+      "after_sha256": "00115887c4e394060c26473d6d7d24e750cd8203f9cff97048f1f47969028a5d"
+    },
+    {
+      "path": "scripts/runtime_core.py",
+      "before_sha256": "3128e85ba39006a6be9e6d6f8997064c2a0b1c9dfb8712e7bd6057b5a8c40137",
+      "after_sha256": "c10323754233df0c2f422a7b55dc8b1b7b21029d867351b6f941e891b59c54e5"
+    },
+    {
+      "path": "scripts/semantic_core.py",
+      "before_sha256": "8675dfd63102938da41280d6fe40c0722bb172e33749b2e1f20976d76986379a",
+      "after_sha256": "790cd9252d9e16aa0e273a1a597edcef9ce5c4059e00cfaea0ce26fe70550060"
+    },
+    {
+      "path": "scripts/validate_delivery.py",
+      "before_sha256": "0de79b75217703c5bebe7f315cc56b89bb8a46e6673808cdfdca5bb9cdfa41f5",
+      "after_sha256": "50d55aeca3c39cb6f7ba1cf9c36f674d12c7b3b56d82d140c08a0be5de869e23"
+    },
+    {
+      "path": "scripts/validate_state.py",
+      "before_sha256": "188ed7c9e4b56a35ccf183aa1d1f1df353add3bae0626e2441ed9e9de06ad0aa",
+      "after_sha256": "0438f9fe0bfc3d1bf98e86739447062f16518aed8043d84f8ed044e45c80db3b"
+    },
+    {
+      "path": "scripts/validate_workflow.py",
+      "before_sha256": "72ef1bc1c346e2fca214988b57b26a9ae64ba8d5e28717d41e000d8ef55ba72b",
+      "after_sha256": "67ddaed40172a625a821d05e346b4297fdcab3abe4a44f537bc2d052c47b6b2d"
+    },
+    {
+      "path": "tests/results/cli_receipts.json",
+      "before_sha256": "40399c17a3d7d8f3881172f4dc406214d27c18854f077490078f3d66d2e32693",
+      "after_sha256": "99fe3d13fb28a97bce54e829081d65d16a17238fcca7a0fc4049a21ee696d7b3"
+    }
+  ],
+  "added_paths": [
+    "RELEASE.json",
+    "docs/BUILD_SOURCE_COMPARISON_2.1.1.json",
+    "docs/PACKAGE_VALIDATION_2.1_BASELINE.json",
+    "docs/PATCH_2.1.1.diff",
+    "docs/RELEASE_2.1.1.zh-CN.md",
+    "docs/TEST_REPORT_2.1_BASELINE.md",
+    "scripts/prepare_task.py",
+    "scripts/reference_core.py",
+    "tests/audit_repro/adversarial_probes.py",
+    "tests/audit_repro/original_2.1_observations.json",
+    "tests/check_package.py",
+    "tests/results/cli_receipts_2_1_1.json",
+    "tests/results/original_probes_after.json",
+    "tests/results/regression_2_1_1.log",
+    "tests/results/summary_2_1_1.json",
+    "tests/run_all.py",
+    "tests/test_2_1_1.py"
+  ],
+  "note": "Per-file baseline comparison for the finished release. SHA256SUMS digest is intentionally excluded to avoid circular hashing; it is regenerated last. No removed baseline file and no remote write."
+}

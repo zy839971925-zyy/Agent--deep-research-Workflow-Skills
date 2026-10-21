@@ -1,0 +1,13 @@
+{
+  "release_version": "2.1.1",
+  "passed": true,
+  "markdown_files_checked": 46,
+  "local_markdown_links_checked": 274,
+  "local_markdown_anchors_checked": 8,
+  "python_ast_checked": 24,
+  "json_parsed": 45,
+  "json_schemas_checked": 14,
+  "routing_reference_paths_checked": 26,
+  "failures": [],
+  "note": "Static package structure only; not model compliance, dependency installation or external execution."
+}

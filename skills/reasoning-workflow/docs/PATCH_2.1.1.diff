@@ -1,0 +1,661 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -3,7 +3,7 @@
+ description: Lightweight general execution workflow for questions, research, artifacts, code, coordination and persistent projects. Calibrate depth independently from autonomy; load strategies only for real gaps, execute within authority, verify the actual result, and preserve constraints through changes.
+ ---
+ 
+-# Reasoning Workflow 2.1
++# Reasoning Workflow 2.1.1
+ 
+ ## Start with the result, not the process
+ 
+@@ -23,7 +23,7 @@
+ - Max: intensify bottleneck-directed investigation and independent challenge.
+ - Ultra: also challenge the problem representation, evidence ecology, missingness and shared failure paths; reconnect all branches to the root answer.
+ 
+-These are effort choices, not compulsory output sections or agent quotas. If useful, record a [Task Profile](schemas/task-profile.schema.json) and route with `scripts/route_task.py`. `requested_depth` records explicit steering. A Light payment still needs full approval; Ultra public research need not become a transaction system.
++These are effort choices, not compulsory output sections or agent quotas. If useful, record a [Task Profile](schemas/task-profile.schema.json) and route with `scripts/route_task.py`. For recorded tasks, `scripts/prepare_task.py` normalizes the profile and returns required resources in one step; Ultra must include `ultra-research`, or report blocked, never silently downgrade. `requested_depth` records explicit steering. A Light payment still needs full approval; Ultra public research need not become a transaction system.
+ 
+ ## A small working loop
+ 
+@@ -31,7 +31,7 @@
+ 2. Advance: answer, investigate, make, coordinate or execute the next useful step. Load only the strategy needed below.
+ 3. Integrate: update the existing task picture; preserve compatible constraints. Changed assumptions invalidate affected conclusions and artifacts, not unrelated work.
+ 4. Verify: check the actual result and relevant object/version, at the required strength. Independent review needs a different supported failure path, not merely another reviewer.
+-5. Close or wait honestly: deliver the requested outcome, or retain usable progress, the exact blocker and the real resumption trigger. A scheduled check is not the outcome.
++5. Close or wait honestly: deliver the requested outcome, or retain usable progress, the exact blocker and the real resumption trigger. A scheduled check is not the outcome. A recorded partial handoff uses `delivery_kind=partial`, names remaining work/obligations and never claims task completion.
+ 
+ No need to narrate this loop. For sustained work, use existing canonical state rather than maintaining a second progress database. “Current obligations” means just the conditions this task currently has to satisfy.
+ 
+--- a/references/host-adapter.md
++++ b/references/host-adapter.md
+@@ -29,7 +29,7 @@
+ 
+ Inputs are the normalized current profile, its exact deterministic route, canonical work-state, manifest and `review-bundle.schema.json` sidecar. Each review uses the existing dual-verification record plus target references, a fingerprint, actual context exposure and, when claiming orthogonal review, evidence references. The existing dual CLI retains `passed` as a record-validity compatibility alias and now exposes `record_valid` and `verification_passed` separately. A valid failed record is not a passing review.
+ 
+-Generate `fingerprint(state, target_refs)` from `validate_workflow.py`. It includes target records and reachable record dependencies, excluding traversal through verification_refs. It binds only that scope, not a global state version: an unchanged artifact based on an older version can remain valid. Changes to the target/dependency records invalidate its review. A target's verification_refs field is itself part of the target bytes, so set final bindings before fingerprinting.
++Generate `fingerprint(state, target_refs)` from `validate_workflow.py`. It includes target records and reachable singular/plural record dependencies (`from_ref`, `to_ref`, `*_ref`, `*_refs`, `depends_on`, `derived_from`, `supports`, `contradicts`, `represents`, `implements`), excluding traversal through verification_refs. Cycles terminate without discarding reachable nodes; unresolved dependencies or duplicate IDs reject the fingerprint. It binds only that scope, not a global state version: an unchanged artifact based on an older version can remain valid. Changes to the target/dependency records invalidate its review. A target's verification_refs field is itself part of the target bytes, so set final bindings before fingerprinting.
+ 
+ Material answers/artifacts/recommendations/decisions need passing reviews at least as strong as the current route, matching canonical verification IDs and target refs. The strict bridge rejects profiles whose explicit depth requires normalization; routing CLI returns the updated profile and version. Direct API routing applies the same normalization but does not mutate the caller's profile.
+ 
+@@ -41,6 +41,12 @@
+ 
+ The standalone CLI deliberately has no worker JSON flag or credential mechanism for this callback. Without host integration it reports the strong requirement unverified and exits 1, even if its records are structurally valid. Single/minimal ordinary structural checks remain available without claiming evidence authentication. Regression tests use an explicitly synthetic callback only to exercise interface behavior, not certify any real independent reviewer. Do not turn this adapter into a new identity platform or claim the Skill authenticates methods by itself. `packet_only` must be a trusted observation, not a worker's guess. Unknown exposure may not claim fresh-context credit; different models or tools do not automatically remove common-source failure. The bridge does not authenticate review authors or sign records; use only trusted, reviewed input storage. It reports `host_execution_verified=false` even when local checks pass.
+ 
++## Partial handoff
++
++Question, Action and Mixed lanes all honor explicit material requirements/acceptance and runtime obligations. A Question lane label cannot hide a blocked required deliverable.
++
++A valid intermediate result may use the optional manifest fields `delivery_kind: "partial"`, `remaining_work` (nonempty), `remaining_obligation_refs` (all unresolved material requirement/acceptance IDs), and `declared_delivery_ready: false`. The canonical task must remain open/blocked rather than closed/ready. Existing byte, reference, status consistency and material-artifact checks still apply. `computed_partial_ready: true` means only that the intermediate handoff is structurally admissible; `computed_delivery_ready` and `computed_task_complete` remain false. Full closure is not waived and the remaining task is not automatically scheduled or executed.
++
+ ## Capabilities
+ 
+ Capability snapshots are routing/preflight data, not final operation authorization. Existing allowed/denied/approval_required gates remain, but the host rechecks principal, actual action/target, constraints and freshness at use. Do not impose one universal TTL or accept freeform scope as authorization. Missing integration means blocked/unsupported for the affected operation, not permission to downgrade it silently.
+@@ -51,4 +57,6 @@
+ 
+ For local tests/operators, both learning CLIs accept `--validation-evidence INDEX.json`. This trusted-host index maps a validation ref to `{path, sha256, verdict: "pass", kind}`; permitted kinds are `external_evaluation`, `human_feedback`, `deterministic_test`, `external_observation`. Paths must stay under the index directory and bytes must match SHA-256. The index is host-curated, not worker-supplied. Digest identity is not a semantic evaluation or proof of who issued an evaluation; the operator must inspect or authenticate its provenance. A forged index from an untrusted source grants no credit.
+ 
++For promoted Tier2, `held_out_eval_refs` also requires role-aware evidence. Promoted Tier3 additionally verifies regression, baseline, dual-review and rollback evidence. Each gate index entry needs `roles` (matching gate role), `learning_ids` (including this lesson), `current: true`, `subject_sha256: learning_subject_fingerprint(record)`, and `verdict: "pass"`, plus the path/hash. Gate `kind` must match: regression → `deterministic_test`; held_out → `external_evaluation` or `deterministic_test`; baseline → `baseline_comparison`; dual_review → `independent_review` plus `independence_verified: true`; rollback → `rollback_plan`. The bound lesson fingerprint covers ID/tier/signature/lesson/conditions/proposed patches; changing these requires fresh gate evidence. The resolver API is `resolver(ref, role=role, record=record)`. Gate verdicts and current/independence labels remain host-authenticated responsibilities; this offline index cannot turn a worker's invented record into real evidence.
++
+ Ordinary retrieval defaults to Tier1 only. `--maintenance` also reads admitted Tier2/3 material as advisory evidence, never as instructions or canonical-application permission. Existing promoted gates (regression, held-out, baseline, dual review, rollback) still apply. No CLI writes the learning library or promotes a rule automatically.
+--- a/references/runtime-and-delegation.md
++++ b/references/runtime-and-delegation.md
+@@ -95,3 +95,7 @@
+ Trigger broad replanning from model-changing evidence, not from every transient tool error. Preserve unaffected plan semantics and completed work.
+ 
+ [← Return to root workflow](../SKILL.md)
++
++## 2.1.1 ordering clarification
++
++`parallel_policy=forbidden` cannot be bypassed by omitting `concurrency_group` or using different group names. In parallel/hybrid schedules a forbidden node must be explicitly ordered against every other assigned node through an acyclic dependency/`starts_after` chain; serial schedules retain ordered semantics. Group labels are descriptive, not host-enforced isolation or sequencing. Independent allowed nodes remain eligible for parallel scheduling.
+--- a/routing-index.json
++++ b/routing-index.json
+@@ -1,6 +1,6 @@
+ {
+   "schema_version": "1.0",
+-  "rule": "Related links are navigation hints, never automatic-load instructions. Load references only through the active route and current unresolved gap.",
++  "rule": "Related links are navigation hints, never automatic-load instructions. Load references through the current deterministic route and real unresolved gaps; required_reference_ids (including explicit Ultra methods) cannot be dropped by phase limits or missing tags.",
+   "families": [
+     {
+       "id": "core-reasoning",
+--- a/schemas/delivery-manifest.schema.json
++++ b/schemas/delivery-manifest.schema.json
+@@ -189,7 +189,50 @@
+         },
+         "additionalProperties": false
+       }
++    },
++    "delivery_kind": {
++      "enum": [
++        "complete",
++        "partial"
++      ]
++    },
++    "remaining_work": {
++      "type": "string",
++      "minLength": 1
++    },
++    "remaining_obligation_refs": {
++      "type": "array",
++      "items": {
++        "type": "string",
++        "minLength": 1
++      },
++      "uniqueItems": true
+     }
+   },
+-  "additionalProperties": false
++  "additionalProperties": false,
++  "allOf": [
++    {
++      "if": {
++        "properties": {
++          "delivery_kind": {
++            "const": "partial"
++          }
++        },
++        "required": [
++          "delivery_kind"
++        ]
++      },
++      "then": {
++        "required": [
++          "remaining_work",
++          "remaining_obligation_refs"
++        ],
++        "properties": {
++          "declared_delivery_ready": {
++            "const": false
++          }
++        }
++      }
++    }
++  ]
+ }
+--- a/scripts/learning_core.py
++++ b/scripts/learning_core.py
+@@ -37,7 +37,19 @@
+     refs=record.get('validation_evidence_refs') or record.get('source_eval_refs') or record.get('eval_refs') or []
+     try: verified=bool(refs) and callable(resolver) and all(resolver(ref) is True for ref in refs)
+     except Exception:verified=False
+-    return [] if verified else [{'severity':'ERROR','code':'LEARNING_VALIDATION_UNVERIFIED','message':'validated credit requires trusted validation evidence resolver; record labels alone are insufficient'}]
++    findings=[] if verified else [{'severity':'ERROR','code':'LEARNING_VALIDATION_UNVERIFIED','message':'validated credit requires trusted validation evidence resolver; record labels alone are insufficient'}]
++    gates={}
++    if record.get('status')=='promoted' and record.get('tier') in (2,3): gates['held_out_eval_refs']='held_out'
++    if record.get('status')=='promoted' and record.get('tier')==3:
++        gates.update(regression_refs='regression',baseline_comparison_ref='baseline',dual_review_ref='dual_review',rollback_ref='rollback')
++    for field,role in gates.items():
++        values=record.get(field) or []
++        values=values if isinstance(values,list) else [values]
++        try:
++            valid=bool(values) and callable(resolver) and all(resolver(ref,role=role,record=record) is True for ref in values)
++        except Exception: valid=False
++        if not valid: findings.append({'severity':'ERROR','code':'LEARNING_PROMOTION_EVIDENCE_UNVERIFIED','message':field+' requires typed, applicable, passing host evidence, not a nonempty reference'})
++    return findings
+ 
+ 
+ def admit_record(record,root,validation_resolver=None):
+@@ -46,6 +58,14 @@
+     if fs:return fs
+     return validate_learning_semantics(record)+validation_findings(record,validation_resolver)
+ 
++
++def learning_subject_fingerprint(record):
++    """Bind promotion evidence to the proposed lesson, not status/usage/ref bookkeeping."""
++    import hashlib,json
++    fields=('learning_id','tier','task_signature','failure_mode','root_cause_class','lesson_type',
++        'heuristic','applicability_conditions','anti_conditions','proposed_patch_refs')
++    payload={k:record[k] for k in fields if k in record}
++    return hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+ 
+ def file_evidence_resolver(index_path):
+     """Offline trusted-host evidence index. Byte identity is not semantic truth.
+@@ -56,9 +76,17 @@
+     if index_path is None:return None
+     path=Path(index_path).resolve();data=json.loads(path.read_text());base=path.parent
+     if not isinstance(data,dict):raise ValueError('validation evidence index must be an object')
+-    def verify(ref):
++    def verify(ref,role=None,record=None):
+         entry=data.get(ref,{})
+-        if entry.get('verdict')!='pass' or entry.get('kind') not in ('external_evaluation','human_feedback','deterministic_test','external_observation'):return False
++        if not isinstance(entry,dict) or entry.get('verdict')!='pass':return False
++        kinds={'external_evaluation','human_feedback','deterministic_test','external_observation'}
++        if role is not None:
++            kinds={'regression':{'deterministic_test'},'held_out':{'external_evaluation','deterministic_test'},
++                'baseline':{'baseline_comparison'},'dual_review':{'independent_review'},'rollback':{'rollback_plan'}}.get(role,set())
++            if (not record or role not in entry.get('roles',[]) or record.get('learning_id') not in entry.get('learning_ids',[]) or
++                entry.get('current') is not True or entry.get('subject_sha256') != learning_subject_fingerprint(record)):return False
++            if role=='dual_review' and entry.get('independence_verified') is not True:return False
++        if entry.get('kind') not in kinds:return False
+         try:
+             p=(base/entry['path']).resolve();p.relative_to(base)
+             return hashlib.sha256(p.read_bytes()).hexdigest()==entry['sha256']
+--- /dev/null
++++ b/scripts/prepare_task.py
+@@ -0,0 +1,38 @@
++#!/usr/bin/env python3
++"""Normalize and prepare references in one step; never executes the task or tools."""
++from pathlib import Path
++import argparse,json
++from routing_core import validate_profile,recheck_profile,route_task
++from route_resources import select
++ROOT=Path(__file__).resolve().parents[1]
++
++def prepare(profile,signals=(),gap_tags=(),root=ROOT):
++    errors=validate_profile(profile,root)
++    if errors:
++        return {'passed':False,'status':'invalid_profile','errors':errors,'task_executed':False}
++    profile=recheck_profile(profile,signals)
++    route=route_task(profile)
++    try:
++        index=json.loads((root/'routing-index.json').read_text())
++        selected=select(index,route,profile,gap_tags)
++        for ref in selected:
++            path=(root/ref['path']).resolve()
++            path.relative_to(root.resolve())
++            if not path.is_file():raise ValueError('REQUIRED_RESOURCE_UNAVAILABLE: '+ref['reference_id'])
++        ids={x['reference_id'] for x in selected};tags=set(gap_tags or profile.get('active_gap_tags',[]))
++        allowed=set(route['required_families'])|set(route['optional_families'])
++        deferred=[{'reference_id':x['id'],'path':x['path'],'reason':'matching_gap_next_phase'} for x in index['references']
++            if x['id'] not in ids and x['family'] in allowed and tags&set(x.get('load_when_tags',[]))]
++    except (ValueError,KeyError,TypeError,OSError) as exc:
++        return {'passed':False,'status':'blocked','task_profile':profile,'route':route,'errors':[str(exc)],
++            'next_action':'Restore required resources or disclose an explicit capability-limited result; do not claim full requested-depth execution.', 'task_executed':False}
++    return {'passed':True,'status':'prepared','task_profile':profile,'route':route,
++        'selected_references':selected,'deferred_references':deferred,'task_executed':False,
++        'authority_granted':False}
++
++def main():
++    p=argparse.ArgumentParser(description=__doc__);p.add_argument('profile');p.add_argument('--signal',action='append',default=[]);p.add_argument('--gap-tag',action='append',default=[]);a=p.parse_args()
++    try:result=prepare(json.loads(Path(a.profile).read_text()),a.signal,a.gap_tag)
++    except (ValueError,TypeError,OSError) as e:result={'passed':False,'status':'invalid_input','errors':[str(e)],'task_executed':False}
++    print(json.dumps(result,indent=2));return 0 if result['passed'] else 1
++if __name__=='__main__':raise SystemExit(main())
+--- /dev/null
++++ b/scripts/reference_core.py
+@@ -0,0 +1,35 @@
++"""Canonical record dependency traversal; not external source authentication."""
++from semantic_core import build_registry
++EXTRA_REFERENCE_FIELDS = {'depends_on', 'derived_from', 'supports', 'contradicts', 'represents', 'implements'}
++
++def record_dependencies(record):
++    for key, value in record.items():
++        if key == 'verification_refs':  # review backlink, not underlying target evidence
++            continue
++        if key.endswith('_ref') or key.endswith('_refs') or key in EXTRA_REFERENCE_FIELDS:
++            if value is None:
++                continue
++            values = value if isinstance(value, list) else [value]
++            for ref in values:
++                if not isinstance(ref, str) or not ref:
++                    raise ValueError('invalid canonical dependency ' + key)
++                yield ref
++
++def dependency_closure(state, refs):
++    registry, findings = build_registry(state)
++    if findings:
++        raise ValueError('invalid canonical registry: ' + ','.join(f.code for f in findings))
++    pending = list(refs)
++    found = {}
++    while pending:
++        ref = pending.pop()
++        if ref in found:
++            continue
++        if ref not in registry:
++            raise ValueError('unknown target/dependency ' + ref)
++        record = registry[ref]['record']
++        found[ref] = record
++        pending.extend(record_dependencies(record))
++    if not found:
++        raise ValueError('empty review target scope')
++    return found
+--- a/scripts/route_resources.py
++++ b/scripts/route_resources.py
+@@ -1,12 +1,13 @@
+ #!/usr/bin/env python3
+ import argparse,json
+ from pathlib import Path
+-from routing_core import recheck_profile
++from routing_core import recheck_profile,route_task
+ 
+ def select(index,route,profile,gap_tags):
+     if recheck_profile(profile,[])!=profile: raise ValueError("PROFILE_RECHECK_REQUIRED")
+     if route.get('profile_version') != profile.get('profile_version'):
+         raise ValueError('STALE_ROUTE')
++    if route != route_task(profile): raise ValueError('ROUTE_REQUIREMENTS_MISMATCH')
+     limit = route.get('reference_phase_limit', 2)
+     if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
+         raise ValueError('INVALID_REFERENCE_LIMIT')
+@@ -17,23 +18,29 @@
+     if profile.get('depth_class')=='light' and not tags and required <= {'core-reasoning'}: return []
+     candidates=[]
+     for e in index['references']:
+-        if e['family'] not in allowed: continue
++        if e['family'] not in allowed and not (profile.get('depth_class')=='ultra' and e['id']=='ultra-research'): continue
+         if e['family'] not in required and profile.get('depth_class') not in e.get('typical_depth',[]): continue
+         overlap=tags & set(e.get('load_when_tags',[]))
+-        if overlap or e['family'] in required: candidates.append((0 if overlap else 1,e['default_priority'],e,sorted(overlap)))
++        if overlap or e['family'] in required or (profile.get('depth_class')=='ultra' and e['id']=='ultra-research'): candidates.append((0 if overlap else 1,e['default_priority'],e,sorted(overlap)))
+     candidates.sort(key=lambda x:(x[0],x[1],x[2]['id']))
+     chosen=[]; seen=set()
++    mandatory=set(route.get('required_reference_ids',[]))
++    if profile.get('depth_class')=='ultra': mandatory.add('ultra-research')
++    for ref in sorted(mandatory):
++        item=next((x for x in candidates if x[2]['id']==ref),None)
++        if item is None: raise ValueError('UNSUPPORTED_REQUIRED_REFERENCE: '+ref)
++        chosen.append(item);seen.add(ref)
+     # A typical reading budget may not erase a mandatory family/control.
+     for fam in route.get('required_families',[]):
+         item=next((x for x in candidates if x[2]['family']==fam),None)
+         if item is None: raise ValueError('UNSUPPORTED_REQUIRED_FAMILY: '+fam)
+-        chosen.append(item);seen.add(item[2]['id'])
++        if item[2]['id'] not in seen: chosen.append(item);seen.add(item[2]['id'])
+     for item in candidates:
+         if len(chosen)>=max(limit,len(required)):break
+         if item[2]['id'] not in seen:chosen.append(item);seen.add(item[2]['id'])
+     out=[]
+     for _,_,e,overlap in chosen:
+-        out.append({'reference_id':e['id'],'family':e['family'],'path':e['path'],'load_reason':'gap_match' if overlap else 'family_entry','current_gap':','.join(overlap) if overlap else 'family_entry','profile_version':profile['profile_version'],'context_cost_class':e['context_cost_class']})
++        out.append({'reference_id':e['id'],'family':e['family'],'path':e['path'],'load_reason':'mandatory_method' if e['id'] in mandatory else ('gap_match' if overlap else 'family_entry'),'current_gap':','.join(overlap) if overlap else 'family_entry','profile_version':profile['profile_version'],'context_cost_class':e['context_cost_class']})
+ 
+     return out
+ 
+--- a/scripts/routing_core.py
++++ b/scripts/routing_core.py
+@@ -50,7 +50,7 @@
+     if profile.get('depth_class') in ('light','standard') and not deep_research: swarm='forbidden'
+     if not execution and not deep_research: swarm='forbidden'
+     slots={'light':1,'standard':2,'deep':3,'max':3,'ultra':3}[profile.get('depth_class','standard')]
+-    return {'profile_version':profile['profile_version'],'required_families':families,'optional_families':[],
++    return {'profile_version':profile['profile_version'],'required_reference_ids':['ultra-research'] if profile.get('depth_class')=='ultra' else [],'required_families':families,'optional_families':[],
+             'verification_mode':verification_mode,'runtime_level':runtime_level,'swarm_admission':swarm,
+             'reference_phase_limit':slots,'progressive_loading':True,'route_status':'current'}
+ 
+--- a/scripts/runtime_core.py
++++ b/scripts/runtime_core.py
+@@ -103,8 +103,6 @@
+         seen.add(nid)
+         if nid not in nodes: out.append(finding('ERROR','SCHEDULE_UNKNOWN_NODE',f'assignment references unknown node {nid}',nid)); continue
+         if a.get('node_contract_hash')!=nodes[nid].get('node_contract_hash'): out.append(finding('ERROR','SCHEDULE_STALE_CONTRACT',f'{nid} assignment uses stale node contract hash',nid))
+-        if nodes[nid].get('parallel_policy')=='forbidden' and schedule.get('mode') in ('parallel','hybrid') and a.get('concurrency_group'):
+-            out.append(finding('ERROR','PARALLEL_FORBIDDEN',f'{nid} forbids parallel execution',nid))
+         if a.get('concurrency_group'): bygroup[a['concurrency_group']].append(a)
+     for nid in deferred:
+         if nid not in nodes: out.append(finding('ERROR','SCHEDULE_UNKNOWN_DEFERRED_NODE',f'deferred_nodes references unknown node {nid}',nid))
+@@ -161,6 +159,8 @@
+                 a,b=items[i],items[j]; na,nb=nodes.get(a.get('node_id')),nodes.get(b.get('node_id'))
+                 if not na or not nb: continue
+                 if group=='__unsequenced_candidates__' and (a['node_id'] in joint_ancestors.get(b['node_id'],set()) or b['node_id'] in joint_ancestors.get(a['node_id'],set())): continue
++                if schedule.get('mode') in ('parallel','hybrid') and ('forbidden' in (na.get('parallel_policy'),nb.get('parallel_policy'))):
++                    out.append(finding('ERROR','PARALLEL_FORBIDDEN',f'potential overlap between {a["node_id"]} and {b["node_id"]}; forbidden nodes require explicit sequencing',a['node_id'],b['node_id']))
+                 aw=set(na.get('write_set',[])); bw=set(nb.get('write_set',[])); ar=set(na.get('read_set',[])); br=set(nb.get('read_set',[]))
+                 lock_overlap=set(na.get('resource_locks',[])) & set(nb.get('resource_locks',[]))
+                 rw_conflict=(aw & (bw|br)) | (bw & ar)
+--- a/scripts/semantic_core.py
++++ b/scripts/semantic_core.py
+@@ -233,7 +233,11 @@
+ 
+ def compute_runtime_closure(state, registry):
+     blockers=[]; warnings=[]
+-    if state.get('lane') not in ('action','mixed'):
++    applicable = state.get('lane') in ('action','mixed') or any(
++        n['record'].get('materiality') == 'material' and n['record_type'] in
++        ('requirement','acceptance_criterion','artifact','verification','effectiveness','action')
++        for n in registry.values()) or bool(state.get('blocked_items'))
++    if not applicable:
+         return {'applicable':False,'computed_runtime_closed':False,'blockers':[],'warnings':[]}
+     for rid,node in registry.items():
+         rec=node['record']; rt=node['record_type']; es=node['effective_status']; mat=rec.get('materiality','supporting'); ce=rec.get('closure_effect','nonblocking')
+--- a/scripts/validate_delivery.py
++++ b/scripts/validate_delivery.py
+@@ -15,10 +15,11 @@
+     findings += [f for f in state_findings if f.severity=='ERROR']
+     if not isinstance(state,dict) or not isinstance(manifest,dict):
+         return findings,{'computed_delivery_ready':False,'epistemic_closure':closure}
++    partial=manifest.get('delivery_kind','complete')=='partial'
+     for layer,key in (('epistemic','computed_epistemic_closed'),('runtime','computed_runtime_closed')):
+         result=closure[layer]
+         if result.get('applicable') and not result[key]:
+-            findings.append(finding('ERROR','DELIVERY_CLOSURE_BLOCKED',f'{layer} closure is unresolved: {result["blockers"]}'))
++            findings.append(finding('WARNING' if partial else 'ERROR','DELIVERY_CLOSURE_BLOCKED',f'{layer} closure is unresolved: {result["blockers"]}'))
+     for collection in ('requirements','acceptance_criteria','artifacts'):
+         rows=manifest.get(collection,[])
+         if not isinstance(rows,list) or any(not isinstance(x,dict) for x in rows):
+@@ -86,9 +87,19 @@
+             except ValueError: findings.append(finding('ERROR','ART_PATH_ESCAPE',f'{aid} path escapes root',aid))
+             else:
+                 if not p.exists(): findings.append(finding('ERROR','ART_FILE_MISSING',f'{aid} current artifact file missing: {m["path"]}',aid))
+-    computed_ready=not any(f.severity=='ERROR' for f in findings) and not manifest.get('blocking_items') and not manifest.get('inconsistencies')
++    if partial:
++        if state.get('declared_status') in ('closed','delivery_ready'):
++            findings.append(finding('ERROR','PARTIAL_FALSE_COMPLETION','partial handoff cannot declare canonical work closed/ready'))
++        remaining=set(manifest.get('remaining_obligation_refs',[]))
++        obligations={rid for rid,n in registry.items() if n['record'].get('materiality')=='material' and
++            n['record_type'] in ('requirement','acceptance_criterion') and n['effective_status'] not in ('satisfied','not_applicable','superseded')}
++        if obligations-remaining: findings.append(finding('ERROR','PARTIAL_OMITTED_OBLIGATION','remaining obligations omitted: '+','.join(sorted(obligations-remaining))))
++        if remaining-set(registry): findings.append(finding('ERROR','PARTIAL_UNKNOWN_OBLIGATION','unknown remaining obligation references'))
++    structurally_ready=not any(f.severity=='ERROR' for f in findings) and not manifest.get('inconsistencies')
++    computed_ready=structurally_ready and not partial and not manifest.get('blocking_items')
+     if manifest.get('declared_delivery_ready') and not computed_ready: findings.append(finding('ERROR','DECLARED_READY_FALSE','declared_delivery_ready=true but computed_delivery_ready=false'))
+-    return findings, {'computed_delivery_ready':computed_ready,'epistemic_closure':closure}
++    return findings, {'computed_delivery_ready':computed_ready,'computed_task_complete':computed_ready,
++        'computed_partial_ready':bool(partial and structurally_ready),'epistemic_closure':closure}
+ 
+ def main():
+     ap=argparse.ArgumentParser(); ap.add_argument('state_json'); ap.add_argument('delivery_manifest'); ap.add_argument('--root'); ap.add_argument('--json',action='store_true'); a=ap.parse_args()
+--- a/scripts/validate_state.py
++++ b/scripts/validate_state.py
+@@ -23,7 +23,7 @@
+     runtime_closure=compute_runtime_closure(state,registry)
+     if state.get('declared_status')=='closed' and state.get('lane') in ('question','mixed') and not closure['computed_epistemic_closed']:
+         for b in closure['blockers']: findings.append(finding('ERROR','EPISTEMIC_CLOSURE_BLOCKED',b,state.get('root_question_ref') or ''))
+-    if state.get('declared_status')=='closed' and state.get('lane') in ('action','mixed') and not runtime_closure['computed_runtime_closed']:
++    if state.get('declared_status')=='closed' and runtime_closure['applicable'] and not runtime_closure['computed_runtime_closed']:
+         for b in runtime_closure['blockers']: findings.append(finding('ERROR','RUNTIME_CLOSURE_BLOCKED',b))
+     # material effective stale items are blockers for declared delivery/closure
+     if state.get('declared_status') in ('closed','delivery_ready'):
+--- a/scripts/validate_workflow.py
++++ b/scripts/validate_workflow.py
+@@ -9,18 +9,8 @@
+ ROOT=Path(__file__).resolve().parents[1]
+ 
+ def fingerprint(state,refs):
+-    registry={r['id']:r for value in state.values() if isinstance(value,list) for r in value if isinstance(r,dict) and 'id' in r}
+-    pending=list(refs); found={}
+-    while pending:
+-        ref=pending.pop()
+-        if ref in found: continue
+-        if ref not in registry: raise ValueError('unknown target/dependency '+ref)
+-        record=registry[ref];found[ref]=record
+-        for key,value in record.items():
+-            if key=='verification_refs': continue
+-            if key.endswith('_refs') or key in ('depends_on','derived_from','supports','contradicts','represents','implements'):
+-                if isinstance(value,list): pending += [r for r in value if isinstance(r,str) and r in registry]
+-    if not found: raise ValueError('empty review target scope')
++    from reference_core import dependency_closure
++    found=dependency_closure(state,refs)
+     blob=json.dumps(found,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
+     return 'sha256:'+hashlib.sha256(blob).hexdigest()
+ 
+--- /dev/null
++++ b/tests/check_package.py
+@@ -0,0 +1,50 @@
++#!/usr/bin/env python3
++"""Read-only portable package checks. Optional --output writes the observed receipt."""
++from pathlib import Path
++from html.parser import HTMLParser
++from urllib.parse import urlsplit,unquote
++import argparse,ast,json,sys
++ROOT=Path(__file__).resolve().parents[1]
++class Links(HTMLParser):
++ def __init__(self):super().__init__();self.links=[];self.ids=set()
++ def handle_starttag(self,tag,attrs):
++  attrs=dict(attrs)
++  if tag=='a' and attrs.get('href'):self.links.append(attrs['href'])
++  if attrs.get('id'):self.ids.add(attrs['id'])
++def check(root):
++ import markdown,jsonschema
++ failures=[];markdowns={};count=0;anchors=0;python_count=0;json_count=0;schema_count=0
++ for path in sorted(root.rglob('*.md')):
++  parser=Links();parser.feed(markdown.markdown(path.read_text(),extensions=['fenced_code','tables','toc']));markdowns[path.resolve()]=parser
++ for path,parser in markdowns.items():
++  for href in parser.links:
++   u=urlsplit(href)
++   if u.scheme or u.netloc:continue
++   count+=1;target=(path.parent/unquote(u.path)).resolve() if u.path else path
++   if not target.exists():failures.append({'kind':'missing_link_target','file':str(path.relative_to(root)),'href':href});continue
++   if u.fragment and target.suffix=='.md':
++    anchors+=1
++    if unquote(u.fragment) not in markdowns[target].ids:failures.append({'kind':'missing_link_anchor','file':str(path.relative_to(root)),'href':href})
++ for path in sorted(root.rglob('*.py')):
++  python_count+=1
++  try:ast.parse(path.read_text(),filename=str(path))
++  except Exception as e:failures.append({'kind':'python_ast','file':str(path.relative_to(root)),'error':str(e)})
++ for path in sorted(root.rglob('*.json')):
++  json_count+=1
++  try:
++   value=json.loads(path.read_text())
++   if path.name.endswith('.schema.json'):schema_count+=1;jsonschema.Draft202012Validator.check_schema(value)
++  except Exception as e:failures.append({'kind':'json_or_schema','file':str(path.relative_to(root)),'error':str(e)})
++ index=json.loads((root/'routing-index.json').read_text());seen=set()
++ for entry in index['references']:
++  if entry['id'] in seen:failures.append({'kind':'duplicate_reference_id','id':entry['id']})
++  seen.add(entry['id']);target=(root/entry['path']).resolve()
++  if not target.is_relative_to(root) or not target.is_file():failures.append({'kind':'invalid_reference_path','id':entry['id']})
++ entry=(root/'SKILL.md').read_text();meta=json.loads((root/'RELEASE.json').read_text())
++ if meta['version'] not in entry or meta['model_entry']!='SKILL.md':failures.append({'kind':'release_entry_mismatch'})
++ return {'release_version':meta['version'],'passed':not failures,'markdown_files_checked':len(markdowns),'local_markdown_links_checked':count,'local_markdown_anchors_checked':anchors,'python_ast_checked':python_count,'json_parsed':json_count,'json_schemas_checked':schema_count,'routing_reference_paths_checked':len(index['references']),'failures':failures,'note':'Static package structure only; not model compliance, dependency installation or external execution.'}
++def main():
++ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path);a=p.parse_args();result=check(ROOT)
++ if a.output:a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
++ print(json.dumps(result,ensure_ascii=False,indent=2));return 0 if result['passed'] else 1
++if __name__=='__main__':raise SystemExit(main())
+--- /dev/null
++++ b/tests/run_all.py
+@@ -0,0 +1,13 @@
++#!/usr/bin/env python3
++"""Run original 39 tests plus 2.1.1 boundaries; no model/business calls."""
++from pathlib import Path
++import json,sys,unittest,importlib.metadata
++from run_regression import Regression,RECEIPTS
++from test_2_1_1 import PatchRegression
++ROOT=Path(__file__).resolve().parents[1]
++suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(Regression),unittest.defaultTestLoader.loadTestsFromTestCase(PatchRegression)])
++result=unittest.TextTestRunner(verbosity=2).run(suite)
++out=ROOT/'tests/results';out.mkdir(exist_ok=True)
++(out/'cli_receipts_2_1_1.json').write_text(json.dumps(RECEIPTS,indent=2))
++summary={'version':'2.1.1','tests':result.testsRun,'original_tests':39,'added_tests':result.testsRun-39,'failures':len(result.failures),'errors':len(result.errors),'real_cli_invocations':len(RECEIPTS),'python':sys.version,'jsonschema':importlib.metadata.version('jsonschema'),'model_evaluated':False,'business_actions_executed':False}
++(out/'summary_2_1_1.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary));sys.exit(0 if result.wasSuccessful() else 1)
+--- /dev/null
++++ b/tests/test_2_1_1.py
+@@ -0,0 +1,150 @@
++#!/usr/bin/env python3
++"""2.1.1 deterministic boundary tests, paired with the unchanged 2.1 suite."""
++from pathlib import Path
++import copy,hashlib,json,sys,unittest,tempfile,shutil
++ROOT=Path(__file__).resolve().parents[1]
++sys.path.insert(0,str(ROOT/'scripts'))
++from run_regression import Regression,load,err
++import runtime_core as rt
++from validate_workflow import fingerprint,validate_bridge
++from validate_delivery import validate as delivery
++from learning_core import admit_record,retrieve,file_evidence_resolver,learning_subject_fingerprint
++from routing_core import route_task,recheck_profile
++from route_resources import select
++from prepare_task import prepare
++
++class PatchRegression(unittest.TestCase):
++ setUp=Regression.setUp
++ tearDown=Regression.tearDown
++ cli=Regression.cli
++ save=Regression.save
++ baseline=Regression.baseline
++ bridge=Regression.bridge
++ def relation_case(self):
++  p,r,s,m,b=self.bridge()
++  s['observations']=[{'id':'o1','record_type':'observation','declared_status':'current','text':'original'}]
++  s['relationships']=[{'id':'rel1','record_type':'relationship','declared_status':'current','relation_type':'causes','epistemic_status':'inferred','from_ref':'o1','to_ref':'e1'}]
++  s['answers'][0]['depends_on'].append('rel1')
++  for entry in b['reviews']:
++   entry['target_fingerprint']=fingerprint(s,entry['target_refs'])
++   for v in s['verification']:
++    if v['id']==entry['record']['verification_id']:v['metadata']['target_fingerprint']=entry['target_fingerprint']
++  return p,r,s,m,b
++ def test_40_relationship_from_mutation_invalidates(self):
++  p,r,s,m,b=self.relation_case();self.assertTrue(validate_bridge(p,r,s,m,b,self.d)['passed'])
++  s['observations'][0]['text']='opposite';self.assertFalse(validate_bridge(p,r,s,m,b,self.d)['passed'])
++ def test_41_relationship_to_mutation_invalidates(self):
++  p,r,s,m,b=self.relation_case();before=fingerprint(s,['a1']);s['evidence'][0]['text']='changed'
++  self.assertNotEqual(before,fingerprint(s,['a1']))
++ def test_42_transitive_cycle_terminates_and_tracks(self):
++  p,r,s,m,b=self.relation_case();s['observations'][0]['depends_on']=['rel1']
++  before=fingerprint(s,['a1']);s['observations'][0]['text']='changed';self.assertNotEqual(before,fingerprint(s,['a1']))
++ def test_43_missing_dependency_fails_closed(self):
++  p,r,s,m,b=self.relation_case();s['relationships'][0]['from_ref']='missing'
++  with self.assertRaisesRegex(ValueError,'unknown target/dependency'):fingerprint(s,['a1'])
++ def test_44_duplicate_registry_fails_closed(self):
++  p,r,s,m,b=self.relation_case();s['observations'][0]['id']='e1'
++  with self.assertRaisesRegex(ValueError,'invalid canonical registry'):fingerprint(s,['a1'])
++ def blocked(self,lane='question'):
++  s,m=self.baseline();s['lane']=lane;s['declared_status']='blocked'
++  for col in ('requirements','acceptance_criteria'):
++   s[col][0].update(declared_status='blocked',closure_effect='blocking');m[col][0]['declared_status']='blocked'
++  return s,m
++ def test_45_question_hard_obligation_blocks(self):
++  s,m=self.blocked();fs,out=delivery(s,m,self.d);self.assertFalse(out['computed_delivery_ready']);self.assertIn('DELIVERY_CLOSURE_BLOCKED',err(fs))
++  self.cli('validate_delivery.py',[s,m],['--root',self.d,'--json'],expect=1)
++ def test_46_all_lanes_same_hard_obligation(self):
++  for lane in ('question','action','mixed'):
++   s,m=self.blocked(lane);self.assertFalse(delivery(s,m,self.d)[1]['computed_delivery_ready'])
++ def test_47_closed_question_cannot_hide_runtime_obligation(self):
++  s,m=self.blocked();s['declared_status']='closed'
++  self.assertIn('RUNTIME_CLOSURE_BLOCKED',err(delivery(s,m,self.d)[0]))
++ def partial(self):
++  s,m=self.blocked();m.update(delivery_kind='partial',declared_delivery_ready=False,remaining_work='Await the missing required input; answer.txt is only an interim result.',remaining_obligation_refs=['req1','acc1']);return s,m
++ def test_48_partial_handoff_never_complete(self):
++  s,m=self.partial();fs,out=delivery(s,m,self.d);self.assertFalse(err(fs),err(fs));self.assertTrue(out['computed_partial_ready']);self.assertFalse(out['computed_delivery_ready']);self.assertFalse(out['computed_task_complete'])
++  self.cli('validate_delivery.py',[s,m],['--root',self.d,'--json'])
++ def test_49_partial_omission_rejected(self):
++  s,m=self.partial();m['remaining_obligation_refs']=['req1'];self.assertIn('PARTIAL_OMITTED_OBLIGATION',err(delivery(s,m,self.d)[0]))
++ def test_50_partial_ready_claim_rejected(self):
++  s,m=self.partial();m['declared_delivery_ready']=True;self.assertTrue(err(delivery(s,m,self.d)[0]))
++ def schedule(self,forbidden=True):
++  x=load('legal_parallel_independent_input.json')
++  if forbidden:
++   for n in x['plan']['nodes']:n['parallel_policy']='forbidden';n['node_contract_hash']=rt.compute_node_contract_hash(n)
++   for a,n in zip(x['schedule']['assignments'],x['plan']['nodes']):a['node_contract_hash']=n['node_contract_hash']
++  return x
++ def test_51_forbidden_without_group_rejected(self):
++  x=self.schedule();self.assertIn('PARALLEL_FORBIDDEN',err(rt.validate_schedule(x['plan'],x['schedule'],ROOT)))
++  self.cli('validate_runtime.py',flags=['--plan',self.save('plan',x['plan']),'--schedule',self.save('schedule',x['schedule'])],expect=1)
++ def test_52_different_groups_not_isolation(self):
++  x=self.schedule()
++  for a in x['schedule']['assignments']:a['concurrency_group']=a['node_id']
++  self.assertIn('PARALLEL_FORBIDDEN',err(rt.validate_schedule(x['plan'],x['schedule'],ROOT)))
++ def test_53_forbidden_sequenced_hybrid_legal(self):
++  x=self.schedule();x['schedule']['mode']='hybrid';x['schedule']['assignments'][1]['starts_after']=['A']
++  self.assertFalse(err(rt.validate_schedule(x['plan'],x['schedule'],ROOT)))
++ def test_54_forbidden_serial_and_allowed_parallel_controls(self):
++  x=self.schedule();x['schedule']['mode']='serial';self.assertFalse(err(rt.validate_schedule(x['plan'],x['schedule'],ROOT)))
++  x=self.schedule(False);self.assertFalse(err(rt.validate_schedule(x['plan'],x['schedule'],ROOT)))
++ def ultra(self):
++  p=load('standard_profile.json');p.update(requested_depth='ultra',active_gap_tags=[]);return recheck_profile(p,[])
++ def test_55_ultra_untagged_method_required(self):
++  p=self.ultra();r=route_task(p);index=json.loads((ROOT/'routing-index.json').read_text());selected=select(index,r,p,[])
++  self.assertIn('ultra-research',[x['reference_id'] for x in selected]);self.assertIn('ultra-research',r['required_reference_ids'])
++ def test_56_ultra_missing_method_fails_closed(self):
++  p=self.ultra();index=json.loads((ROOT/'routing-index.json').read_text());index['references']=[x for x in index['references'] if x['id']!='ultra-research']
++  with self.assertRaisesRegex(ValueError,'UNSUPPORTED_REQUIRED_REFERENCE'):select(index,route_task(p),p,[])
++ def test_57_prepare_profile_route_resources_cli(self):
++  p=load('standard_profile.json');out=self.cli('prepare_task.py',[p],['--signal','ultra_requested']);self.assertEqual(out['task_profile']['requested_depth'],'ultra');self.assertFalse(out['authority_granted']);self.assertFalse(out['task_executed'])
++  self.assertIn('ultra-research',[x['reference_id'] for x in out['selected_references']])
++ def test_58_prepare_light_stays_light(self):
++  p=load('standard_profile.json');p.update(depth_class='light',evidence_depth='minimal',verification_depth='minimal',active_gap_tags=[])
++  # use exact passing light control from the original suite
++  p.update(task_modes=[],frame_uncertainty='low',causal_or_systemic_complexity='low')
++  out=prepare(p);self.assertTrue(out['passed'],out);self.assertEqual(out['selected_references'],[])
++ def test_59_prepare_missing_file_blocked_no_downgrade(self):
++  root=self.d/'package';shutil.copytree(ROOT/'schemas',root/'schemas');shutil.copy2(ROOT/'routing-index.json',root/'routing-index.json')
++  out=prepare(self.ultra(),root=root);self.assertFalse(out['passed']);self.assertEqual(out['status'],'blocked');self.assertEqual(out['task_profile']['depth_class'],'ultra')
++ def test_60_pending_gap_resources_visible(self):
++  p=self.ultra();p['active_gap_tags']=['ultra','delegation','recovery','orthogonal-verification'];out=prepare(p)
++  self.assertTrue(out['passed']);self.assertIn('synchronization-and-recovery',{x['reference_id'] for x in out['selected_references']+out['deferred_references']})
++ def promoted(self):
++  q=load('learning_intrinsic_flag_false.json');q.update(tier=3,status='promoted',source_eval_refs=['eval'],regression_refs=['reg'],held_out_eval_refs=['held'],baseline_comparison_ref='baseline',dual_review_ref='review',rollback_ref='rollback');q['provenance']={'feedback_types':['deterministic_verifier'],'intrinsic_reflection_only':False}
++  (self.d/'receipt.txt').write_text('Synthetic host-curated evidence fixture; not an actual model evaluation.')
++  h=hashlib.sha256((self.d/'receipt.txt').read_bytes()).hexdigest();index={'eval':{'verdict':'pass','kind':'deterministic_test','path':'receipt.txt','sha256':h}}
++  for ref,role,kind in [('reg','regression','deterministic_test'),('held','held_out','external_evaluation'),('baseline','baseline','baseline_comparison'),('review','dual_review','independent_review'),('rollback','rollback','rollback_plan')]:
++   index[ref]={'verdict':'pass','kind':kind,'path':'receipt.txt','sha256':h,'roles':[role],'learning_ids':[q['learning_id']],'current':True,'subject_sha256':learning_subject_fingerprint(q),'independence_verified':True}
++  return q,index
++ def resolver(self,index):return file_evidence_resolver(self.save('index',index))
++ def test_61_unresolved_gate_rejected_with_good_source(self):
++  q,index=self.promoted();del index['held'];self.assertTrue(admit_record(q,ROOT,self.resolver(index)))
++  self.cli('validate_learning.py',[q],['--validation-evidence',self.save('index',index)],expect=1)
++ def test_62_all_typed_scoped_gates_pass(self):
++  q,index=self.promoted();resolver=self.resolver(index);self.assertFalse(admit_record(q,ROOT,resolver));self.assertFalse(retrieve([q],['deep_research'],[],validation_resolver=resolver));self.assertEqual(len(retrieve([q],['deep_research'],[],maintenance=True,validation_resolver=resolver)),1)
++  self.cli('validate_learning.py',[q],['--validation-evidence',self.save('index',index)])
++  out=self.cli('retrieve_learnings.py',[[q]],['--task-tag','deep_research','--maintenance','--validation-evidence',self.save('index',index)]);self.assertTrue(out['advisory_only'])
++ def test_63_wrong_type_scope_verdict_stale_gate_rejected(self):
++  for field,value in [('kind','external_observation'),('learning_ids',['other']),('current',False),('verdict','fail'),('roles',['wrong']),('subject_sha256','0'*64)]:
++   q,index=self.promoted();index['reg'][field]=value;self.assertTrue(admit_record(q,ROOT,self.resolver(index)),field)
++ def test_64_changed_heuristic_invalidates_promotion_evidence(self):
++  q,index=self.promoted();q['heuristic']='Entirely different lesson';self.assertTrue(admit_record(q,ROOT,self.resolver(index)))
++ def test_65_boolean_only_resolver_cannot_grant_promotion(self):
++  q,index=self.promoted();self.assertTrue(admit_record(q,ROOT,lambda ref:True))
++ def test_66_review_independence_and_file_bytes_required(self):
++  q,index=self.promoted();index['review']['independence_verified']=False;self.assertTrue(admit_record(q,ROOT,self.resolver(index)))
++  q,index=self.promoted();(self.d/'receipt.txt').write_text('Changed');self.assertTrue(admit_record(q,ROOT,self.resolver(index)))
++
++ def test_67_ultra_cannot_be_erased_by_forged_light_route(self):
++  p=self.ultra();r=route_task(p);r['required_families']=['core-reasoning'];r['reference_phase_limit']=0;r['required_reference_ids']=[]
++  with self.assertRaisesRegex(ValueError,'ROUTE_REQUIREMENTS_MISMATCH'):select(json.loads((ROOT/'routing-index.json').read_text()),r,p,[])
++ def test_68_partial_no_closed_state_or_unknown_ref(self):
++  s,m=self.partial();s['declared_status']='closed';self.assertIn('PARTIAL_FALSE_COMPLETION',err(delivery(s,m,self.d)[0]))
++  s,m=self.partial();m['remaining_obligation_refs'].append('missing');self.assertIn('PARTIAL_UNKNOWN_OBLIGATION',err(delivery(s,m,self.d)[0]))
++ def test_69_tier2_heldout_requires_evidence(self):
++  q,index=self.promoted();q['tier']=2
++  self.assertTrue(admit_record(q,ROOT,self.resolver(index)))
++  index['held']['subject_sha256']=learning_subject_fingerprint(q)
++  self.assertFalse(admit_record(q,ROOT,self.resolver(index)))
++
++if __name__=='__main__':unittest.main(verbosity=2)

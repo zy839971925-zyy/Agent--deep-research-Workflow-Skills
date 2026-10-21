@@ -86,7 +86,7 @@ For example, `premise_refs` may resolve only to Premise/Assumption records; `que
 
 ## Edge policy and cycle semantics
 
-Keep edge semantics centralized rather than scattering them across ad-hoc conditionals. The Portable edition includes a machine-readable edge policy and validators; a Modular host may use its own equivalent enforcement as long as the same semantics are preserved.
+Edge semantics live in one machine-readable policy file (`schemas/edge-policy.json`), not scattered Python conditionals. The policy defines target types, downstream effect, propagation behavior, and cycle policy.
 
 Typical families:
 

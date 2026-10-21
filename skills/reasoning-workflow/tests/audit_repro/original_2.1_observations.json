@@ -1,0 +1,180 @@
+[
+  {
+    "id": "B1_parallel_forbidden_without_group",
+    "expected": "validation refuses unsequenced parallel forbidden nodes",
+    "actual": {
+      "plan_errors": [],
+      "schedule_errors": []
+    }
+  },
+  {
+    "id": "C1_parallel_group_control",
+    "expected": "refuses same schedule with group",
+    "actual": [
+      "PARALLEL_FORBIDDEN",
+      "PARALLEL_FORBIDDEN"
+    ]
+  },
+  {
+    "id": "B2_explicit_ultra_not_selected",
+    "expected": "Ultra method reachable on explicit Ultra even without extra tags",
+    "actual": {
+      "profile_valid": [],
+      "route": {
+        "profile_version": 2,
+        "required_families": [
+          "core-reasoning",
+          "deep-research",
+          "audit-verification"
+        ],
+        "optional_families": [],
+        "verification_mode": "dual",
+        "runtime_level": "none",
+        "swarm_admission": "preferred",
+        "reference_phase_limit": 3,
+        "progressive_loading": true,
+        "route_status": "current"
+      },
+      "selected": [
+        "problem-framing-and-effort",
+        "information-target-navigation",
+        "formal-review-and-audit"
+      ],
+      "repeat_selected": [
+        "problem-framing-and-effort",
+        "information-target-navigation",
+        "formal-review-and-audit"
+      ]
+    }
+  },
+  {
+    "id": "C2_ultra_tag_control",
+    "expected": "ultra tag selects overlay",
+    "actual": [
+      "problem-framing-and-effort",
+      "ultra-research",
+      "formal-review-and-audit"
+    ]
+  },
+  {
+    "id": "B2b_multi_gap_coverage",
+    "expected": "recovery control either selected or explicitly queued",
+    "actual": [
+      "problem-framing-and-effort",
+      "ultra-research",
+      "runtime-and-delegation",
+      "formal-review-and-audit"
+    ]
+  },
+  {
+    "id": "B3_tier3_unresolved_promotion_gates",
+    "expected": "must resolve required promotion evidence",
+    "actual": {
+      "findings": [],
+      "resolver_calls": [
+        "eval-good"
+      ],
+      "maintenance_retrieved": [
+        "synthetic:contradictory-intrinsic"
+      ]
+    }
+  },
+  {
+    "id": "B3_cli_promotion_gate",
+    "expected": "missing tier3 gate references rejected even if source eval is real",
+    "actual": {
+      "exit_code": 0,
+      "stdout": {
+        "passed": true,
+        "findings": []
+      }
+    }
+  },
+  {
+    "id": "C3_ordinary_tier3_control",
+    "expected": "tier3 excluded from ordinary retrieval",
+    "actual": []
+  },
+  {
+    "id": "B4_fixture_schema_check",
+    "expected": "valid fixture",
+    "actual": {
+      "errors": [],
+      "closure": {
+        "epistemic": {
+          "applicable": true,
+          "computed_epistemic_closed": true,
+          "blockers": [],
+          "warnings": []
+        },
+        "runtime": {
+          "applicable": false,
+          "computed_runtime_closed": false,
+          "blockers": [],
+          "warnings": []
+        }
+      }
+    }
+  },
+  {
+    "id": "B4_singular_endpoint_fingerprint",
+    "expected": "source endpoint change invalidates old target review",
+    "actual": {
+      "before": {
+        "passed": true,
+        "structural_valid": true,
+        "computed_delivery_ready": true,
+        "evidence_authenticated": false,
+        "orthogonality_verified": null,
+        "errors": [],
+        "host_execution_verified": false
+      },
+      "after": {
+        "passed": true,
+        "structural_valid": true,
+        "computed_delivery_ready": true,
+        "evidence_authenticated": false,
+        "orthogonality_verified": null,
+        "errors": [],
+        "host_execution_verified": false
+      },
+      "fingerprint_unchanged": true
+    }
+  },
+  {
+    "id": "C4_direct_evidence_control",
+    "expected": "direct evidence mutation invalidates review",
+    "actual": {
+      "fingerprint_changed": true,
+      "bridge_passed": false
+    }
+  },
+  {
+    "id": "B5_question_requirements_blocked",
+    "expected": "material blocking explicit requirements prevent delivery",
+    "actual": {
+      "delivery_errors": [],
+      "delivery_ready": true,
+      "bridge": {
+        "passed": true,
+        "structural_valid": true,
+        "computed_delivery_ready": true,
+        "evidence_authenticated": false,
+        "orthogonality_verified": null,
+        "errors": [],
+        "host_execution_verified": false
+      }
+    }
+  },
+  {
+    "id": "C5_mixed_lane_control",
+    "expected": "same obligations block mixed lane",
+    "actual": {
+      "errors": [
+        "DELIVERY_CLOSURE_BLOCKED",
+        "DECLARED_READY_FALSE"
+      ],
+      "delivery_ready": false
+    }
+  }
+]

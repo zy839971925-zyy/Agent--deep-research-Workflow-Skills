@@ -1,0 +1,20 @@
+{
+  "profile_version": 1,
+  "lane": "question",
+  "depth_class": "light",
+  "autonomy_class": "B",
+  "reasoning_breadth": "standard",
+  "evidence_depth": "minimal",
+  "challenge_depth": "minimal",
+  "verification_depth": "minimal",
+  "governance_depth": "minimal",
+  "routing_confidence": "high",
+  "task_modes": [],
+  "task_coupling": "low",
+  "external_side_effects": "none",
+  "persistence": "none",
+  "active_gap_tags": [
+    "high-consequence"
+  ],
+  "high_consequence": true
+}

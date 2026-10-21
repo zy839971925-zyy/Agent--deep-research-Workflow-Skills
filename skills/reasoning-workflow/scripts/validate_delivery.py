@@ -15,10 +15,11 @@ def validate(state,manifest,root=None):
     findings += [f for f in state_findings if f.severity=='ERROR']
     if not isinstance(state,dict) or not isinstance(manifest,dict):
         return findings,{'computed_delivery_ready':False,'epistemic_closure':closure}
+    partial=manifest.get('delivery_kind','complete')=='partial'
     for layer,key in (('epistemic','computed_epistemic_closed'),('runtime','computed_runtime_closed')):
         result=closure[layer]
         if result.get('applicable') and not result[key]:
-            findings.append(finding('ERROR','DELIVERY_CLOSURE_BLOCKED',f'{layer} closure is unresolved: {result["blockers"]}'))
+            findings.append(finding('WARNING' if partial else 'ERROR','DELIVERY_CLOSURE_BLOCKED',f'{layer} closure is unresolved: {result["blockers"]}'))
     for collection in ('requirements','acceptance_criteria','artifacts'):
         rows=manifest.get(collection,[])
         if not isinstance(rows,list) or any(not isinstance(x,dict) for x in rows):
@@ -52,6 +53,9 @@ def validate(state,manifest,root=None):
         if aid not in man_acc: findings.append(finding('ERROR','ACC_MISSING_MANIFEST',f'{aid} missing from delivery manifest',aid)); continue
         ms=man_acc[aid].get('declared_status'); ss=srec.get('declared_status')
         if ms!=ss: findings.append(finding('ERROR','ACC_STATE_DIVERGENCE',f'{aid}: manifest={ms}, canonical={ss}',aid))
+        for ref in man_acc[aid].get('artifact_refs',[]) or []:
+            if ref not in registry or registry[ref]['record_type']!='artifact': findings.append(finding('ERROR','ACC_ARTIFACT_REF',f'{aid} artifact_ref {ref} missing/wrong type',aid,ref))
+            elif registry[ref]['effective_status']!='current': findings.append(finding('ERROR','ACC_ARTIFACT_NOT_CURRENT',f'{aid} artifact {ref} is not current',aid,ref))
         for ref in man_acc[aid].get('verification_refs',[]) or []:
             if ref not in registry or registry[ref]['record_type']!='verification': findings.append(finding('ERROR','ACC_VER_REF',f'{aid} verification_ref {ref} missing/wrong type',aid,ref))
             elif registry[ref]['effective_status']!='passed': findings.append(finding('ERROR','ACC_VER_NOT_PASSED',f'{aid} verification {ref} is {registry[ref]["effective_status"]}',aid,ref))
@@ -63,29 +67,41 @@ def validate(state,manifest,root=None):
     for m in manifest.get('artifacts',[]) or []:
         aid=m.get('id'); s=state_art.get(aid)
         if not s: findings.append(finding('ERROR','ART_STATE_MISSING',f'manifest artifact {aid} absent from canonical state',aid)); continue
+        for key in ('path','role','based_on_state_version'):
+            if m.get(key)!=s.get(key): findings.append(finding('ERROR','ART_IDENTITY_MISMATCH',f'{aid} manifest {key} differs from canonical artifact',aid))
         eff=registry.get(aid,{}).get('effective_status')
+        required_current=s.get('materiality')=='material' and s.get('declared_status') not in ('historical','superseded')
+        if (eff=='current' or required_current) and not m.get('declared_current'):
+            findings.append(finding('ERROR','ART_CURRENT_DOWNGRADE',f'{aid} canonical current/required artifact cannot be downgraded by manifest flag',aid))
+        if required_current and eff!='current':
+            findings.append(finding('ERROR','ART_REQUIRED_NOT_CURRENT',f'{aid} required material artifact is not current',aid))
         if m.get('declared_current') and eff!='current': findings.append(finding('ERROR','ART_NOT_CURRENT',f'{aid} declared current in manifest but effective status is {eff}',aid))
-        if s.get('materiality')=='material' and eff=='current':
-            if not m.get('declared_current'):
-                findings.append(finding('ERROR','ART_NOT_CURRENT',f'{aid} is a current material artifact but manifest does not declare it current',aid))
-            if not m.get('path'):
-                findings.append(finding('ERROR','ART_PATH_REQUIRED',f'{aid} current material artifact requires a path',aid))
-            elif root is None:
-                findings.append(finding('ERROR','ART_ROOT_REQUIRED',f'{aid} current material artifact cannot be verified without --root',aid))
         for ref in m.get('represents',[]) or []:
             if ref not in registry: findings.append(finding('ERROR','ART_REPRESENTS_REF',f'{aid} represents unknown {ref}',aid,ref))
         for ref in m.get('verification_refs',[]) or []:
             if ref not in registry or registry[ref]['record_type']!='verification': findings.append(finding('ERROR','ART_VER_REF',f'{aid} verification_ref {ref} missing/wrong type',aid,ref))
             elif registry[ref]['effective_status']!='passed': findings.append(finding('ERROR','ART_VER_NOT_PASSED',f'{aid} verification {ref} is {registry[ref]["effective_status"]}',aid,ref))
+        if required_current and not m.get('path'):
+            findings.append(finding('ERROR','ART_PATH_REQUIRED',f'{aid} material current artifact needs a path',aid))
         if root and m.get('declared_current') and m.get('path'):
             p=(Path(root)/m['path']).resolve(); rr=Path(root).resolve()
             try: p.relative_to(rr)
             except ValueError: findings.append(finding('ERROR','ART_PATH_ESCAPE',f'{aid} path escapes root',aid))
             else:
-                if not p.is_file(): findings.append(finding('ERROR','ART_FILE_MISSING',f'{aid} current artifact file missing or not a file: {m["path"]}',aid))
-    computed_ready=not any(f.severity=='ERROR' for f in findings) and not manifest.get('blocking_items') and not manifest.get('inconsistencies')
+                if not p.exists(): findings.append(finding('ERROR','ART_FILE_MISSING',f'{aid} current artifact file missing: {m["path"]}',aid))
+    if partial:
+        if state.get('declared_status') in ('closed','delivery_ready'):
+            findings.append(finding('ERROR','PARTIAL_FALSE_COMPLETION','partial handoff cannot declare canonical work closed/ready'))
+        remaining=set(manifest.get('remaining_obligation_refs',[]))
+        obligations={rid for rid,n in registry.items() if n['record'].get('materiality')=='material' and
+            n['record_type'] in ('requirement','acceptance_criterion') and n['effective_status'] not in ('satisfied','not_applicable','superseded')}
+        if obligations-remaining: findings.append(finding('ERROR','PARTIAL_OMITTED_OBLIGATION','remaining obligations omitted: '+','.join(sorted(obligations-remaining))))
+        if remaining-set(registry): findings.append(finding('ERROR','PARTIAL_UNKNOWN_OBLIGATION','unknown remaining obligation references'))
+    structurally_ready=not any(f.severity=='ERROR' for f in findings) and not manifest.get('inconsistencies')
+    computed_ready=structurally_ready and not partial and not manifest.get('blocking_items')
     if manifest.get('declared_delivery_ready') and not computed_ready: findings.append(finding('ERROR','DECLARED_READY_FALSE','declared_delivery_ready=true but computed_delivery_ready=false'))
-    return findings, {'computed_delivery_ready':computed_ready,'epistemic_closure':closure}
+    return findings, {'computed_delivery_ready':computed_ready,'computed_task_complete':computed_ready,
+        'computed_partial_ready':bool(partial and structurally_ready),'epistemic_closure':closure}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('state_json'); ap.add_argument('delivery_manifest'); ap.add_argument('--root'); ap.add_argument('--json',action='store_true'); a=ap.parse_args()

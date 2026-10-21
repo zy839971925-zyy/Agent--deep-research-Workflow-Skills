@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0",
+  "work_id": "SYNTHETIC-DR-16",
+  "state_version": 7,
+  "lane": "question",
+  "declared_status": "delivery_ready",
+  "objective": "Synthetic test only: does arithmetic source 2+2 support answer 4?",
+  "updated_at": "2026-10-21T10:00:00Z",
+  "root_question_ref": "q1",
+  "questions": [
+    {
+      "id": "q1",
+      "record_type": "question",
+      "declared_status": "answered",
+      "text": "Synthetic: what is 2+2?",
+      "answer_refs": [
+        "a1"
+      ],
+      "drift_check": "pass",
+      "recomposition_status": "not_required",
+      "materiality": "material"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "e1",
+      "record_type": "evidence",
+      "declared_status": "current",
+      "text": "Synthetic fixture: 2+2=4. Not retrieved research.",
+      "materiality": "material"
+    }
+  ],
+  "answers": [
+    {
+      "id": "a1",
+      "record_type": "answer",
+      "declared_status": "current",
+      "text": "Synthetic answer: 4.",
+      "question_refs": [
+        "q1"
+      ],
+      "evidence_refs": [
+        "e1"
+      ],
+      "depends_on": [
+        "e1"
+      ],
+      "verification_refs": [
+        "v1"
+      ],
+      "materiality": "material"
+    }
+  ],
+  "verification": [
+    {
+      "id": "v1",
+      "record_type": "verification",
+      "declared_status": "passed",
+      "target_refs": [
+        "a1"
+      ],
+      "metadata": {
+        "synthetic": true
+      },
+      "materiality": "material",
+      "closure_effect": "blocking"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "art1",
+      "record_type": "artifact",
+      "declared_status": "current",
+      "path": "answer.txt",
+      "based_on_state_version": 7,
+      "role": "answer",
+      "represents": [
+        "a1"
+      ],
+      "depends_on": [
+        "a1"
+      ],
+      "verification_refs": [
+        "v1"
+      ],
+      "materiality": "material"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req1",
+      "record_type": "requirement",
+      "declared_status": "satisfied",
+      "materiality": "material",
+      "verification_refs": [
+        "v1"
+      ]
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "acc1",
+      "record_type": "acceptance_criterion",
+      "declared_status": "satisfied",
+      "materiality": "material",
+      "verification_refs": [
+        "v1"
+      ]
+    }
+  ]
+}

@@ -14,17 +14,19 @@ def validate(data,root):
         fs.append({'severity':'ERROR','code':'RECONCILIATION_EVIDENCE_REQUIRED','message':'reconciled review requires targeted verification/evidence references'})
     mode=data.get('mode'); l2=data.get('layer2')
     if mode in ('dual','dual_orthogonal') and not l2: fs.append({'severity':'ERROR','code':'SECOND_LAYER_REQUIRED','message':'dual verification requires layer2'})
-    if (data['layer1']['verdict'] in ('fail','blocked') or l2 and l2.get('verdict') in ('fail','conflict','blocked')) and data.get('reconciliation_status')=='not_required':
-        fs.append({'severity':'ERROR','code':'REVIEW_CONFLICT_UNRESOLVED','message':'failed or blocked verification must reopen, reconcile, or remain blocked'})
     if l2:
         if l2.get('reviewer_context_id')==data.get('solver_context_id'): fs.append({'severity':'ERROR','code':'REVIEW_NOT_FRESH','message':'layer2 reviewer must not reuse solver context'})
         if l2.get('solver_transcript_included'): fs.append({'severity':'ERROR','code':'SOLVER_TRANSCRIPT_CONTAMINATION','message':'layer2 review should not receive full solver reasoning transcript'})
         basis=set(l2.get('independence_basis',[]))
         if mode=='dual_orthogonal' and not (basis & {'different_model','orthogonal_tool','orthogonal_evidence','human','deterministic_checker'}): fs.append({'severity':'ERROR','code':'ORTHOGONAL_BASIS_REQUIRED','message':'dual_orthogonal requires more than fresh context'})
         if mode=='dual_orthogonal' and l2.get('route_signature') and l2.get('route_signature')==l2.get('solver_route_signature') and not (basis & {'different_model','orthogonal_tool','orthogonal_evidence','human','deterministic_checker'}): fs.append({'severity':'ERROR','code':'CORRELATED_REVIEW_ROUTE','message':'identical review route cannot claim orthogonal independence'})
-        if l2.get('verdict')=='conflict' and data.get('reconciliation_status') not in ('reopened','targeted_evidence_needed','reconciled','blocked'): fs.append({'severity':'ERROR','code':'REVIEW_CONFLICT_UNRESOLVED','message':'review conflict must reopen/reconcile, never majority-vote close'})
+        if (l2.get('verdict')=='conflict' or l2.get('verdict') != data.get('layer1',{}).get('verdict')) and data.get('reconciliation_status') not in ('reopened','targeted_evidence_needed','reconciled','blocked'): fs.append({'severity':'ERROR','code':'REVIEW_CONFLICT_UNRESOLVED','message':'review conflict must reopen/reconcile, never majority-vote close'})
     return fs
 
+def verification_passed(data):
+    l2=data.get('layer2') or {}
+    return (data.get('layer1',{}).get('verdict')=='pass' and (data.get('mode') not in ('dual','dual_orthogonal') or l2.get('verdict')=='pass') and data.get('reconciliation_status') in ('not_required','reconciled'))
+
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('record');ap.add_argument('--root',default='.');a=ap.parse_args();d=json.loads(Path(a.record).read_text());fs=validate(d,Path(a.root));print(json.dumps({'passed':not fs,'findings':fs},indent=2));return 1 if fs else 0
+    ap=argparse.ArgumentParser();ap.add_argument('record');ap.add_argument('--root',default=str(Path(__file__).resolve().parents[1]));a=ap.parse_args();d=json.loads(Path(a.record).read_text());fs=validate(d,Path(a.root));print(json.dumps({'passed':not fs,'record_valid':not fs,'verification_passed':not fs and verification_passed(d),'findings':fs},indent=2));return 1 if fs else 0
 if __name__=='__main__':raise SystemExit(main())

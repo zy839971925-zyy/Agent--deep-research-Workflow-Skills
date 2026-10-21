@@ -9,14 +9,6 @@ except ImportError:
 
 DEPTHS=['light','standard','deep','max','ultra']
 QUAL=['minimal','standard','deep','max']
-INDEX_PATH=Path(__file__).resolve().parents[1]/'routing-index.json'
-
-def fingerprint(value):
-    payload=json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode('utf-8')
-    return 'sha256:'+hashlib.sha256(payload).hexdigest()
-
-def compute_index_fingerprint(index=None):
-    return fingerprint(index if index is not None else load_json(INDEX_PATH))
 
 def load_json(path): return json.loads(Path(path).read_text(encoding='utf-8'))
 
@@ -29,16 +21,26 @@ def _q(v):
     try:return QUAL.index(v)
     except:return 0
 
-def route_task(profile, index=None):
-    families=['core-reasoning']; modes=set(profile.get('task_modes',[]))
+INDEX_PATH=Path(__file__).resolve().parents[1]/'routing-index.json'
+
+def fingerprint(value):
+    return 'sha256:'+hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+
+def compute_index_fingerprint(index=None):
+    return fingerprint(index if index is not None else load_json(INDEX_PATH))
+
+def route_task(profile,index=None):
+    # Share explicit-depth normalization with the CLI; expose its new version.
+    profile=recheck_profile(profile,[])
+    families=['core-reasoning']; modes=set(profile.get('task_modes',[])); gaps=set(profile.get('active_gap_tags',[]))
     evidence=profile.get('evidence_depth','minimal')
     deep_research=(evidence in ('deep','max') or profile.get('frame_uncertainty')=='high' or profile.get('causal_or_systemic_complexity')=='high' or profile.get('explicit_deep_research') or 'research' in modes and profile.get('depth_class') in ('deep','max','ultra'))
     if deep_research: families.append('deep-research')
     if 'decision' in modes: families.append('decision-analysis')
-    execution=(profile.get('lane') in ('action','mixed') or 'action' in modes or profile.get('persistence')=='durable' or profile.get('external_side_effects','none')!='none')
+    execution=(bool(gaps & {'delegation','worker','swarm','scheduler'}) or profile.get('lane') in ('action','mixed') or 'action' in modes or profile.get('persistence')=='durable' or profile.get('external_side_effects','none')!='none')
     if execution: families.append('execution-control')
     verify=profile.get('verification_depth','minimal')
-    audit=(verify in ('deep','max') or profile.get('depth_class') in ('deep','max','ultra') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
+    audit=('orthogonal-verification' in gaps or verify in ('deep','max') or profile.get('depth_class') in ('deep','max','ultra') or profile.get('high_consequence') or 'audit' in modes or execution and _q(profile.get('governance_depth','minimal'))>=1)
     if audit: families.append('audit-verification')
     if 'maintenance' in modes: families.append('workflow-learning')
     # learning may never silently enter ordinary user tasks
@@ -56,8 +58,8 @@ def route_task(profile, index=None):
     if profile.get('depth_class') in ('light','standard') and not deep_research: swarm='forbidden'
     if not execution and not deep_research: swarm='forbidden'
     slots={'light':1,'standard':2,'deep':3,'max':3,'ultra':3}[profile.get('depth_class','standard')]
-    return {'profile_version':profile['profile_version'],'profile_fingerprint':fingerprint(profile),
-            'index_fingerprint':compute_index_fingerprint(index),'required_families':families,'optional_families':[],
+    slots=max(slots,len(families)+(1 if profile.get('depth_class')=='ultra' else 0))
+    return {'profile_fingerprint':fingerprint(profile),'index_fingerprint':compute_index_fingerprint(index),'profile_version':profile['profile_version'],'required_reference_ids':['ultra-research'] if profile.get('depth_class')=='ultra' else [],'required_families':families,'optional_families':[],
             'verification_mode':verification_mode,'runtime_level':runtime_level,'swarm_admission':swarm,
             'reference_phase_limit':slots,'progressive_loading':True,'route_status':'current'}
 
@@ -66,7 +68,11 @@ def recheck_profile(profile,signals):
     up={'hidden_complexity','decisive_contradiction','uncertain_causal_edge','repeated_route_failure','source_conflict','entity_version_time_ambiguity','worker_conflict','user_steering','external_state_change','closure_material_uncertainty'} & signals
     ultra={'ultra_requested','max_stagnation','severe_frame_instability','evidence_ecology_gap','orthogonal_research_needed','pivotal_claim_undercoverage'} & signals
     down={'lower_than_expected_complexity'} & signals
-    if 'ultra_requested' in signals or ultra and current=='max':
+    if 'ultra_requested' in signals or p.get('requested_depth')=='ultra':
+        idx=4; p['requested_depth']='ultra'; reasons.append('ultra_requested')
+    elif p.get('requested_depth'):
+        idx=DEPTHS.index(p['requested_depth']); reasons.append('explicit_requested_depth')
+    elif ultra and current=='max':
         idx=4; reasons+=sorted(ultra)
     elif up:
         idx=max(idx,min(3,idx+1)); reasons+=sorted(up)
@@ -82,6 +88,5 @@ def recheck_profile(profile,signals):
 
 def route_is_stale(route,profile,index_fingerprint=None):
     expected=route_task(profile)
-    if index_fingerprint is not None:
-        expected['index_fingerprint']=index_fingerprint
-    return any(route.get(key)!=value for key,value in expected.items())
+    if index_fingerprint is not None: expected['index_fingerprint']=index_fingerprint
+    return any(route.get(k)!=v for k,v in expected.items())

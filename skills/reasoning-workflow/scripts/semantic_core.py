@@ -233,7 +233,11 @@ def compute_epistemic_closure(state,registry):
 
 def compute_runtime_closure(state, registry):
     blockers=[]; warnings=[]
-    if state.get('lane') not in ('action','mixed'):
+    applicable = state.get('lane') in ('action','mixed') or any(
+        n['record'].get('materiality') == 'material' and n['record_type'] in
+        ('requirement','acceptance_criterion','artifact','verification','effectiveness','action')
+        for n in registry.values()) or bool(state.get('blocked_items'))
+    if not applicable:
         return {'applicable':False,'computed_runtime_closed':False,'blockers':[],'warnings':[]}
     for rid,node in registry.items():
         rec=node['record']; rt=node['record_type']; es=node['effective_status']; mat=rec.get('materiality','supporting'); ce=rec.get('closure_effect','nonblocking')

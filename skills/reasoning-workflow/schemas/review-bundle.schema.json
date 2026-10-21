@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scoped review bridge contract 1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "work_id",
+    "reviews"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "work_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviews": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record",
+          "target_refs",
+          "target_fingerprint",
+          "context_exposure"
+        ],
+        "properties": {
+          "record": {
+            "type": "object",
+            "required": [
+              "verification_id"
+            ]
+          },
+          "target_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "target_fingerprint": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "context_exposure": {
+            "enum": [
+              "packet_only",
+              "conversation",
+              "full_solver_transcript",
+              "unknown"
+            ]
+          },
+          "independence_evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}

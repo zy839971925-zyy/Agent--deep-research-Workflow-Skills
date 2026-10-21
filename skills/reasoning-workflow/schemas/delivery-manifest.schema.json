@@ -120,6 +120,10 @@
           },
           "declared_current": {
             "type": "boolean"
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
           }
         },
         "additionalProperties": false
@@ -185,7 +189,50 @@
         },
         "additionalProperties": false
       }
+    },
+    "delivery_kind": {
+      "enum": [
+        "complete",
+        "partial"
+      ]
+    },
+    "remaining_work": {
+      "type": "string",
+      "minLength": 1
+    },
+    "remaining_obligation_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "delivery_kind": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "delivery_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "remaining_work",
+          "remaining_obligation_refs"
+        ],
+        "properties": {
+          "declared_delivery_ready": {
+            "const": false
+          }
+        }
+      }
+    }
+  ]
 }

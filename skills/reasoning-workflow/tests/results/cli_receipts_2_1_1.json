@@ -1,0 +1,583 @@
+[
+  {
+    "test": "run_regression.Regression.test_02_route_cli_and_cwd",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/route_task.py",
+      "<temporary-test-directory>/input0.json",
+      "--signal",
+      "ultra_requested"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_fingerprint\": \"sha256:6f7d136c32ac421fa0b700785b0285820a2edda98f1ba0d271b2817509669963\",\n    \"index_fingerprint\": \"sha256:6c3dc9a1c98b732fa286593f0ec03e43b574491c730a7038a0723b50b74db954\",\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 4,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_05_strict_raw_envelope",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"RAW_INPUT\",\n      \"message\": \"RAW_ENVELOPE: expected array or exactly {records: array}; explicit [] is valid\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_05_strict_raw_envelope",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"RAW_INPUT\",\n      \"message\": \"RAW_ENVELOPE: expected array or exactly {records: array}; explicit [] is valid\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_05_strict_raw_envelope",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--root",
+      "<temporary-test-directory>",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--root",
+      "<temporary-test-directory>",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"hash_algorithm: None is not one of ['sha256', 'sha512']\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--root",
+      "<temporary-test-directory>",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"RAW_HASH_MISMATCH\",\n      \"message\": \"R1 sha256 mismatch\",\n      \"refs\": [\n        \"R1\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'derived_from' is a required property\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"derived_from: [] should be non-empty\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_06_raw_hash_and_lineage_schema",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_raw.py",
+      "<temporary-test-directory>/input0.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_07_runtime_explicit_empty",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--ledger",
+      "<temporary-test-directory>/empty.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schema_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_id' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'state_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'nodes' is a required property\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_07_runtime_explicit_empty",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/empty.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schema_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schedule_id' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schedule_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_id' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'based_on_plan_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'mode' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'scope' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'assignments' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'completed_prerequisite_refs' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'deferred_nodes' is a required property\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_08_schedule_legal_and_cycles",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/sch.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_08_schedule_legal_and_cycles",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/sch.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEDULE_WAIT_CYCLE\",\n      \"message\": \"combined dependency/wait cycle: A -> A\",\n      \"refs\": [\n        \"A\",\n        \"A\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_08_schedule_legal_and_cycles",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/sch.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEDULE_WAIT_CYCLE\",\n      \"message\": \"combined dependency/wait cycle: A -> B -> A\",\n      \"refs\": [\n        \"A\",\n        \"B\",\n        \"A\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_08_schedule_legal_and_cycles",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/sch.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEDULE_WAIT_CYCLE\",\n      \"message\": \"combined dependency/wait cycle: A -> B -> A\",\n      \"refs\": [\n        \"A\",\n        \"B\",\n        \"A\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_08_schedule_legal_and_cycles",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/sch.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEDULE_WAIT_CYCLE\",\n      \"message\": \"combined dependency/wait cycle: A -> B -> A\",\n      \"refs\": [\n        \"A\",\n        \"B\",\n        \"A\"\n      ]\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEDULE_WAIT_CYCLE\",\n      \"message\": \"combined dependency/wait cycle: A -> B -> A\",\n      \"refs\": [\n        \"A\",\n        \"B\",\n        \"A\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_17_review_valid_is_not_passed",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_dual_verification.py",
+      "<temporary-test-directory>/input0.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"record_valid\": true,\n  \"verification_passed\": false,\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_18_learning_intrinsic_rejected",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_learning.py",
+      "<temporary-test-directory>/input0.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"INTRINSIC_REFLECTION_NOT_VALIDATION\",\n      \"message\": \"same-model intrinsic reflection may create candidate insight only\"\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"VALIDATION_EVIDENCE_REQUIRED\",\n      \"message\": \"validated/promoted requires resolvable validation evidence references; host resolves them\"\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"LEARNING_VALIDATION_UNVERIFIED\",\n      \"message\": \"validated credit requires trusted validation evidence resolver; record labels alone are insufficient\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_18_learning_intrinsic_rejected",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/retrieve_learnings.py",
+      "<temporary-test-directory>/input0.json",
+      "--task-tag",
+      "deep_research"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"INTRINSIC_REFLECTION_NOT_VALIDATION\",\n      \"message\": \"same-model intrinsic reflection may create candidate insight only\"\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"VALIDATION_EVIDENCE_REQUIRED\",\n      \"message\": \"validated/promoted requires resolvable validation evidence references; host resolves them\"\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"LEARNING_VALIDATION_UNVERIFIED\",\n      \"message\": \"validated credit requires trusted validation evidence resolver; record labels alone are insufficient\"\n    }\n  ],\n  \"advisory_only\": false,\n  \"selected\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_19_learning_tiers_and_evidence",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_learning.py",
+      "<temporary-test-directory>/input0.json",
+      "--validation-evidence",
+      "<temporary-test-directory>/evidence_index.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_19_learning_tiers_and_evidence",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/retrieve_learnings.py",
+      "<temporary-test-directory>/input0.json",
+      "--task-tag",
+      "deep_research",
+      "--validation-evidence",
+      "<temporary-test-directory>/evidence_index.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"findings\": [],\n  \"advisory_only\": false,\n  \"selected\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_20_learning_malformed",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/retrieve_learnings.py",
+      "<temporary-test-directory>/input0.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"LEARNING_INPUT\",\n      \"message\": \"expected array or exactly {learnings: array}\"\n    }\n  ],\n  \"advisory_only\": false,\n  \"selected\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_20_learning_malformed",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/retrieve_learnings.py",
+      "<temporary-test-directory>/input0.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'tier' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'source_run_refs' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'source_eval_refs' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'task_signature' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'failure_mode' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'root_cause_class' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'lesson_type' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'heuristic' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'applicability_conditions' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'anti_conditions' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'provenance' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'created_at' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'rollback_ref' is a required property\",\n      \"refs\": []\n    }\n  ],\n  \"advisory_only\": false,\n  \"selected\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_21_strict_bridge",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_workflow.py",
+      "--profile",
+      "<temporary-test-directory>/profile.json",
+      "--route",
+      "<temporary-test-directory>/route.json",
+      "--state",
+      "<temporary-test-directory>/state.json",
+      "--manifest",
+      "<temporary-test-directory>/manifest.json",
+      "--reviews",
+      "<temporary-test-directory>/reviews.json",
+      "--root",
+      "<temporary-test-directory>"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"structural_valid\": true,\n  \"computed_delivery_ready\": true,\n  \"evidence_authenticated\": false,\n  \"orthogonality_verified\": null,\n  \"errors\": [],\n  \"host_execution_verified\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_25_proposal_cli_no_host_bypass",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/p.json",
+      "--worker-proposal",
+      "<temporary-test-directory>/q.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"WORKER_HOST_CONTEXT_REQUIRED\",\n      \"message\": \"CLI is static validation only; live submission needs trusted host callback and atomic commit\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_26_resource_cli_other_cwd",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/route_resources.py",
+      "<temporary-test-directory>/input0.json",
+      "<temporary-test-directory>/input1.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"selected_references\": [\n    {\n      \"reference_id\": \"problem-framing-and-effort\",\n      \"family\": \"core-reasoning\",\n      \"path\": \"references/problem-framing-and-effort.md\",\n      \"load_reason\": \"family_entry\",\n      \"current_gap\": \"family_entry\",\n      \"profile_version\": 1,\n      \"context_cost_class\": \"medium\"\n    },\n    {\n      \"reference_id\": \"change-governance-and-effectiveness\",\n      \"family\": \"audit-verification\",\n      \"path\": \"references/change-governance-and-effectiveness.md\",\n      \"load_reason\": \"gap_match\",\n      \"current_gap\": \"high-consequence\",\n      \"profile_version\": 1,\n      \"context_cost_class\": \"medium\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_32_manifest_flag_cannot_skip_digest",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_workflow.py",
+      "--profile",
+      "<temporary-test-directory>/profile.json",
+      "--route",
+      "<temporary-test-directory>/route.json",
+      "--state",
+      "<temporary-test-directory>/state.json",
+      "--manifest",
+      "<temporary-test-directory>/manifest.json",
+      "--reviews",
+      "<temporary-test-directory>/reviews.json",
+      "--root",
+      "<temporary-test-directory>"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"structural_valid\": false,\n  \"computed_delivery_ready\": false,\n  \"evidence_authenticated\": false,\n  \"orthogonality_verified\": null,\n  \"errors\": [\n    \"ART_CURRENT_DOWNGRADE: art1 canonical current/required artifact cannot be downgraded by manifest flag\",\n    \"DECLARED_READY_FALSE: declared_delivery_ready=true but computed_delivery_ready=false\",\n    \"current/required artifact missing or downgraded art1\"\n  ],\n  \"host_execution_verified\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_34_explicit_depth_api_cli_consistency",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/route_task.py",
+      "<temporary-test-directory>/input0.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_fingerprint\": \"sha256:6f7d136c32ac421fa0b700785b0285820a2edda98f1ba0d271b2817509669963\",\n    \"index_fingerprint\": \"sha256:6c3dc9a1c98b732fa286593f0ec03e43b574491c730a7038a0723b50b74db954\",\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 4,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_35_bridge_refuses_unnormalized_explicit_depth",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_workflow.py",
+      "--profile",
+      "<temporary-test-directory>/profile.json",
+      "--route",
+      "<temporary-test-directory>/route.json",
+      "--state",
+      "<temporary-test-directory>/state.json",
+      "--manifest",
+      "<temporary-test-directory>/manifest.json",
+      "--reviews",
+      "<temporary-test-directory>/reviews.json",
+      "--root",
+      "<temporary-test-directory>"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"structural_valid\": false,\n  \"computed_delivery_ready\": false,\n  \"evidence_authenticated\": false,\n  \"orthogonality_verified\": null,\n  \"errors\": [\n    \"PROFILE_RECHECK_REQUIRED: normalize explicit depth and use the resulting profile/version and route\"\n  ],\n  \"host_execution_verified\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "run_regression.Regression.test_38_orthogonal_cli_without_host_receipt",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_workflow.py",
+      "--profile",
+      "<temporary-test-directory>/profile.json",
+      "--route",
+      "<temporary-test-directory>/route.json",
+      "--state",
+      "<temporary-test-directory>/state.json",
+      "--manifest",
+      "<temporary-test-directory>/manifest.json",
+      "--reviews",
+      "<temporary-test-directory>/reviews.json",
+      "--root",
+      "<temporary-test-directory>"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"structural_valid\": true,\n  \"computed_delivery_ready\": false,\n  \"evidence_authenticated\": false,\n  \"orthogonality_verified\": false,\n  \"errors\": [\n    \"ORTHOGONALITY_UNVERIFIED: trusted host evidence/method receipt and two bound layer verifications required v1\",\n    \"ORTHOGONALITY_UNVERIFIED: trusted host evidence/method receipt and two bound layer verifications required v2\"\n  ],\n  \"host_execution_verified\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_45_question_hard_obligation_blocks",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_delivery.py",
+      "<temporary-test-directory>/input0.json",
+      "<temporary-test-directory>/input1.json",
+      "--root",
+      "<temporary-test-directory>",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"DELIVERY_CLOSURE_BLOCKED\",\n      \"message\": \"runtime closure is unresolved: ['req1 material requirement is blocked.', 'acc1 material acceptance_criterion is blocked.']\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"DECLARED_READY_FALSE\",\n      \"message\": \"declared_delivery_ready=true but computed_delivery_ready=false\",\n      \"refs\": []\n    }\n  ],\n  \"computed_delivery_ready\": false,\n  \"computed_task_complete\": false,\n  \"computed_partial_ready\": false,\n  \"epistemic_closure\": {\n    \"epistemic\": {\n      \"applicable\": true,\n      \"computed_epistemic_closed\": true,\n      \"blockers\": [],\n      \"warnings\": []\n    },\n    \"runtime\": {\n      \"applicable\": true,\n      \"computed_runtime_closed\": false,\n      \"blockers\": [\n        \"req1 material requirement is blocked.\",\n        \"acc1 material acceptance_criterion is blocked.\"\n      ],\n      \"warnings\": []\n    }\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_48_partial_handoff_never_complete",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_delivery.py",
+      "<temporary-test-directory>/input0.json",
+      "<temporary-test-directory>/input1.json",
+      "--root",
+      "<temporary-test-directory>",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"WARNING\",\n      \"code\": \"DELIVERY_CLOSURE_BLOCKED\",\n      \"message\": \"runtime closure is unresolved: ['req1 material requirement is blocked.', 'acc1 material acceptance_criterion is blocked.']\",\n      \"refs\": []\n    }\n  ],\n  \"computed_delivery_ready\": false,\n  \"computed_task_complete\": false,\n  \"computed_partial_ready\": true,\n  \"epistemic_closure\": {\n    \"epistemic\": {\n      \"applicable\": true,\n      \"computed_epistemic_closed\": true,\n      \"blockers\": [],\n      \"warnings\": []\n    },\n    \"runtime\": {\n      \"applicable\": true,\n      \"computed_runtime_closed\": false,\n      \"blockers\": [\n        \"req1 material requirement is blocked.\",\n        \"acc1 material acceptance_criterion is blocked.\"\n      ],\n      \"warnings\": []\n    }\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_51_forbidden_without_group_rejected",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_runtime.py",
+      "--plan",
+      "<temporary-test-directory>/plan.json",
+      "--schedule",
+      "<temporary-test-directory>/schedule.json",
+      "--json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"PARALLEL_FORBIDDEN\",\n      \"message\": \"potential overlap between A and B; forbidden nodes require explicit sequencing\",\n      \"refs\": [\n        \"A\",\n        \"B\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_57_prepare_profile_route_resources_cli",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/prepare_task.py",
+      "<temporary-test-directory>/input0.json",
+      "--signal",
+      "ultra_requested"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"status\": \"prepared\",\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_fingerprint\": \"sha256:6f7d136c32ac421fa0b700785b0285820a2edda98f1ba0d271b2817509669963\",\n    \"index_fingerprint\": \"sha256:6c3dc9a1c98b732fa286593f0ec03e43b574491c730a7038a0723b50b74db954\",\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 4,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  },\n  \"selected_references\": [\n    {\n      \"reference_id\": \"ultra-research\",\n      \"family\": \"deep-research\",\n      \"path\": \"references/ultra-research.md\",\n      \"load_reason\": \"mandatory_method\",\n      \"current_gap\": \"family_entry\",\n      \"profile_version\": 2,\n      \"context_cost_class\": \"high\"\n    },\n    {\n      \"reference_id\": \"problem-framing-and-effort\",\n      \"family\": \"core-reasoning\",\n      \"path\": \"references/problem-framing-and-effort.md\",\n      \"load_reason\": \"family_entry\",\n      \"current_gap\": \"family_entry\",\n      \"profile_version\": 2,\n      \"context_cost_class\": \"medium\"\n    },\n    {\n      \"reference_id\": \"information-target-navigation\",\n      \"family\": \"deep-research\",\n      \"path\": \"references/information-target-navigation.md\",\n      \"load_reason\": \"family_entry\",\n      \"current_gap\": \"family_entry\",\n      \"profile_version\": 2,\n      \"context_cost_class\": \"medium\"\n    },\n    {\n      \"reference_id\": \"formal-review-and-audit\",\n      \"family\": \"audit-verification\",\n      \"path\": \"references/formal-review-and-audit.md\",\n      \"load_reason\": \"family_entry\",\n      \"current_gap\": \"family_entry\",\n      \"profile_version\": 2,\n      \"context_cost_class\": \"high\"\n    }\n  ],\n  \"deferred_references\": [],\n  \"task_executed\": false,\n  \"authority_granted\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_61_unresolved_gate_rejected_with_good_source",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_learning.py",
+      "<temporary-test-directory>/input0.json",
+      "--validation-evidence",
+      "<temporary-test-directory>/index.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 1,
+    "stdout": "{\n  \"passed\": false,\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"LEARNING_PROMOTION_EVIDENCE_UNVERIFIED\",\n      \"message\": \"held_out_eval_refs requires typed, applicable, passing host evidence, not a nonempty reference\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_62_all_typed_scoped_gates_pass",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/validate_learning.py",
+      "<temporary-test-directory>/input0.json",
+      "--validation-evidence",
+      "<temporary-test-directory>/index.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"findings\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_2_1_1.PatchRegression.test_62_all_typed_scoped_gates_pass",
+    "argv": [
+      "python",
+      "<skill-root>/scripts/retrieve_learnings.py",
+      "<temporary-test-directory>/input0.json",
+      "--task-tag",
+      "deep_research",
+      "--maintenance",
+      "--validation-evidence",
+      "<temporary-test-directory>/index.json"
+    ],
+    "cwd": "temporary directory outside Skill",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"findings\": [],\n  \"advisory_only\": true,\n  \"selected\": [\n    {\n      \"learning_id\": \"synthetic:contradictory-intrinsic\",\n      \"tier\": 3,\n      \"source_run_refs\": [\n        \"synthetic:run\"\n      ],\n      \"source_eval_refs\": [\n        \"eval\"\n      ],\n      \"task_signature\": [\n        \"deep_research\"\n      ],\n      \"failure_mode\": \"synthetic source selection failure\",\n      \"root_cause_class\": \"evidence_failure\",\n      \"lesson_type\": \"strategy\",\n      \"heuristic\": \"Synthetic inert text: inspect primary evidence.\",\n      \"applicability_conditions\": [\n        \"deep_research\"\n      ],\n      \"anti_conditions\": [],\n      \"provenance\": {\n        \"feedback_types\": [\n          \"deterministic_verifier\"\n        ],\n        \"intrinsic_reflection_only\": false\n      },\n      \"status\": \"promoted\",\n      \"created_at\": \"2026-10-21T00:00:00Z\",\n      \"rollback_ref\": \"rollback\",\n      \"regression_refs\": [\n        \"reg\"\n      ],\n      \"held_out_eval_refs\": [\n        \"held\"\n      ],\n      \"baseline_comparison_ref\": \"baseline\",\n      \"dual_review_ref\": \"review\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  }
+]
