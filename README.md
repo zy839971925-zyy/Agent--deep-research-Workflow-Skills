@@ -48,8 +48,8 @@ For example, “does tutoring work?” becomes a check of outcomes, programme de
 ## Start here
 
 1. **Choose an edition** below. If you are unsure, start with Portable.
-2. **Install the whole Skill folder** in a location your AI host recognizes. Do not copy only `SKILL.md`; it links to supporting material.
-3. **Enable it in the host**, or make it available as the host's default workflow. Product-specific setup differs; see [host profiles](skills/reasoning-workflow/references/harness-profiles.md).
+2. **Install the complete Skill folder** using the instructions for [Claude Code, Codex, or another agent](#install-portable). Do not copy only `SKILL.md`; it links to supporting material.
+3. **Enable or invoke it in the host.** The host-specific sections below give exact locations and checks; see [host profiles](skills/reasoning-workflow/references/harness-profiles.md) for additional adapters.
 4. **Ask normally.** The workflow should infer the research path and effort from the scenario. For a deliberate override, use one of the prompts in [Try it](#try-it).
 5. **Check the result.** For high-stakes or fast-changing questions, ask for the decisive evidence, uncertainty, and limits—not just a confident conclusion.
 
@@ -64,12 +64,81 @@ For example, “does tutoring work?” becomes a check of outcomes, programme de
 
 Portable is the recommended first install. Modular is not six standalone copies of every Portable feature; use it when the host can compose focused Skills reliably. The Modular edition contains `reasoning-core`, `deep-research`, `decision-analysis`, `execution-control`, `audit-verification`, and `workflow-learning`.
 
+<a id="install-portable"></a>
+
 ### Install Portable
 
-1. Clone this repository or download [the complete Portable package](dist/reasoning-workflow-3.1.0.zip).
-2. Put the complete `reasoning-workflow` directory in your host's recognized Skill directory. For example, Codex commonly uses `.agents/skills/reasoning-workflow/`; Claude Code commonly uses `.claude/skills/reasoning-workflow/`. Confirm the current host's own instructions before relying on a path.
-3. Enable or select the Skill as required by that host. Start from [`SKILL.md`](skills/reasoning-workflow/SKILL.md); it points to additional guidance as the task needs it.
-4. Try a normal request, then try an explicit depth request from [the examples](#try-it).
+The canonical Skill is `skills/reasoning-workflow/`. Install that **entire directory**, not only `SKILL.md`: its references, families, schemas, scripts, and assets are relative to it. You can clone the repository or extract the complete [Portable package](dist/reasoning-workflow-3.1.0.zip). The commands below assume you cloned the repository and are running them from its root:
+
+```sh
+git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git
+cd Agent--deep-research-Workflow-Skills
+```
+
+Prerequisites for the clone route are Git and the host you plan to use. The command blocks below use Bash/zsh (macOS, Linux, WSL, or Git Bash). They intentionally stop if the destination already exists. Inspect or back up that Skill first; do not merge over a customized installation. These examples are user-level installs, available across projects. For a project-only install, use the host's project directory instead (`.claude/skills/` for Claude Code; `.agents/skills/` for Codex).
+
+#### Claude Code
+
+Claude Code discovers user Skills under `~/.claude/skills/` and project Skills under `.claude/skills/`. From the repository root, install for your user with:
+
+```sh
+dest="$HOME/.claude/skills/reasoning-workflow"
+if [ -e "$dest" ]; then
+  echo "Already exists; inspect or back up before replacing: $dest" >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$dest")"
+cp -R skills/reasoning-workflow "$dest"
+test -f "$dest/SKILL.md"
+```
+
+Start Claude Code with `claude`, ask `What skills are available?`, then invoke `/reasoning-workflow` or make a request that matches its description. If it is not listed, check the destination and restart Claude Code. See [Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills) for current discovery and invocation behavior.
+
+#### Codex
+
+Codex discovers user Skills under `~/.agents/skills/`; repository Skills can live under `.agents/skills/`. From the repository root, install for your user with:
+
+```sh
+dest="$HOME/.agents/skills/reasoning-workflow"
+if [ -e "$dest" ]; then
+  echo "Already exists; inspect or back up before replacing: $dest" >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$dest")"
+cp -R skills/reasoning-workflow "$dest"
+test -f "$dest/SKILL.md"
+```
+
+In Codex, open `/skills` and confirm `reasoning-workflow` is listed; then invoke it with `$reasoning-workflow` or make a matching request. Codex usually detects new Skills automatically; restart Codex if it does not appear. See [Codex Skills](https://developers.openai.com/codex/skills) for current paths and use.
+
+#### Give these instructions to an AI agent
+
+Copy this prompt into the agent you want to set up (replace the host name if known):
+
+> Install the Reasoning Workflow Skill from `https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills`. Use an existing clean checkout if available; otherwise, from its parent directory, run `git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git` (do not clone over existing files). First identify the active host (Claude Code, Codex, or another documented Skill host) and read this repository's README installation section. Use the canonical source directory `skills/reasoning-workflow/` and copy the **whole directory**, preserving its relative files; do not install only `SKILL.md`. For Claude Code use `~/.claude/skills/reasoning-workflow/`; for Codex use `~/.agents/skills/reasoning-workflow/`. Before writing, check the exact destination. If it already exists, stop and report its path; do not overwrite, merge, delete, or rename the user's files. For another host, use only its current official Skill-install instructions; if its location cannot be established, ask before writing. Verify that the installed `SKILL.md` and supporting directories exist, then verify discovery in the host if this session exposes it. Report the source, destination, verification performed, and anything you could not verify. Do not claim model behavior was tested unless you actually ran a task. This installs a Skill only; do not install the DeepSeek Harness plugin unless DeepSeek Harness is the active host and the user requests that plugin.
+
+On Windows PowerShell, use the equivalent copy procedure below; set `$dest` to `.claude/skills/reasoning-workflow` for Claude Code or `.agents/skills/reasoning-workflow` for Codex:
+
+```powershell
+$dest = Join-Path $HOME ".claude/skills/reasoning-workflow"
+if (Test-Path -LiteralPath $dest) { throw "Already exists; inspect or back up first: $dest" }
+New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+Copy-Item -Recurse -LiteralPath "skills/reasoning-workflow" -Destination $dest
+if (-not (Test-Path -LiteralPath (Join-Path $dest "SKILL.md"))) { throw "SKILL.md was not copied" }
+```
+
+The prompt describes a safe procedure, not permission to modify files on its own. The agent must use the host's real filesystem and stop at an existing destination.
+
+#### DeepSeek Harness: install the plugin, not just the Skill folder
+
+DeepSeek Harness uses this repository's separate native Cordis bundle; copying the Portable Skill into another host's Skills directory does **not** install that plugin. Prerequisites: the `dsh` CLI and `pnpm`. From the repository root, add the bundle to the profile you use:
+
+```sh
+dsh plugin --profile default add ./integrations/deepseek-harness
+dsh --profile default --dump-config
+```
+
+Replace `default` if you use another profile. Verify that the resolved plugin list contains `reasoning-workflow-deepseek-harness`, then start or restart that profile and ask `/reasoning-workflow` a read-only question. The repository bundle is not published to npm or the Plugin Market. See the full [DeepSeek Harness plugin install and use guide](docs/DEEPSEEK_HARNESS.md).
 
 The Python helpers are optional. Their dependencies are listed in [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt); the helpers prepare or validate task records, but do not run a model, activate a Skill, or execute real-world actions.
 
