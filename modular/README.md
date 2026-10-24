@@ -1,6 +1,6 @@
-# Reasoning Workflow 3.0.0 — Modular edition
+# Reasoning Workflow 3.0.1 — Modular edition
 
-The Modular edition splits the six workflow Families into independently installable instruction-only Agent Skills. Use it when the host already handles skill discovery/routing well, or when a task needs only a focused subset. The shared research method is versioned with Portable 3.0.0; Modular is not six complete replacements for the governing Portable Skill.
+The Modular edition splits the six workflow Families into independently installable instruction-only Agent Skills. Use it when the host already handles skill discovery/routing well, or when a task needs only a focused subset. The shared research method is versioned with Portable 3.0.1; Modular is not six complete replacements for the governing Portable Skill.
 
 - `reasoning-core` — framing, representation, decomposition, relationships, hypotheses, interpretation
 - `deep-research` — problem-driven research, retrieval, evidence/provenance, freshness, comparative synthesis, Ultra research

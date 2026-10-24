@@ -1,6 +1,29 @@
 # Reasoning Workflow — 实际测试报告
 
-## 3.0.0 本地候选验证（2026-10-24）
+## 3.0.1 维护版验证（2026-10-24）
+
+- 34 项仓库级宿主契约测试：通过；使用隔离环境中的 `jsonschema==4.23.0` 与 `markdown==3.8.2`。
+- 74 项 Portable 回归测试：通过，0 failure、0 error；包含 39 项保留基线、35 项新增回归检查和 38 次真实 CLI 子进程调用。测试回执 `model_evaluated=false`。
+- 编译检查：`python -m compileall -q scripts tests` 通过；`git diff --check` 通过。
+- 静态包检查：76 个 Markdown、353 个本地 Markdown 链接、13 个本地锚点、29 个 Python AST、54 个 JSON、14 个 JSON Schema、30 个路由引用；168 个归档文件、167 个内部校验和条目，源码/归档完全一致，失败数为 0。
+- `dist/SHA256SUMS` 中 2.1.1、3.0.0、3.0.1 三个档案均通过 SHA-256 校验。
+- 新增内容绑定的历史检查点工件、混合观点访谈夹具和稀疏检索/无需联网控制。共 18 个 V3 场景、23 个跨任务案例，均仍是协议材料，不是模型运行结果。
+- 本版本补强夹具与完整性测试，不声称研究工作流规则或真实模型表现有所提升；没有执行真实模型 A/B 或盲评。
+
+复现：
+
+```sh
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/run_all.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/check_package.py
+python -m compileall -q scripts tests
+python scripts/build_distribution.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/check_package.py --archive ../../dist/reasoning-workflow-3.0.1.zip
+(cd ../../dist && sha256sum -c SHA256SUMS)
+```
+
+---
+
+## 3.0.0 合并主分支基线验证（历史，2026-10-24）
 
 - 34 项仓库级宿主契约测试：通过；使用隔离环境中的 `jsonschema==4.23.0` 与 `markdown==3.8.2`。
 - 74 项 Portable 回归测试：通过，0 failure、0 error；包含 39 项保留基线、35 项新增回归检查和 38 次真实 CLI 子进程调用。回执报告 `model_evaluated=false`、`business_actions_executed=false`。

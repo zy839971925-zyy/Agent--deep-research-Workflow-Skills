@@ -1,13 +1,20 @@
 # Changelog
 
-## 3.0.0 — 2026-10-24 (local candidate; not remotely published)
+## 3.0.1 — 2026-10-24 (evaluation-fixture maintenance)
+
+- Bind the stale-checkpoint fixture to a real archived v1 artifact and computed digest, so version/content mismatch is testable rather than signalled by an obvious placeholder.
+- Add mixed qualitative-interview excerpts and a dedicated prevalence-boundary case.
+- Add controlled sparse-search recovery and no-web negative-control scenarios.
+- Deterministic checks remain protocol/fixture validation only; real-model behavior evaluation is still outstanding.
+
+## 3.0.0 — 2026-10-24 (merged to main; no separate GitHub Release)
 
 - Add triggered research modes for real-world empirical questions, pre-build technical architecture, and linked hybrid investigations; ground architecture comparison in project evidence and quality-attribute scenarios.
 - Add a source-aware clarification gate: route uncertainty across conversation state, project materials, live host capability, external facts, derivation, and user-owned judgments; preserve material unresolved state and ask only after relevant checks.
 - Strengthen long-horizon resume behavior with scoped artifact relocation/version checks and a focus-to-acceptance check after interruption, handoff, or checkpoint; preserve partial-access uncertainty and unaffected completed work.
 - Add a runtime capability contract with explicit fallbacks, selective architecture decision records, and bounded psychology/survey-method guidance; do not treat famous-expert heuristics as guaranteed interventions.
 - Add a causal-chain web-search method that turns answer-bearing links into adaptive, role-specific queries, engine-aware operators, source checks, and a proportionate search trace; add a protocol scenario, not a model-performance claim.
-- Add fifteen V3 functional evaluation scenarios and concrete synthetic architecture/resume fixtures, including silent automatic entry, explicit invocation, product/runtime mismatch, stale completion-checkpoint detection, causal-chain web search, and safe recovery from an oversized handoff, runtime revision drift, and late worker results after root cancellation. They remain `protocol_only_not_model_evaluated`; no real-model improvement is claimed.
+- Add seventeen V3 functional evaluation scenarios and concrete synthetic architecture/resume fixtures, including silent automatic entry, explicit invocation, product/runtime mismatch, stale completion-checkpoint detection, causal-chain web search, and safe recovery from an oversized handoff, runtime revision drift, and late worker results after root cancellation. They remain `protocol_only_not_model_evaluated`; no real-model improvement is claimed.
 - Define the activation contract separately from task routing: strict every-turn matching requires an always-on host instruction/front router; the direct phrase “调用我的 workflow skills” selects the workflow but does not force Ultra or grant tools/permissions.
 - Preserve the 2.2.0 research-frontier, harness, packaging, and test improvements; keep history and previously released artifacts intact.
 

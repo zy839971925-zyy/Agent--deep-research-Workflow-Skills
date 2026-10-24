@@ -1,12 +1,17 @@
 # Reasoning Workflow — upgrade and migration
 
-## 2.2.0 → 3.0.0 (local candidate)
+## 3.0.0 → 3.0.1
+
+- Replace the complete Portable directory with the 3.0.1 package; keep references, tests, schemas, and scripts together. No schema migration is required.
+- This is an evaluation-fixture maintenance release: it adds a content-bound historical checkpoint artifact, mixed-view interview evidence, and sparse-search/no-web controls. It does not claim a workflow behavior change or real-model improvement.
+
+## 2.2.0 → 3.0.0
 
 - Replace the complete Portable directory with the complete 3.0.0 directory; retain a backup. Keep references, tests, schemas, and scripts together.
 - New triggered references distinguish empirical real-world research, pre-build architecture evaluation, and hybrid outcome-to-system questions. Existing Ultra methods remain; do not load every reference for every task.
 - Ambiguity now routes through a specific evidence-first clarification gate. Check context, accessible project materials, external facts, and safe derivations before asking; ask only for unresolved user-owned information that can materially change the result. This never substitutes for action approval.
 - Resume behavior explicitly searches authorized workspace indexes for moved or versioned artifacts and reconnects next actions to current acceptance conditions. It does not promise persistence a host lacks.
-- V3 functional scenarios and fixtures are added as a manual behavior-evaluation protocol only. No real-model evaluation or improvement is claimed. The local 3.0.0 archive is not remotely published.
+- V3 functional scenarios and fixtures are added as a manual behavior-evaluation protocol only. No real-model evaluation or improvement is claimed. The 3.0.0 package is included in the repository; no separate GitHub Release asset was published.
 
 
 ## 2.1.1 → 2.2.0 (local candidate)

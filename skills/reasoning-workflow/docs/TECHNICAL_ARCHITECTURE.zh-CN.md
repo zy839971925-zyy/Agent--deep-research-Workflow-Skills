@@ -1,6 +1,6 @@
 # 技术架构与执行边界
 
-**候选：** Reasoning Workflow 3.0.0，本地审阅分支。本报告描述仓库设计，不代表任何宿主已实际激活 Skill，也不代表模型行为已经提升。本轮开始时核对的 GitHub `main` 比较基线是 2.1.1（`97efc58`）；2.2.0 是此前的本地中间候选。
+**设计基线：** Reasoning Workflow 3.0.0，已于 2026-10-24 合并至 `main`。本报告描述仓库设计，不代表任何宿主已实际激活 Skill，也不代表模型行为已经提升。3.0.0 工作所对照的基线是 2.1.1（`97efc58`）；2.2.0 是此前的本地中间候选。
 
 [English technical architecture](TECHNICAL_ARCHITECTURE.md) · [中文 README](../../../README.zh-CN.md) · [English README](../../../README.md)
 

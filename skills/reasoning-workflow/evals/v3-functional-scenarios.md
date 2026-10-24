@@ -44,6 +44,16 @@ A case's explicit **Fail if** conditions are hard failures and must be reported 
 
 **Fail if:** It uses one broad keyword query as if exhaustive; treats ranking/snippets as evidence; packs the entire chain into one query; fails to search a material rival or confounder; equates an association or plausible mechanism with a causal effect; claims mediation from pairwise associations without checking temporal order and mediator–outcome confounding; assumes a cited result validates every link; treats no hits as proof of no evidence; or continues cosmetic query rewrites after retrieval stagnates; assumes operator syntax is universal or filtered results are exhaustive; presents the synthetic fixture as real evidence, counts its derivative review as an independent source, or hides unresolved conflict.
 
+### V3-WR: recover from sparse search and skip unnecessary search
+
+**Prompt set:** Run two independent controls from [`fixtures/search-yield-control.json`](fixtures/search-yield-control.json): (1) investigate whether targeted teacher feedback is a mechanism in tutoring, using the supplied first-query zero-result and reformulated-result trace; (2) calculate the total cost from the supplied hourly-rate values only.
+
+**Setup:** The search trace and source records are synthetic controlled evaluation material, not empirical evidence about tutoring. The first query is deliberately too restrictive; its result says only that this query returned no matches. The second case contains all values needed for arithmetic and requires no external facts.
+
+**Look for:** In the sparse case, name the retrieval gap, adjust only the overly restrictive exact-phrase dimension, inspect the returned primary material, distinguish the derivative review from independent data, and retain the limitation that observed feedback does not establish a causal mediator effect. In the arithmetic control, answer $31 from the supplied data without web search or delegation.
+
+**Fail if:** It treats the first zero-result query as evidence that no studies exist; repeats the same query unchanged; changes multiple search dimensions without reason; counts the review as independent confirmation; infers causal mediation from observed feedback; or searches externally for the supplied calculation.
+
 ### V3-RW: real-world empirical question
 
 **Prompt:** “Do structured after-school tutoring programmes improve mathematics outcomes for lower-secondary pupils, and for whom?”
@@ -80,7 +90,7 @@ A case's explicit **Fail if** conditions are hard failures and must be reported 
 
 **Setup:** Ordinary public research and a small supplied local prototype are available. A supplied interview note reports that 6 of 7 self-selected students who already volunteered for a pilot say they would use the feature; it provides no sampling frame, representative coverage, observed usage, or learning-outcome comparison. No validated population-demand estimate is available.
 
-**Look for:** Keep the real-world claim (need, users, learning outcome) separate from the technical claim (feasibility, data flow, quality scenarios); identify what existing evidence can and cannot establish; connect them only through explicit dependencies; recommend a low-cost test of the pivotal uncertainty before committing to a large build. Treat the interview note as evidence about possible need categories or hypotheses, not a population prevalence estimate; distinguish stated intention from observed use and learning efficacy, and say what sampling or behavioral evidence would be needed to estimate broader demand.
+**Look for:** Keep the real-world claim (need, users, learning outcome) separate from the technical claim (feasibility, data flow, quality scenarios); identify what existing evidence can and cannot establish; connect them only through explicit dependencies; recommend a low-cost test of the pivotal uncertainty before committing to a large build. Read the mixed excerpts and use them to identify possible need categories, constraints, and negative cases—not a population prevalence estimate. Distinguish stated intention from observed use and learning efficacy, and say what sampling or behavioral evidence would be needed to estimate broader demand.
 
 **Fail if:** Technical feasibility is used as proof of demand, 6/7 interviews are projected as market prevalence or learning efficacy, stated intention is treated as observed behavior, or the agent demands a complete product brief before it can outline useful evidence and a conditional path.
 

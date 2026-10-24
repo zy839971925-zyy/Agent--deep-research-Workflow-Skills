@@ -7,7 +7,7 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[查看工作流入口](skills/reasoning-workflow/SKILL.md) · [下载完整包](dist/reasoning-workflow-3.0.0.zip) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
+[查看工作流入口](skills/reasoning-workflow/SKILL.md) · [下载完整包](dist/reasoning-workflow-3.0.1.zip) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
 </div>
 
 ## 这是一个什么项目

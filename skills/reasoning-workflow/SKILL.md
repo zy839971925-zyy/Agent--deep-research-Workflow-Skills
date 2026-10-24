@@ -3,7 +3,7 @@ name: reasoning-workflow
 description: Default silent entry for questions, research, artifacts, code, coordination and persistent projects. When available to the host, triage each direct user request for the least sufficient Light-to-Ultra depth and load only relevant workflow guidance. The direct user phrase “调用我的 workflow skills” explicitly selects this workflow.
 ---
 
-# Reasoning Workflow 3.0.0
+# Reasoning Workflow 3.0.1
 
 ## Automatic matching and explicit invocation
 

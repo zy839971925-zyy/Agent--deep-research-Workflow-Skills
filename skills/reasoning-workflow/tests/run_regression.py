@@ -109,8 +109,9 @@ class Regression(unittest.TestCase):
  def test_40_checkpoint_current_identity_comparison(self):
   payload=b'synthetic checkpoint component';(self.d/'component.json').write_bytes(payload)
   digest='sha256:'+hashlib.sha256(payload).hexdigest()
+  current_version=json.loads((ROOT/'RELEASE.json').read_text())['version']
   checkpoint={'schema_version':'1.1','checkpoint_id':'cp-id','created_at':'2026-10-24T00:00:00Z',
-   'workflow':{'name':'reasoning-workflow','version':'3.0.0','policy_hash':'sha256:'+'1'*64,'semantic_contract_version':'1'},
+   'workflow':{'name':'reasoning-workflow','version':current_version,'policy_hash':'sha256:'+'1'*64,'semantic_contract_version':'1'},
    'workspace_revision':'git:abc123','plan_version':1,'schedule_version':1,'state_version':1,
    'required_components':['semantic'],'components':{'semantic':{'status':'saved','ref':'component.json','hash':digest,'integrity_proof':'hash'}},
    'commit_status':'complete','next_safe_action':None,'running_nodes':['N'],'completed_nodes':[],'blocked_nodes':[]}
@@ -326,13 +327,15 @@ class Regression(unittest.TestCase):
  def test_39_cross_task_protocol_integrity(self):
   data=json.loads((ROOT/'evals/cross_task_cases.json').read_text())
   self.assertEqual(data['status'],'protocol_only_not_model_evaluated')
-  self.assertEqual(len(data['cases']),21);self.assertEqual(len({c['id'] for c in data['cases']}),21)
+  self.assertEqual(len(data['cases']),23);self.assertEqual(len({c['id'] for c in data['cases']}),23)
   self.assertTrue(all(c['task'] and c['acceptance'] and c['forbidden'] for c in data['cases']))
   case_ids={c['id'] for c in data['cases']}
-  self.assertTrue({'v3_clarification_after_search','v3_must_ask_user_priority','v3_research_public_fact_no_question','v3_automatic_skill_entry','v3_stale_completion_checkpoint','v3_causal_web_search_strategy','v3_resume_runtime_revision_mismatch','v3_root_cancel_late_worker_result','v3_normative_policy_tradeoff','v3_late_worker_after_correction'} <= case_ids)
+  self.assertTrue({'v3_clarification_after_search','v3_must_ask_user_priority','v3_research_public_fact_no_question','v3_automatic_skill_entry','v3_stale_completion_checkpoint','v3_causal_web_search_strategy','v3_resume_runtime_revision_mismatch','v3_root_cancel_late_worker_result','v3_normative_policy_tradeoff','v3_late_worker_after_correction','v3_search_sparse_recovery_and_no_web_control','v3_qualitative_interviews_not_prevalence'} <= case_ids)
   v3=(ROOT/'evals/v3-functional-scenarios.md').read_text()
-  self.assertEqual(sum(1 for line in v3.splitlines() if line.startswith('### V3-')),17)
+  self.assertEqual(sum(1 for line in v3.splitlines() if line.startswith('### V3-')),18)
   self.assertIn('### V3-WS:',v3)
+  self.assertIn('### V3-WR:',v3)
+  self.assertIn('fixtures/search-yield-control.json',v3)
   self.assertIn('### V3-NV:',v3)
   self.assertIn('### V3-LS:',v3)
   self.assertIn('superseded premise stale',v3)
@@ -372,12 +375,34 @@ class Regression(unittest.TestCase):
   self.assertIn('two-stage resume',v3.lower())
   self.assertIn('named wait trigger is now satisfied',v3.lower())
   self.assertIn('rather than treating the handoff as complete or waiting again',v3.lower())
-  for rel in ('checkpoint-evidence-mismatch/state/checkpoint.md','checkpoint-evidence-mismatch/deliverables/recommendation.md','checkpoint-evidence-mismatch/verification/acceptance-review.json','long-horizon-workspace/state/checkpoint.md','long-horizon-workspace/research/architecture/sync-options.md','long-horizon-workspace/archive/docs/sync-options.md','long-horizon-workspace/notes/unrelated-ai-scheduler.md','dependency-resume/state/checkpoint.md','dependency-resume/state/dependency-map.md','dependency-resume/completed/local-export-analysis.md','dependency-resume/materials/provider-key-management-v2.md','dependency-resume/drafts/provider-sync.md','dependency-resume/drafts/privacy-section.md','dependency-resume/drafts/recovery-section.md'):
+  for rel in ('checkpoint-evidence-mismatch/state/checkpoint.md','checkpoint-evidence-mismatch/archive/recommendation-v1.md','checkpoint-evidence-mismatch/deliverables/recommendation.md','search-yield-control.json','qualitative-interview-mixed-views.json','checkpoint-evidence-mismatch/verification/acceptance-review.json','long-horizon-workspace/state/checkpoint.md','long-horizon-workspace/research/architecture/sync-options.md','long-horizon-workspace/archive/docs/sync-options.md','long-horizon-workspace/notes/unrelated-ai-scheduler.md','dependency-resume/state/checkpoint.md','dependency-resume/state/dependency-map.md','dependency-resume/completed/local-export-analysis.md','dependency-resume/materials/provider-key-management-v2.md','dependency-resume/drafts/provider-sync.md','dependency-resume/drafts/privacy-section.md','dependency-resume/drafts/recovery-section.md'):
    self.assertTrue((ROOT/'evals/fixtures'/rel).is_file(),rel)
   retrieval=(ROOT/'references/retrieval-and-observation.md').read_text().lower()
   self.assertIn('online search: turn the causal model into retrieval moves',retrieval)
   self.assertIn('change one search dimension at a time',retrieval)
   self.assertIn('a citation trail is a useful adjunct',retrieval)
+  search_fixture=json.loads((ROOT/'evals/fixtures/search-yield-control.json').read_text())
+  self.assertEqual(search_fixture['status'],'synthetic_protocol_fixture_not_empirical_evidence')
+  self.assertEqual(search_fixture['sparse_search_case']['first_result']['count'],0)
+  self.assertGreater(search_fixture['sparse_search_case']['reformulated_result']['count'],0)
+  self.assertIn('without web search',search_fixture['no_web_control']['expected_observations'][0])
+  interview_fixture=json.loads((ROOT/'evals/fixtures/qualitative-interview-mixed-views.json').read_text())
+  self.assertEqual(interview_fixture['status'],'synthetic_purposive_interviews_not_population_sample')
+  self.assertEqual(len(interview_fixture['interviews']),7)
+  self.assertIn('negative cases',interview_fixture['expected_observations'][1])
+  cp=json.loads((ROOT/'evals/fixtures/checkpoint-evidence-mismatch/verification/acceptance-review.json').read_text())
+  checkpoint_text=(ROOT/'evals/fixtures/checkpoint-evidence-mismatch/state/checkpoint.md').read_text()
+  old_bytes=(ROOT/'evals/fixtures/checkpoint-evidence-mismatch/archive/recommendation-v1.md').read_bytes()
+  new_bytes=(ROOT/'evals/fixtures/checkpoint-evidence-mismatch/deliverables/recommendation.md').read_bytes()
+  old_hash='sha256:'+hashlib.sha256(old_bytes).hexdigest(); new_hash='sha256:'+hashlib.sha256(new_bytes).hexdigest()
+  self.assertIn('archive/recommendation-v1.md',checkpoint_text)
+  self.assertIn(old_hash,checkpoint_text)
+  self.assertEqual(cp['checkpoint_artifact_digest'],old_hash)
+  self.assertEqual(cp['historical_artifact_digest'],old_hash)
+  self.assertEqual(cp['current_artifact_digest'],new_hash)
+  self.assertTrue(cp['historical_digest_matches_checkpoint'])
+  self.assertFalse(cp['digest_matches_checkpoint'])
+  self.assertNotEqual(old_hash,new_hash)
   self.assertIn('mechanism or mediator',retrieval)
   methods=(ROOT/'references/research-modes-and-methods.md').read_text().lower()
   self.assertIn('decision record',methods);self.assertIn('uncertainty routing',methods)

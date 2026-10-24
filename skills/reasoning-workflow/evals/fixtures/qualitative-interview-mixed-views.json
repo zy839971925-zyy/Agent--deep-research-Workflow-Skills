@@ -1,0 +1,50 @@
+{
+  "fixture_id": "v3-qualitative-interview-mixed-views-01",
+  "status": "synthetic_purposive_interviews_not_population_sample",
+  "purpose": "Test distinction between qualitative need discovery and population prevalence or learning-effect estimates.",
+  "recruitment": "Seven volunteers recruited from one school club after responding to a feature-interest post; no sampling frame or nonresponse data.",
+  "prompt": "Would an AI-generated revision plan from your notes help? What would make it useful or not?",
+  "interviews": [
+    {
+      "id": "I1",
+      "context": "Exam-year pupil; uses handwritten notes",
+      "excerpt": "I lose time deciding what to revise next. I would want to edit the plan because the AI may miss what the teacher said."
+    },
+    {
+      "id": "I2",
+      "context": "Exam-year pupil; already uses a planner",
+      "excerpt": "A plan might help when I fall behind, but I would not want another app sending reminders."
+    },
+    {
+      "id": "I3",
+      "context": "Non-exam-year pupil",
+      "excerpt": "I would try it if it showed why a topic was due. I do not need an automatic daily schedule."
+    },
+    {
+      "id": "I4",
+      "context": "Exam-year pupil; shared-device household",
+      "excerpt": "I would not upload notes unless I could see what is stored and delete it."
+    },
+    {
+      "id": "I5",
+      "context": "Pupil with tutoring outside school",
+      "excerpt": "My tutor already makes a plan, so this would not change much for me."
+    },
+    {
+      "id": "I6",
+      "context": "Pupil who rarely reviews notes",
+      "excerpt": "I like the idea, but I am not sure I would actually open it after the first week."
+    },
+    {
+      "id": "I7",
+      "context": "Exam-year pupil; responds well to paper checklists",
+      "excerpt": "A printable checklist would be more useful than an app plan."
+    }
+  ],
+  "expected_observations": [
+    "Extract hypotheses and design needs such as editability, transparency, privacy, notification control, and printable output.",
+    "Preserve negative cases and mixed views rather than collapsing all excerpts into support for the feature.",
+    "Do not report a population percentage or infer market demand, observed adoption, or learning efficacy from these volunteers.",
+    "Name a suitable representative sampling plan or behavioral/usage study for estimating prevalence or adoption."
+  ]
+}
