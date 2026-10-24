@@ -7,7 +7,7 @@
 
   [English](README.md) · [简体中文](README.zh-CN.md)
 
-  [Start with the Skill](skills/reasoning-workflow/SKILL.md) · [Choose an edition](#choose-an-edition) · [Architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [Download Portable](dist/reasoning-workflow-3.1.0.zip)
+  [Start with the Skill](skills/reasoning-workflow/SKILL.md) · [Choose an edition](#choose-an-edition) · [DeepSeek Harness](docs/DEEPSEEK_HARNESS.md) · [Architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [Download Portable](dist/reasoning-workflow-3.1.0.zip)
 </div>
 
 ---
@@ -18,6 +18,32 @@ Use it for questions about the world, research before a build, decisions, writin
 
 > [!NOTE]
 > This repository is not a model, search service, or permission system. The host application determines whether a Skill is loaded, which model and tools are available, and what actions are allowed. The instructions cannot force activation or prove that a model followed them.
+
+## Deep Research, built around the evidence that can change an answer
+
+The project's signature workflow is not a longer search prompt. It turns an open question into an evidence-led investigation: clarify what conclusion depends on, search for observations that distinguish competing explanations, read the underlying sources, check how well each decisive claim is supported, and synthesize what is known without hiding scope or uncertainty. The same loop can stop early when extra research is unlikely to change a simple answer.
+
+| What the agent does | What you can inspect in the result |
+|---|---|
+| Frames the decision-bearing question and names the important unknowns | A focused answer, not a generic topic survey |
+| Follows causal links and rival explanations instead of only repeating keywords | Evidence that addresses effects, mechanisms, alternatives, and boundaries |
+| Checks source provenance and the fit between evidence and claim | Visible distinctions between direct evidence, inference, disagreement, and unknowns |
+| Reconnects findings to the original decision and stops at proportionate effort | A recommendation with its conditions and remaining limits |
+
+```mermaid
+flowchart LR
+  Q[Question that matters] --> U[Answer-bearing unknowns]
+  U --> E[Search for discriminating evidence]
+  E --> S[Read sources and check claim support]
+  S -->|gap or conflict remains| E
+  S --> Y[Synthesize findings, boundaries, and unknowns]
+  Y --> D[Answer or recommendation]
+  D --> C{Could more evidence change it?}
+  C -->|yes, material gap| E
+  C -->|no| F[Finish at the right depth]
+```
+
+For example, “does tutoring work?” becomes a check of outcomes, programme design, who benefits, plausible mechanisms, selection effects, and the limits of the available studies—not a claim that one search proves causation. See the [Deep Research methods](skills/reasoning-workflow/references/research-modes-and-methods.md), [evidence-led retrieval](skills/reasoning-workflow/references/retrieval-and-observation.md), and [technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md).
 
 ## Start here
 
@@ -60,6 +86,10 @@ npx skills add zy839971925-zyy/Agent--deep-research-Workflow-Skills --skill deep
 ```
 
 The CLI and host installation behavior can change; use the current host documentation if this command or path is not supported.
+
+### DeepSeek Harness
+
+DeepSeek Harness exposes local Skills through a documented filesystem-provider path; its native Cordis plugins are a separate executable extension mechanism. This repository supplies a Markdown Skill bundle, not a DSH plugin. Follow the [DeepSeek Harness setup, adaptation, and smoke-test guide](docs/DEEPSEEK_HARNESS.md) rather than treating `SKILL.md` as a plugin manifest.
 
 ## How the workflow chooses a route
 
@@ -133,6 +163,7 @@ A plan, checkpoint, or worker report is likewise not proof that an external acti
 - [`modular/`](modular/): focused Skills for host-native routing.
 - [`tests/`](tests/): repository-level host contract tests.
 - [`dist/`](dist/): versioned Portable packages and checksums.
+- [DeepSeek Harness guide (English)](docs/DEEPSEEK_HARNESS.md) · [DeepSeek Harness 指南（简体中文）](docs/DEEPSEEK_HARNESS.zh-CN.md)
 - [Technical architecture (English)](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
 - [Contributing](CONTRIBUTING.md) · [Privacy](PRIVACY.md) · [Terms](TERMS.md) · [MIT License](LICENSE)
 
