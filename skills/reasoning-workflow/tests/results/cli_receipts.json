@@ -2,23 +2,23 @@
   {
     "test": "__main__.Regression.test_02_route_cli_and_cwd",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/route_task.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/route_task.py",
+      "/tmp/tmpisndr26_/input0.json",
       "--signal",
       "ultra_requested"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
-    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 3,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
+    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_fingerprint\": \"sha256:6f7d136c32ac421fa0b700785b0285820a2edda98f1ba0d271b2817509669963\",\n    \"index_fingerprint\": \"sha256:4f635dc327e9db843bffb3296c1caffc9d79529f6e7810b8b3a729a56da5e785\",\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 4,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
     "stderr": ""
   },
   {
     "test": "__main__.Regression.test_05_strict_raw_envelope",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpj1ttnjnr/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -29,9 +29,9 @@
   {
     "test": "__main__.Regression.test_05_strict_raw_envelope",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpj1ttnjnr/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -42,9 +42,9 @@
   {
     "test": "__main__.Regression.test_05_strict_raw_envelope",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpj1ttnjnr/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -55,11 +55,11 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--root",
-      "<temporary-test-directory>",
+      "/tmp/tmpuizxmq25",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -70,11 +70,11 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--root",
-      "<temporary-test-directory>",
+      "/tmp/tmpuizxmq25",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -85,11 +85,11 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--root",
-      "<temporary-test-directory>",
+      "/tmp/tmpuizxmq25",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -100,9 +100,9 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -113,9 +113,9 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -126,9 +126,9 @@
   {
     "test": "__main__.Regression.test_06_raw_hash_and_lineage_schema",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_raw.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_raw.py",
+      "/tmp/tmpuizxmq25/input0.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -139,28 +139,28 @@
   {
     "test": "__main__.Regression.test_07_runtime_explicit_empty",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpxo_ffxy5/plan.json",
       "--ledger",
-      "<temporary-test-directory>/empty.json",
+      "/tmp/tmpxo_ffxy5/empty.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
-    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schema_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_id' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'state_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'nodes' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"NODE_LEDGER_PLAN_ID\",\n      \"message\": \"node ledger plan_id does not match plan\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"NODE_LEDGER_PLAN_VERSION\",\n      \"message\": \"node ledger is based on stale plan_version\",\n      \"refs\": []\n    }\n  ]\n}\n",
+    "stdout": "{\n  \"findings\": [\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'schema_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_id' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'plan_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'state_version' is a required property\",\n      \"refs\": []\n    },\n    {\n      \"severity\": \"ERROR\",\n      \"code\": \"SCHEMA\",\n      \"message\": \"$: 'nodes' is a required property\",\n      \"refs\": []\n    }\n  ]\n}\n",
     "stderr": ""
   },
   {
     "test": "__main__.Regression.test_07_runtime_explicit_empty",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpxo_ffxy5/plan.json",
       "--schedule",
-      "<temporary-test-directory>/empty.json",
+      "/tmp/tmpxo_ffxy5/empty.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -171,12 +171,12 @@
   {
     "test": "__main__.Regression.test_08_schedule_legal_and_cycles",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpw06l60bb/plan.json",
       "--schedule",
-      "<temporary-test-directory>/sch.json",
+      "/tmp/tmpw06l60bb/sch.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -187,12 +187,12 @@
   {
     "test": "__main__.Regression.test_08_schedule_legal_and_cycles",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpw06l60bb/plan.json",
       "--schedule",
-      "<temporary-test-directory>/sch.json",
+      "/tmp/tmpw06l60bb/sch.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -203,12 +203,12 @@
   {
     "test": "__main__.Regression.test_08_schedule_legal_and_cycles",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpw06l60bb/plan.json",
       "--schedule",
-      "<temporary-test-directory>/sch.json",
+      "/tmp/tmpw06l60bb/sch.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -219,12 +219,12 @@
   {
     "test": "__main__.Regression.test_08_schedule_legal_and_cycles",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpw06l60bb/plan.json",
       "--schedule",
-      "<temporary-test-directory>/sch.json",
+      "/tmp/tmpw06l60bb/sch.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -235,12 +235,12 @@
   {
     "test": "__main__.Regression.test_08_schedule_legal_and_cycles",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/plan.json",
+      "/tmp/tmpw06l60bb/plan.json",
       "--schedule",
-      "<temporary-test-directory>/sch.json",
+      "/tmp/tmpw06l60bb/sch.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -251,9 +251,9 @@
   {
     "test": "__main__.Regression.test_17_review_valid_is_not_passed",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_dual_verification.py",
-      "<temporary-test-directory>/input0.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_dual_verification.py",
+      "/tmp/tmpxab1bdmn/input0.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
@@ -263,9 +263,9 @@
   {
     "test": "__main__.Regression.test_18_learning_intrinsic_rejected",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_learning.py",
-      "<temporary-test-directory>/input0.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_learning.py",
+      "/tmp/tmpbqinwzz6/input0.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
@@ -275,9 +275,9 @@
   {
     "test": "__main__.Regression.test_18_learning_intrinsic_rejected",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/retrieve_learnings.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/retrieve_learnings.py",
+      "/tmp/tmpbqinwzz6/input0.json",
       "--task-tag",
       "deep_research"
     ],
@@ -289,11 +289,11 @@
   {
     "test": "__main__.Regression.test_19_learning_tiers_and_evidence",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_learning.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_learning.py",
+      "/tmp/tmp6z0zgodd/input0.json",
       "--validation-evidence",
-      "<temporary-test-directory>/evidence_index.json"
+      "/tmp/tmp6z0zgodd/evidence_index.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
@@ -303,13 +303,13 @@
   {
     "test": "__main__.Regression.test_19_learning_tiers_and_evidence",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/retrieve_learnings.py",
-      "<temporary-test-directory>/input0.json",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/retrieve_learnings.py",
+      "/tmp/tmp6z0zgodd/input0.json",
       "--task-tag",
       "deep_research",
       "--validation-evidence",
-      "<temporary-test-directory>/evidence_index.json"
+      "/tmp/tmp6z0zgodd/evidence_index.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
@@ -319,9 +319,9 @@
   {
     "test": "__main__.Regression.test_20_learning_malformed",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/retrieve_learnings.py",
-      "<temporary-test-directory>/input0.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/retrieve_learnings.py",
+      "/tmp/tmpv_j0fy3h/input0.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
@@ -331,9 +331,9 @@
   {
     "test": "__main__.Regression.test_20_learning_malformed",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/retrieve_learnings.py",
-      "<temporary-test-directory>/input0.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/retrieve_learnings.py",
+      "/tmp/tmpv_j0fy3h/input0.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
@@ -343,20 +343,20 @@
   {
     "test": "__main__.Regression.test_21_strict_bridge",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_workflow.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_workflow.py",
       "--profile",
-      "<temporary-test-directory>/profile.json",
+      "/tmp/tmpz_nremv5/profile.json",
       "--route",
-      "<temporary-test-directory>/route.json",
+      "/tmp/tmpz_nremv5/route.json",
       "--state",
-      "<temporary-test-directory>/state.json",
+      "/tmp/tmpz_nremv5/state.json",
       "--manifest",
-      "<temporary-test-directory>/manifest.json",
+      "/tmp/tmpz_nremv5/manifest.json",
       "--reviews",
-      "<temporary-test-directory>/reviews.json",
+      "/tmp/tmpz_nremv5/reviews.json",
       "--root",
-      "<temporary-test-directory>"
+      "/tmp/tmpz_nremv5"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
@@ -366,12 +366,12 @@
   {
     "test": "__main__.Regression.test_25_proposal_cli_no_host_bypass",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_runtime.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_runtime.py",
       "--plan",
-      "<temporary-test-directory>/p.json",
+      "/tmp/tmpullily16/p.json",
       "--worker-proposal",
-      "<temporary-test-directory>/q.json",
+      "/tmp/tmpullily16/q.json",
       "--json"
     ],
     "cwd": "temporary directory outside Skill",
@@ -382,10 +382,10 @@
   {
     "test": "__main__.Regression.test_26_resource_cli_other_cwd",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/route_resources.py",
-      "<temporary-test-directory>/input0.json",
-      "<temporary-test-directory>/input1.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/route_resources.py",
+      "/tmp/tmpe7jjt1g8/input0.json",
+      "/tmp/tmpe7jjt1g8/input1.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
@@ -395,20 +395,20 @@
   {
     "test": "__main__.Regression.test_32_manifest_flag_cannot_skip_digest",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_workflow.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_workflow.py",
       "--profile",
-      "<temporary-test-directory>/profile.json",
+      "/tmp/tmpggd9elq1/profile.json",
       "--route",
-      "<temporary-test-directory>/route.json",
+      "/tmp/tmpggd9elq1/route.json",
       "--state",
-      "<temporary-test-directory>/state.json",
+      "/tmp/tmpggd9elq1/state.json",
       "--manifest",
-      "<temporary-test-directory>/manifest.json",
+      "/tmp/tmpggd9elq1/manifest.json",
       "--reviews",
-      "<temporary-test-directory>/reviews.json",
+      "/tmp/tmpggd9elq1/reviews.json",
       "--root",
-      "<temporary-test-directory>"
+      "/tmp/tmpggd9elq1"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
@@ -418,32 +418,32 @@
   {
     "test": "__main__.Regression.test_34_explicit_depth_api_cli_consistency",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/route_task.py",
-      "<temporary-test-directory>/input0.json"
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/route_task.py",
+      "/tmp/tmpsyrd7s0b/input0.json"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 0,
-    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 3,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
+    "stdout": "{\n  \"passed\": true,\n  \"task_profile\": {\n    \"profile_version\": 2,\n    \"lane\": \"question\",\n    \"depth_class\": \"ultra\",\n    \"autonomy_class\": \"A\",\n    \"reasoning_breadth\": \"standard\",\n    \"evidence_depth\": \"standard\",\n    \"challenge_depth\": \"standard\",\n    \"verification_depth\": \"standard\",\n    \"governance_depth\": \"minimal\",\n    \"routing_confidence\": \"high\",\n    \"task_modes\": [\n      \"research\"\n    ],\n    \"task_coupling\": \"low\",\n    \"persistence\": \"none\",\n    \"external_side_effects\": \"none\",\n    \"requested_depth\": \"ultra\",\n    \"parent_profile_version\": 1,\n    \"update_reason\": \"ultra_requested\"\n  },\n  \"route\": {\n    \"profile_fingerprint\": \"sha256:6f7d136c32ac421fa0b700785b0285820a2edda98f1ba0d271b2817509669963\",\n    \"index_fingerprint\": \"sha256:4f635dc327e9db843bffb3296c1caffc9d79529f6e7810b8b3a729a56da5e785\",\n    \"profile_version\": 2,\n    \"required_reference_ids\": [\n      \"ultra-research\"\n    ],\n    \"required_families\": [\n      \"core-reasoning\",\n      \"deep-research\",\n      \"audit-verification\"\n    ],\n    \"optional_families\": [],\n    \"verification_mode\": \"dual\",\n    \"runtime_level\": \"none\",\n    \"swarm_admission\": \"preferred\",\n    \"reference_phase_limit\": 4,\n    \"progressive_loading\": true,\n    \"route_status\": \"current\"\n  }\n}\n",
     "stderr": ""
   },
   {
     "test": "__main__.Regression.test_35_bridge_refuses_unnormalized_explicit_depth",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_workflow.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_workflow.py",
       "--profile",
-      "<temporary-test-directory>/profile.json",
+      "/tmp/tmp_ey8cc1e/profile.json",
       "--route",
-      "<temporary-test-directory>/route.json",
+      "/tmp/tmp_ey8cc1e/route.json",
       "--state",
-      "<temporary-test-directory>/state.json",
+      "/tmp/tmp_ey8cc1e/state.json",
       "--manifest",
-      "<temporary-test-directory>/manifest.json",
+      "/tmp/tmp_ey8cc1e/manifest.json",
       "--reviews",
-      "<temporary-test-directory>/reviews.json",
+      "/tmp/tmp_ey8cc1e/reviews.json",
       "--root",
-      "<temporary-test-directory>"
+      "/tmp/tmp_ey8cc1e"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,
@@ -453,20 +453,20 @@
   {
     "test": "__main__.Regression.test_38_orthogonal_cli_without_host_receipt",
     "argv": [
-      "python",
-      "<workspace> Workflow/scripts/validate_workflow.py",
+      "/home/user/.cache/uv/builds-v0/.tmpyBYjh5/bin/python",
+      "/home/user/workspace/repo/skills/reasoning-workflow/scripts/validate_workflow.py",
       "--profile",
-      "<temporary-test-directory>/profile.json",
+      "/tmp/tmplqrd486n/profile.json",
       "--route",
-      "<temporary-test-directory>/route.json",
+      "/tmp/tmplqrd486n/route.json",
       "--state",
-      "<temporary-test-directory>/state.json",
+      "/tmp/tmplqrd486n/state.json",
       "--manifest",
-      "<temporary-test-directory>/manifest.json",
+      "/tmp/tmplqrd486n/manifest.json",
       "--reviews",
-      "<temporary-test-directory>/reviews.json",
+      "/tmp/tmplqrd486n/reviews.json",
       "--root",
-      "<temporary-test-directory>"
+      "/tmp/tmplqrd486n"
     ],
     "cwd": "temporary directory outside Skill",
     "exit": 1,

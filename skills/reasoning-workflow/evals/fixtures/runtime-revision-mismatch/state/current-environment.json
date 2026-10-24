@@ -1,0 +1,13 @@
+{
+  "fixture_only": true,
+  "workflow_identity": {
+    "version": "synthetic-build-B",
+    "policy_hash": "sha256:bbbb"
+  },
+  "repository_revision": "synthetic-rev-B",
+  "runtime_snapshot": {
+    "web_search": "available",
+    "private_document_connector": "unavailable_in_this_run"
+  },
+  "note": "Synthetic fixture only. A saved capability snapshot does not prove the real current host state."
+}

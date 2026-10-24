@@ -334,9 +334,48 @@ def _payload_hash(payload):
     if isinstance(payload,str): return _sha_bytes(payload.encode())
     return _sha_bytes(_canon(payload).encode())
 
-def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: dict|None=None, component_resolver=None, parent_index: dict|None=None, attestation_verifier=None):
+_WORKFLOW_IDENTITY_FIELDS=('name','version','policy_hash','semantic_contract_version')
+
+def _compare_checkpoint_identity(checkpoint, current_identity):
+    """Compare only values supplied by the checkpoint and a trusted current-host snapshot.
+
+    Missing values stay explicitly unknown; they are never treated as a match. Runtime
+    capabilities are intentionally excluded and must be re-observed by the host.
+    """
+    saved_workflow=checkpoint.get('workflow') if isinstance(checkpoint,dict) else None
+    saved_workflow=saved_workflow if isinstance(saved_workflow,dict) else {}
+    current_workflow=current_identity.get('workflow') if isinstance(current_identity,dict) else None
+    current_workflow=current_workflow if isinstance(current_workflow,dict) else {}
+    invalid=current_identity is not None and not isinstance(current_identity,dict)
+    if isinstance(current_identity,dict) and not isinstance(current_identity.get('workflow'),dict): invalid=True
+    mismatches=[]; unknown=[]
+    for field in _WORKFLOW_IDENTITY_FIELDS:
+        saved=saved_workflow.get(field); current=current_workflow.get(field)
+        if isinstance(saved,str) and saved and isinstance(current,str) and current:
+            if saved!=current: mismatches.append('workflow.'+field)
+        else:
+            unknown.append('workflow.'+field)
+            if current is not None and not isinstance(current,str): invalid=True
+    saved_workspace=checkpoint.get('workspace_revision') if isinstance(checkpoint,dict) else None
+    current_workspace=current_identity.get('workspace_revision') if isinstance(current_identity,dict) else None
+    if isinstance(saved_workspace,str) and saved_workspace and isinstance(current_workspace,str) and current_workspace:
+        if saved_workspace!=current_workspace: mismatches.append('workspace_revision')
+    else:
+        # Even when both sides omit the optional revision, record the unknown explicitly.
+        unknown.append('workspace_revision')
+        if current_workspace is not None and not isinstance(current_workspace,str): invalid=True
+    return mismatches,unknown,invalid
+
+def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: dict|None=None, component_resolver=None, parent_index: dict|None=None, attestation_verifier=None, current_identity: dict|None=None):
     out=validate_schema(checkpoint,root/'schemas'/'checkpoint-manifest.schema.json')
     if any(f.severity=='ERROR' for f in out): return out
+    mismatches,identity_unknown,identity_invalid=_compare_checkpoint_identity(checkpoint,current_identity)
+    if identity_invalid:
+        out.append(finding('ERROR','CHECKPOINT_CURRENT_IDENTITY_INVALID','current identity must be a trusted object with string-valued identity fields'))
+    if mismatches:
+        out.append(finding('ERROR','CHECKPOINT_CURRENT_IDENTITY_MISMATCH',f'checkpoint identity differs from current host: {", ".join(mismatches)}',*mismatches))
+    if identity_unknown:
+        out.append(finding('WARNING','CHECKPOINT_CURRENT_IDENTITY_UNVERIFIED',f'current identity could not be compared for: {", ".join(identity_unknown)}',*identity_unknown))
     comps=checkpoint.get('components',{}); required=checkpoint.get('required_components',[])
     for name in required:
         comp=comps.get(name)
@@ -392,10 +431,10 @@ def validate_checkpoint(checkpoint, root: Path, plan: dict|None=None, schedule: 
     if checkpoint.get('commit_status')!='complete': out.append(finding('WARNING','CHECKPOINT_NOT_COMMITTED','checkpoint is not a committed recovery point',checkpoint.get('checkpoint_id')))
     return out
 
-def validate_checkpoint_chain(checkpoints, root: Path):
+def validate_checkpoint_chain(checkpoints, root: Path, current_identity: dict|None=None):
     out=[]; idx={c.get('checkpoint_id'):c for c in checkpoints if c.get('checkpoint_id')}
     # Parent existence + cycle + monotonic checks through validate_checkpoint.
-    for c in checkpoints: out += validate_checkpoint(c,root,parent_index=idx)
+    for c in checkpoints: out += validate_checkpoint(c,root,parent_index=idx,current_identity=current_identity)
     parent_adj={cid:[c.get('parent_checkpoint_id')] if c.get('parent_checkpoint_id') else [] for cid,c in idx.items()}
     for cyc in _cycles(idx,parent_adj): out.append(finding('ERROR','CHECKPOINT_LINEAGE_CYCLE',f'checkpoint lineage cycle: {" -> ".join(cyc)}',*cyc))
     return out
@@ -408,8 +447,18 @@ def effective_replay_safety(node, ledger_entry):
         return 'unsafe'
     return max((declared,observed),key=order.get)
 
-def compute_resume_actions(plan, ledger, checkpoint):
-    """Return deterministic resume obligations. Restore is never equivalent to continue."""
+def compute_resume_actions(plan, ledger, checkpoint, current_identity: dict|None=None):
+    """Return deterministic resume obligations. Restore is never equivalent to continue.
+
+    A running node cannot be declared resumable until the current workflow identity is
+    supplied and compared. A known workspace-revision mismatch also requires reconciliation;
+    an unavailable optional workspace revision stays unknown and is reported as such.
+    """
+    identity_mismatches,identity_unknown,identity_invalid=_compare_checkpoint_identity(checkpoint,current_identity)
+    workflow_unknown=[x for x in identity_unknown if x.startswith('workflow.')]
+    identity_gate=('current_identity_invalid' if identity_invalid else
+                   'checkpoint_identity_mismatch' if identity_mismatches else
+                   'workflow_identity_unverified' if workflow_unknown else None)
     nodes={n['node_id']:n for n in plan.get('nodes',[])}; state={n.get('node_id'):n for n in (ledger or {}).get('nodes',[]) if isinstance(n,dict)}; actions=[]
     for nid in checkpoint.get('running_nodes',[]) or []:
         node=nodes.get(nid); ns=state.get(nid,{})
@@ -417,16 +466,18 @@ def compute_resume_actions(plan, ledger, checkpoint):
         status=ns.get('effective_status')
         if status in ('cancelled','verified_complete','failed'):
             actions.append({'node_id':nid,'resume_action':'blocked_terminal_state','effective_status':status}); continue
+        if identity_gate:
+            actions.append({'node_id':nid,'resume_action':'reconcile_required','reason':identity_gate,'identity_mismatch_fields':identity_mismatches,'identity_unknown_fields':identity_unknown}); continue
         if not ns or (ledger or {}).get('plan_id') != plan.get('plan_id') or checkpoint.get('state_version') != (ledger or {}).get('state_version') or checkpoint.get('plan_version') != plan.get('plan_version') or (ledger or {}).get('plan_version') != plan.get('plan_version'):
-            actions.append({'node_id':nid,'resume_action':'reconcile_required'}); continue
+            actions.append({'node_id':nid,'resume_action':'reconcile_required','identity_unknown_fields':identity_unknown}); continue
         if status!='running':
-            actions.append({'node_id':nid,'resume_action':'reconcile_required'}); continue
+            actions.append({'node_id':nid,'resume_action':'reconcile_required','identity_unknown_fields':identity_unknown}); continue
         replay=effective_replay_safety(node,ns)
         receipts=ns.get('side_effect_receipts',[]) or []
         if node.get('side_effect_class','none')!='none' and replay=='safe':
-            actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts)}); continue
-        if replay=='safe': actions.append({'node_id':nid,'resume_action':'rerun_allowed'})
-        elif replay=='idempotent': actions.append({'node_id':nid,'resume_action':'verify_bound_idempotency_key_before_retry'})
-        elif replay=='detectable': actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts)})
-        else: actions.append({'node_id':nid,'resume_action':'external_confirmation_required','receipt_present':bool(receipts)})
+            actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts),'identity_unknown_fields':identity_unknown}); continue
+        if replay=='safe': actions.append({'node_id':nid,'resume_action':'rerun_allowed','identity_unknown_fields':identity_unknown})
+        elif replay=='idempotent': actions.append({'node_id':nid,'resume_action':'verify_bound_idempotency_key_before_retry','identity_unknown_fields':identity_unknown})
+        elif replay=='detectable': actions.append({'node_id':nid,'resume_action':'check_external_commit_before_retry','receipt_present':bool(receipts),'identity_unknown_fields':identity_unknown})
+        else: actions.append({'node_id':nid,'resume_action':'external_confirmation_required','receipt_present':bool(receipts),'identity_unknown_fields':identity_unknown})
     return actions

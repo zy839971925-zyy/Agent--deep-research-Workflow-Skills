@@ -1,106 +1,65 @@
-# Model adaptation for GPT-5.6 and later
+# Model adaptation for GPT-6+ and current frontier models
 
-**Trigger:** GPT-5.6+, GPT-6 Astra, Codex or another capable agent model is used for substantive reasoning, Deep/Max/Ultra research, tool-rich work, long-context work, or delegated execution.
+**Trigger:** A frontier model, model family, or host runtime materially changes the available reasoning effort, context, tools, parallelism, persistence, or presentation surface.
 
-**Reads:** model/runtime capabilities, available tools, user objective, Task Profile, active route, context pressure, tool results, verification need.
+**Reads:** the user's objective and depth, actual model/runtime identity when exposed, available tools and limits, context pressure, current research state, and observed failure modes.
 
-**Updates:** prompting style, planning horizon, context disclosure, delegation strategy, reasoning-effort allocation, compaction behavior, tool-use policy.
+**Updates:** phase allocation, scaffold strength, context disclosure, delegation, serial fallback, and presentation strategy.
 
-**May invalidate:** fixed long plans, repeated instructions, unnecessary reference loading, uniform high reasoning effort, hard-coded agent counts, or verification loops that do not improve the answer.
+**May invalidate:** model-name assumptions, fixed long plans, uniform maximum effort, unnecessary repetition, or an instruction that presumes an unavailable host feature.
 
-**Exit:** the workflow is adapted to the actual model/runtime without changing its semantic invariants.
+**Exit:** the workflow matches capabilities actually exposed by the current host while preserving the research and authorization invariants.
 
-**Related:** [problem framing and effort](problem-framing-and-effort.md), [inquiry and research](inquiry-and-research.md), [runtime and delegation](runtime-and-delegation.md), [synthesis and verification](synthesis-execution-and-verification.md), [ultra research](ultra-research.md).
+**Related:** [harness profiles](harness-profiles.md), [problem framing and effort](problem-framing-and-effort.md), [runtime and delegation](runtime-and-delegation.md), [Ultra research](ultra-research.md).
 
 **Return:** [root workflow](../SKILL.md) → Task Profile / routing.
 
-## Principle
+## Principle: capability-first, model-aware
 
-For GPT-5.6 and later, prefer outcome-focused instructions, semantic invariants, and adaptive strategy over rigid step-by-step scripts. Stronger models often perform better when the workflow states what must remain true and what success means, while leaving tactical planning flexible.
+Target GPT-6-generation and later systems, including current Claude 5.5/5.1-class models where available. These are target examples, not proof that a particular model or product exposes a capability or performs a task better. Do not preserve a GPT-5 compatibility target by default, create model-name branches, or infer behavior from a marketing label.
 
-Do not remove structure. Move structure from mandatory visible procedure into constraints, state, routing, and verification.
+Adapt to the *observed model-plus-harness* pair. A model can reason about a tool it cannot call; a CLI may support agents while the API or consumer chat does not; a product may use a different model for its Research mode. A skill instruction cannot install a tool, grant access, enforce a permission boundary, guarantee persistence, or force an interactive UI.
 
+Strong models benefit from clear outcomes, epistemic invariants, and room to choose tactics. Keep procedural structure where it protects a material transition, prevents a known failure, or makes work recoverable. Do not remove scaffolding merely because the model is newer, and do not add model-specific personality claims without direct, task-relevant evidence.
 
-## Strong-model behavior guardrails
+## Inspect the live capability surface
 
-For GPT-5.6 and later, keep instructions lean and non-duplicative. Stronger models infer routine gaps well, so specify outcome, hard constraints, epistemic invariants, and success criteria before prescribing tactics. When several Skills or instruction files are visible, eliminate conflicting guidance rather than adding another priority paragraph.
+Before planning tool-dependent work, establish only what the current interface actually shows:
 
-For GPT-6 Astra-class runtimes, account for four tendencies: it may ask for clarification where a reasonable assumption would suffice, it is more sensitive to Skill-file instructions, it may delegate less than desired unless parallel discovery is explicitly useful, and it may over-test small tasks. Bias toward autonomous follow-through when the user's intent is clear, request subagents by purpose rather than count, and keep verification proportional to consequence and uncertainty.
+- search, webpage retrieval, citation display, file/PDF reading, code execution, data analysis, and connected sources;
+- reasoning-effort controls, context limits or compaction behavior, and whether state can be saved outside the conversation;
+- independent agents, their tool and permission scope, and whether they can run concurrently;
+- charts, diagrams, artifacts, interactive elements, or host-provided widgets;
+- account, plan, workspace, region, and administrator limits that are visible or documented.
 
-Treat model names as capability examples, not permanent branches. The adapter should survive newer GPT-5.6+ models by testing available capabilities first.
+Treat unknown features as unavailable for this run. Continue with supplied information and available methods; mark the exact consequential gap rather than describing a planned tool call as completed.
 
-## Planning
+## Allocate effort by epistemic leverage
 
-Prefer long-horizon understanding with short-horizon execution:
+Use the strongest available reasoning for the work whose error would propagate: reconstructing a disputed frame, identifying decisive dependencies, designing a discriminating observation, reconciling independent evidence, assessing causal claims, and synthesizing limitations. Delegate or use cheaper processing for bounded extraction, metadata normalization, deduplication, formatting, or mechanical comparison only when the host actually supports it and the output remains inspectable.
 
-```text
-broad objective and success criteria
-→ next useful research/action step
-→ observe
-→ update model
-→ re-plan
-```
+Depth governs the breadth and persistence of inquiry, not uniform maximum compute. After a major reframe, rebuild from the user’s objective and retained evidence instead of carrying forward a provisional answer as settled. Use a provisional synthesis to expose evidence gaps, then deliberately search for those gaps—including a plausible adverse result—rather than merely confirming the draft.
 
-Do not force a complete detailed plan when early evidence may change the frame. Use plans to maintain direction, not to lock the model into stale paths.
+## Context and recoverable state
 
-## Token and reasoning budget
+Progressively load the entry point, active family, and only the references that address a live gap. More context is useful when it contains decision-bearing evidence or constraints, not simply because a model accepts a larger prompt.
 
-Depth controls epistemic ambition, not constant per-call compute. Ultra may allow a much larger total token budget, but tokens should be spent where additional reasoning can discover new structure, relationships, explanations, evidence routes, or decisive uncertainty.
+For a long task, preserve a compact external or conversation-visible evidence packet when the host supports it: question and scope; current frame; pivotal claims; source locators and decisive passages; source-family/dependency notes; conflict and uncertainty; closed or failed routes; next discriminating target. Do not depend on hidden chain-of-thought, a subagent's unreturned context, or a promise that compaction preserves every tool result.
 
-Avoid uniform maximum reasoning effort for every phase. Use high effort for framing, mechanism synthesis, causal judgment, adversarial comparison, and final pivotal-claim verification. Use cheaper or lower-effort routes for mechanical extraction, sorting, deduplication, formatting, and repetitive metadata work when the runtime supports it.
+## Delegation and serial Ultra
 
-## Context and compaction
+Use agents only when the current harness exposes them and independent branches could materially improve coverage, speed, or error independence. Give each worker a self-contained question, scope, seed evidence, named gap, permitted sources/tools, and a compact evidence-return format. The root researcher evaluates source independence and resolves conflicts; agent consensus is not corroboration.
 
-Use progressive context disclosure. Load the root, current profile, active family, and only the references needed for the current gap. A stronger model does not benefit from duplicated instructions or irrelevant reference bulk.
+If agents are absent, run justified branches serially: complete one useful evidence route, update the research frontier, then select the next route. Preserve Ultra’s broader reframing and cross-checking; do not pretend work was parallel or lower the depth merely because the host has one conversation thread.
 
-Preserve useful reasoning when the problem model remains stable. When a major reframe occurs, avoid blindly inheriting old reasoning that may anchor the new pass.
+## Presentation surfaces
 
-Compact only when context is becoming noisy, obsolete branches accumulate, or the problem model has stabilized after broad exploration. Preserve current problem model, pivotal claims, live hypotheses, decisive evidence, contradictions, bounded unknowns, retired routes, and next high-value gap. Drop duplicate source text, stale branches, same-provenance repetition, and process noise.
+When the host supports an interactive chart, comparison, diagram, or artifact, prefer it only if the structure helps the user inspect relationships, trade-offs, or dense data. Keep simple factual answers in text. Use a clear text/table fallback when the UI is unavailable; do not imply that a skill can invoke an Apps SDK widget, artifact, or chart without a supported host capability.
 
-## Tool and programmatic work
+## Tune from observed failures, not stereotypes
 
-Use model tokens for epistemic work. Use deterministic computation and tools for mechanical work: filtering, aggregation, sorting, deduplication, hash checking, test execution, metadata extraction, and reproducible calculations.
+Change scaffolding locally when the workflow misses a real obligation, loses context, over-searches, over-plans, delegates unnecessarily, or repeats verification without changing the answer. Keep the semantic contract fixed: answer the real question; distinguish observation, inference, and unknown; preserve provenance and boundaries; use tools only as available and authorized; and do not claim unperformed work.
 
-If the task provides many documents or records, do not push all raw material into the model context by default. Use tools to reduce them to candidate evidence units, then spend reasoning budget on interpretation and judgment.
-
-## Delegation
-
-When the runtime supports subagents, use them for separable work that improves coverage, speed, or independence: distinct framings, evidence ecosystems, jurisdictions/languages, reproduction tasks, adversarial search, or specialist methods.
-
-Do not hard-code an agent count. Do not let subagents vote on truth. Branches return evidence, uncertainty, counterevidence, failed routes, and materiality to the parent. Root synthesis reconciles evidence and commits canonical conclusions.
-
-If subagents are unavailable, emulate distinct passes serially when the benefit justifies the cost.
-
-## Compatibility floor
-
-Target GPT-5.6 and later without creating version-branch sprawl. Adapt to observed capabilities rather than named models where possible:
-
-```text
-multi-agent available?        → parallel independent discovery when useful
-persisted reasoning available? → preserve stable reasoning; reset after major reframe
-dynamic effort available?      → raise/lower compute by phase
-programmatic tools available?  → move mechanical work out of model context
-weak instruction following?    → use more procedural scaffolding
-strong instruction following?  → reduce repetition and resolve conflicts
-```
-
-The semantic workflow remains the same. Only the strategy and compute allocation change.
-
-## Scaffolding elasticity
-
-Workflow structure is itself an adaptive resource. Use more procedural scaffolding only when the model/runtime is likely to miss required transitions, lose state, or violate important invariants. Use less when a stronger model reliably infers routine steps and extra instructions cause over-planning, duplicated work, or instruction conflict.
-
-Adjust locally rather than creating model-specific forks:
-
-```text
-missed obligation        → add local scaffold / explicit success condition
-over-planning            → remove step detail; keep invariant and outcome
-context overload         → reduce references and examples
-weak delegation          → state the purpose/independence condition more clearly
-unnecessary delegation   → tighten materiality threshold
-repeated verification    → narrow checks to pivotal claims / expensive failure modes
-```
-
-Do not infer that a newer model always needs less structure. Observe adherence and task performance; tune only the part that is failing.
+A newer model is not itself evidence of better research. Claims about quality, reliability, cost, or latency require task-relevant evaluation; official product documentation establishes feature availability, not measured performance gains.
 
 [← Return to root workflow](../SKILL.md)

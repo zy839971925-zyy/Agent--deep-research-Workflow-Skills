@@ -1,7 +1,7 @@
 {
   "name": "reasoning-workflow",
-  "version": "2.1.1",
-  "description": "General-purpose reasoning and controlled execution with lightweight entry, progressive references and a strong Deep Research path",
+  "version": "3.0.0",
+  "description": "General-purpose reasoning and controlled execution with silent per-request depth triage, progressive references and a strong Deep Research path",
   "author": {
     "name": "折鸢",
     "url": "https://github.com/zy839971925-zyy"
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Reasoning Workflow",
     "shortDescription": "Understand first, research deliberately, verify proportionately",
-    "longDescription": "A reusable governing Skill for questions and projects. Task Admission selects Light, Standard, Deep, Max, or Ultra depth and progressively routes six Skill Families. Deep Research follows uncertain premises, relationships, and causal chains to evidence needs. Ultra grants substantially more research budget for reframing, relationship discovery, alternative hypotheses, cross-domain and orthogonal evidence routes, boundary/missingness analysis, and selective pivotal verification. Model-adaptation guidance targets GPT-5.6 and later while preserving a capability-based fallback. Runtime helpers support authorized execution, recovery, replay safety, and verification only when warranted.",
+    "longDescription": "A reusable governing Skill for questions and projects. When the host keeps it active or selects it, Task Admission silently checks each direct request and selects Light, Standard, Deep, Max, or Ultra depth before progressively routing relevant Skill Families. A direct user request such as “调用我的 workflow skills” explicitly selects this workflow without naming a release or forcing Ultra. Skill metadata alone cannot guarantee activation; use an always-on host instruction or front router for an every-turn contract. Deep Research follows uncertain premises, relationships, and causal chains to evidence needs. Ultra grants substantially more research budget for reframing, relationship discovery, alternative hypotheses, cross-domain and orthogonal evidence routes, boundary/missingness analysis, and selective pivotal verification. Model adaptation is capability-first for GPT-6+ and current frontier models; host tools and parallelism are never inferred from model names. Codex, Claude Code, and ordinary chat receive distinct host guidance with serial Ultra fallback. Runtime helpers support authorized execution, recovery, replay safety, and verification only when warranted.",
     "developerName": "折鸢",
     "category": "Productivity",
     "capabilities": [
@@ -34,6 +34,7 @@
     "privacyPolicyURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/main/TERMS.md",
     "defaultPrompt": [
+      "调用我的 workflow skills",
       "Use Reasoning Workflow and choose the right depth for this task",
       "Research this question through its key premises and causal links",
       "Execute this task within scope and verify the result"

@@ -1,4 +1,35 @@
-# Reasoning Workflow 2.1.1 — 实际测试报告
+# Reasoning Workflow — 实际测试报告
+
+## 3.0.0 本地候选验证（2026-10-24）
+
+- 34 项仓库级宿主契约测试：通过；使用隔离环境中的 `jsonschema==4.23.0` 与 `markdown==3.8.2`。
+- 74 项 Portable 回归测试：通过，0 failure、0 error；包含 39 项保留基线、35 项新增回归检查和 38 次真实 CLI 子进程调用。回执报告 `model_evaluated=false`、`business_actions_executed=false`。
+- 编译检查：`python -m compileall -q skills/reasoning-workflow/scripts` 通过。
+- 静态包检查：73 个 Markdown、352 个本地链接、13 个本地锚点、29 个 Python AST、52 个 JSON、14 个 JSON Schema、30 个路由引用通过；分发包 163 个文件，162 个校验条目，源码/归档一致，失败数为 0。
+- 分发档案：`reasoning-workflow-3.0.0.zip`；`dist/SHA256SUMS` 中 2.1.1、2.2.0、3.0.0 三个档案均通过校验。
+- V3 在线因果搜索新增合成来源包，检查竞争结果、混杂观察与二手来源的重复依赖；它只验证证据处理协议，明确不是现实研究证据。17 个 V3 场景与 21 个跨任务案例仍是评测协议，尚未在真实模型上运行或盲评。
+- 本报告不证明研究质量、服从率、真实联网检索表现、成本、延迟或长任务成功率提升。检查点身份对照也是确定性比较：CLI 参数不是可信的宿主现场状态；生产宿主仍须提供本次运行观察到的环境与工作区信息。
+
+复现：
+
+```sh
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python -m unittest discover -s tests -v
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/run_all.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/check_package.py
+python scripts/build_distribution.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python tests/check_package.py --archive ../../dist/reasoning-workflow-3.0.0.zip
+(cd ../../dist && sha256sum -c SHA256SUMS)
+```
+
+---
+
+## 2.2.0 本地候选验证（历史基础，2026-10-24）
+
+此前 2.2.0 候选完成过 34 项仓库契约测试、69 项 Portable 回归测试和静态包检查；这些记录仅描述当时的候选。3.0.0 结果以上述新一轮实际输出为准。该候选同样没有真实模型行为评测。
+
+---
+
+# Reasoning Workflow 2.1.1 — 历史测试报告
 
 ## 最终结果
 
@@ -41,7 +72,7 @@ uv run --no-project --with markdown==3.8.2 --with jsonschema==4.23.0 python test
 ## 未覆盖与不得推断
 
 - 69 项全部是确定性代码/合成数据测试；没有真实模型服从性、质量、token、时延或成本对照。
-- 六类 [cross-task case](evals/cross_task_cases.json) 仍是评测协议/完整性材料，不是完成的模型实验。
+- 历史 2.1.1 基线记录为 16 类 [cross-task case](evals/cross_task_cases.json)；现行 3.0.0 候选增至 21 类。两者均为评测协议/完整性材料，不是完成的模型实验；3.0.0 包含自动入口/显式调用情境。
 - 宿主回调/index 是显式合成测试夹具；没有认证真实外部 reviewer、晋升评估或独立模型。文件摘要仅证明字节及绑定。
 - 没有真实外部执行器/支付/取消栅栏/恢复重放/数据库事务的集成实验。CLIs 校验与准备，不实现这些宿主能力。
 - 本地修复包没有自动安装、修改 Wabi 设置、改写远端仓库或发布版本；不能保证任意模型读取后一定服从。

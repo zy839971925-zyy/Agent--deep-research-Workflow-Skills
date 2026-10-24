@@ -89,6 +89,9 @@ Prefer ranges, ordering, and switch conditions to invented precision.
 
 ## Clarification as value of information
 
+Before asking about a material gap, route through the sibling [clarification gate](../../reasoning-core/references/clarification-gate.md): distinguish user-owned value/intent from facts that can be checked in context, project materials, or external sources. Ask only when the unresolved user-owned input can change the choice enough to matter and no conditional/reversible route preserves progress. This remains separate from action authorization.
+
+
 A missing user preference or constraint does not automatically justify interruption. Ask when the expected improvement in the decision is material relative to the cost of interruption and the information cannot be safely inferred.
 
 `missing information → could it change the chosen action? → by enough to matter? → ask / infer / proceed conditionally`

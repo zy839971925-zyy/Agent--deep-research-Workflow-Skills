@@ -1,0 +1,26 @@
+{
+  "fixture_only": true,
+  "dependencies": [
+    {
+      "item": "local-export-analysis",
+      "depends_on": [],
+      "state": "current"
+    },
+    {
+      "item": "provider-recovery-claim",
+      "depends_on": [
+        "private-document-connector",
+        "provider-doc-v1"
+      ],
+      "state": "recheck"
+    },
+    {
+      "item": "provider-sync-recommendation",
+      "depends_on": [
+        "provider-recovery-claim",
+        "provider-doc-v1"
+      ],
+      "state": "stale_until_rechecked"
+    }
+  ]
+}

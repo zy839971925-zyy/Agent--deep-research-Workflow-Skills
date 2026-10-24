@@ -1,0 +1,91 @@
+{
+  "fixture_id": "v3-causal-web-search-conflict-pack-01",
+  "status": "synthetic_controlled_fixture_not_empirical_evidence",
+  "purpose": "Test query adaptation, evidence classification, provenance independence, causal-link reasoning, and uncertainty handling. No values describe real tutoring programs or students.",
+  "task": "Explain whether after-school mathematics tutoring improves outcomes, how it might work, and for whom.",
+  "candidate_chain": [
+    "tutoring_offer_or_participation",
+    "attendance_and_dose",
+    "targeted_practice_and_feedback",
+    "mathematics_outcome"
+  ],
+  "searchable_terms_learned_from_sources": [
+    "intention-to-treat",
+    "attendance dose",
+    "implementation fidelity",
+    "lower-secondary cluster trial",
+    "post-hoc subgroup"
+  ],
+  "sources": [
+    {
+      "id": "SYN-RCT-A",
+      "title": "Synthetic Trial A: Randomized Tutoring Offer in Two Districts",
+      "source_family": "trial-a-data",
+      "source_type": "synthetic_primary_study",
+      "design": "Individual randomized offer; volunteer schools; 420 lower-secondary pupils",
+      "population_scope": "Two districts; pupils whose families opted into the study",
+      "comparison": "Offer of weekly tutoring versus usual school support",
+      "outcome": "Standardized mathematics test at six months",
+      "finding": "Intention-to-treat difference +0.12 SD (95% CI +0.02 to +0.22).",
+      "mechanism_evidence": "Attendance was measured during the program and was higher in the offer group; the study did not identify the causal effect of attendance or feedback on test outcomes.",
+      "limitations": [
+        "Volunteer schools and families limit generalization.",
+        "The randomized offer estimates the offer effect, not the causal effect of each mediator."
+      ]
+    },
+    {
+      "id": "SYN-RCT-B",
+      "title": "Synthetic Trial B: Cluster-Randomized Tutoring Across Twelve Schools",
+      "source_family": "trial-b-data",
+      "source_type": "synthetic_primary_study",
+      "design": "Cluster-randomized offer; 12 lower-secondary schools; 318 pupils",
+      "population_scope": "One region; all enrolled pupils in participating schools",
+      "comparison": "Tutoring offer versus usual support",
+      "outcome": "Standardized mathematics test at one academic year",
+      "finding": "Average intention-to-treat difference +0.01 SD (95% CI -0.08 to +0.10), compatible with little or no average effect.",
+      "mechanism_evidence": "A positive estimate among high-attendance pupils was exploratory and post hoc; attendance was not randomized, so it does not establish a dose effect.",
+      "limitations": [
+        "Only twelve randomized clusters.",
+        "The subgroup analysis was not prespecified and is not confirmatory."
+      ]
+    },
+    {
+      "id": "SYN-COHORT-C",
+      "title": "Synthetic Cohort C: Tutoring Participation and Later Mathematics Scores",
+      "source_family": "cohort-c-data",
+      "source_type": "synthetic_primary_study",
+      "design": "Matched observational cohort; 2,100 pupils",
+      "population_scope": "Participating districts; voluntary tutoring enrollment",
+      "comparison": "Tutoring participants versus matched nonparticipants",
+      "outcome": "End-of-year mathematics score",
+      "finding": "Adjusted association +0.17 SD after matching on recorded prior achievement and demographics.",
+      "mechanism_evidence": "No mediator sequence was tested.",
+      "limitations": [
+        "Unmeasured motivation, family support, and selection may remain.",
+        "The adjusted association alone does not identify a causal effect."
+      ]
+    },
+    {
+      "id": "SYN-REVIEW-D",
+      "title": "Synthetic Review D: Summary of Tutoring Evidence",
+      "source_family": "review-reuses-trial-a-and-cohort-c",
+      "source_type": "synthetic_secondary_summary",
+      "design": "Narrative summary; no new participants or analysis",
+      "population_scope": "Inherits the scope of cited sources",
+      "comparison": "Summarizes SYN-RCT-A and SYN-COHORT-C",
+      "outcome": "Mathematics outcomes",
+      "finding": "Repeats the positive estimates reported by SYN-RCT-A and SYN-COHORT-C.",
+      "mechanism_evidence": "No new mediator data.",
+      "limitations": [
+        "Not independent replication; it reuses existing source families."
+      ]
+    }
+  ],
+  "expected_observations": [
+    "Recognize that the two synthetic randomized estimates differ and retain both rather than selecting only the favorable one.",
+    "Distinguish the randomized offer effect from observational participation association and from attendance/feedback mediation.",
+    "Do not count SYN-REVIEW-D as an independent data source or replication of SYN-RCT-A.",
+    "Use terms such as intention-to-treat, cluster trial, attendance dose, and post-hoc subgroup to make a justified next retrieval move.",
+    "Keep effect size, population limits, and uncertainty separate; do not infer universal benefit or no benefit from this small packet."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "fixture_only": true,
+  "root_task_id": "synthetic-root-1",
+  "status": "canceled",
+  "revision": 12,
+  "canceled_before_worker_return": true,
+  "external_action_authorized": false,
+  "publication_authorized": false
+}

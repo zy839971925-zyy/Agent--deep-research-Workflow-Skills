@@ -74,6 +74,10 @@ Look for missing actors, definitions, incentives, mechanisms, confounders, adjac
 
 A same-model fresh pass is useful for re-framing. It is not automatically independent verification.
 
+## Draft as a gap-finding compass
+
+After sufficient evidence exists for a provisional synthesis, use it to expose only the pivotal unresolved claim, missing scope, conflict, or plausible adverse result. Pursue the highest-value gap and update the frontier; do not treat draft text as evidence or audit every sentence. Rebuild after a material reframe. See the sibling [synthesis execution and verification](../../audit-verification/references/synthesis-execution-and-verification.md) method when that Skill is installed.
+
 ## Reasoning-aware retrieval
 
 A search query is a lossy projection of an evidence need. First test whether the current representation and decomposition expose an answer-bearing dependency. Specify what observation would separate live alternatives, and where the world would leave that trace; only then choose a method and form a query if search is the method. For a stuck or homogeneous route, set the active gap to `information-target` or `response-field` and load information target navigation (route to the relevant sibling Skill if needed) on the next reference phase. Keep its working card internal unless the user needs to see the research method.

@@ -1,24 +1,28 @@
-# Reasoning Workflow 2.1.1
+# Reasoning Workflow 3.0.0 — Portable edition
 
-A lightweight general-purpose workflow with a strong Deep Research path.
+A general-purpose reasoning and execution workflow with a strong Deep Research path. Start with [SKILL.md](SKILL.md); load references only for active gaps.
 
-Start with [SKILL.md](SKILL.md). It is the short model-facing entry, not a requirement to load the full package. Simple questions can be answered directly. Depth, autonomy, persistence and risk are separate choices; more thinking never expands permission.
+The Portable edition includes the governing entry, six on-demand Families, references, schemas, optional Python helpers, synthetic tests, migration notes, and host-adaptation guidance. Keep the complete directory together so relative links and helper paths resolve.
 
-- [2.1.1 中文说明](docs/RELEASE_2.1.1.zh-CN.md): 修复、功能完善、迁移和实测边界。
-- [Task strategies](references/task-strategies.md): research, artifacts/code, coordination, continuity and external actions; combine only the strategies needed now.
-- [Usage and migration](UPGRADE.md): setup, compatibility changes, commands and host requirements.
-- [Host adapter](references/host-adapter.md): trusted submission context, recovery, review-to-delivery and learning evidence interfaces.
-- [Change log](CHANGELOG.md): implemented fixes and limits.
-- [Test report](TEST_REPORT.md): actual deterministic regression results, not model performance claims.
+- [3.0.0 release notes](docs/RELEASE_3.0.0.zh-CN.md): research modes, clarification, resumption, and verification boundaries.
+- [Research modes and methods](references/research-modes-and-methods.md): real-world, pre-build architecture, and hybrid investigations.
+- [Clarification gate](references/clarification-gate.md): check context and evidence before asking for user-owned details.
+- [V3 functional scenarios](evals/v3-functional-scenarios.md): observable evaluation protocol; not model-evaluated.
+- [Host profiles](references/harness-profiles.md): Codex, Claude Code, ChatGPT, Claude app chat, and Grok installation/fallback boundaries.
+- [Model adaptation](references/model-adaptation.md): capability-first strategy for GPT-6+ and current frontier models; no behavior guarantees from model names.
+- [Comparative synthesis](references/comparative-synthesis.md): optional method for studies, model evaluations, and benchmarks.
+- [Usage and migration](UPGRADE.md): setup, compatibility, and host requirements.
+- [Host adapter contract](references/host-adapter.md): trusted execution, authorization, evidence admission, and recovery responsibilities.
+- [Change log](CHANGELOG.md) · [Test report](TEST_REPORT.md): version history and actual deterministic checks, not model-compliance claims.
 
-Run the local safe synthetic suite:
+The [Modular edition](../../modular/README.md) separates six instruction-only Families for hosts with their own routing. It omits Portable’s deterministic routing/runtime helpers and cross-Family state.
+
+Run non-mutating package regression tests from the repository root:
 
 ```sh
-uv run --no-project --with jsonschema==4.23.0 python tests/run_all.py
+python skills/reasoning-workflow/tests/run_all.py
 ```
 
-It uses temporary local files and executes the shipped Python functions/CLIs. It makes no external account or business calls. This release does not replace the original directory, install third-party skills, connect accounts or migrate saved state automatically. Python dependencies use an isolated environment.
+Optional output goes only to an explicitly selected disposable directory via `--output-dir`. Static checks and deterministic release-building are described in the release notes. No Skill installation connects accounts, enables tools, or grants authority.
 
-Use `schemas/` and recorded state only when a task actually needs them. `families/` and the detailed existing `references/` are on-demand material, not compulsory phases. `meta/README*.md` preserves the historical GitHub project intent, not the current install entry. `docs/LEGACY_ENTRY.md` is a historical entry for migration comparison, not the active instruction file.
-
-An executable checker can validate structure, bindings, versions and bytes. It cannot certify semantic truth, model compliance, authentic external authorization or real-world success. The supplied host adapter deliberately distinguishes those responsibilities.
+Historical project-intent material in `meta/` and `docs/LEGACY_ENTRY.md` is retained for provenance; it is not the active entry or current host-install guide.

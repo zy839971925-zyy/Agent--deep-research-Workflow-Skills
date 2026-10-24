@@ -89,9 +89,9 @@ Prefer ranges, ordering, and switch conditions to invented precision.
 
 ## Clarification as value of information
 
-A missing user preference or constraint does not automatically justify interruption. Ask when the expected improvement in the decision is material relative to the cost of interruption and the information cannot be safely inferred.
+A missing user preference or constraint does not automatically justify interruption. First use the [clarification gate](clarification-gate.md): classify whether the uncertainty is already in context, project evidence, externally verifiable, derivable, or genuinely user-owned. Ask only when the remaining user-owned uncertainty could change the choice enough to matter and no safe conditional or reversible route can preserve progress.
 
-`missing information → could it change the chosen action? → by enough to matter? → ask / infer / proceed conditionally`
+`missing information → could it change the chosen action? → who owns the fact? → can evidence resolve it? → ask / infer / proceed conditionally`
 
 This is distinct from authorization: low clarification value can justify proceeding, but no amount of inference can manufacture permission for a consequential action.
 

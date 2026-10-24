@@ -81,16 +81,66 @@ class Regression(unittest.TestCase):
    self.assertIn('SCHEDULE_WAIT_CYCLE',err(fs),name)
    self.cli('validate_runtime.py',flags=['--plan',self.save('plan',x['plan']),'--schedule',self.save('sch',x['schedule'])],expect=1)
  def test_09_resume_terminal_and_versions(self):
-  x=load('resume_safe_cancelled_input.json')
+  x=load('resume_safe_cancelled_input.json');identity={'workflow':copy.deepcopy(x['checkpoint']['workflow'])}
   for status in ('cancelled','verified_complete','failed'):
    x['ledger']['nodes'][0]['effective_status']=status
-   self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'])[0]['resume_action'],'blocked_terminal_state')
+   self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'],identity)[0]['resume_action'],'blocked_terminal_state')
   x['ledger']['nodes'][0]['effective_status']='running'
-  self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'])[0]['resume_action'],'reconcile_required')
+  self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'])[0]['reason'],'workflow_identity_unverified')
+  self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'],identity)[0]['resume_action'],'reconcile_required')
   x['checkpoint']['state_version']=x['ledger']['state_version']
-  self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'])[0]['resume_action'],'rerun_allowed')
+  self.assertEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'],identity)[0]['resume_action'],'rerun_allowed')
   x['plan']['nodes'][0]['side_effect_class']='irreversible'
-  self.assertNotEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'])[0]['resume_action'],'rerun_allowed')
+  self.assertNotEqual(rt.compute_resume_actions(x['plan'],x['ledger'],x['checkpoint'],identity)[0]['resume_action'],'rerun_allowed')
+ def test_41_causal_search_fixture_and_decision_trace(self):
+  fixture=json.loads((ROOT/'tests/fixtures/causal-search-source-pack.json').read_text())
+  self.assertEqual(fixture['status'],'synthetic_controlled_fixture_not_empirical_evidence')
+  sources={s['id']:s for s in fixture['sources']}
+  self.assertNotEqual(sources['SYN-RCT-A']['finding'],sources['SYN-RCT-B']['finding'])
+  self.assertIn('SYN-RCT-A',sources['SYN-REVIEW-D']['comparison'])
+  scenario=(ROOT/'evals/v3-functional-scenarios.md').read_text()
+  case=next(c for c in json.loads((ROOT/'evals/cross_task_cases.json').read_text())['cases'] if c['id']=='v3_causal_web_search_strategy')
+  self.assertIn('causal-search-source-pack.json',scenario)
+  self.assertTrue(any('fixed synthetic source-pack fixture' in a for a in case['acceptance']))
+  for doc in (ROOT/'references/retrieval-and-observation.md',ROOT.parent.parent/'modular/skills/deep-research/references/retrieval-and-observation.md'):
+   text=doc.read_text()
+   self.assertIn('concise, observable decision note',text)
+   self.assertNotIn('state internally why',text)
+ def test_40_checkpoint_current_identity_comparison(self):
+  payload=b'synthetic checkpoint component';(self.d/'component.json').write_bytes(payload)
+  digest='sha256:'+hashlib.sha256(payload).hexdigest()
+  checkpoint={'schema_version':'1.1','checkpoint_id':'cp-id','created_at':'2026-10-24T00:00:00Z',
+   'workflow':{'name':'reasoning-workflow','version':'3.0.0','policy_hash':'sha256:'+'1'*64,'semantic_contract_version':'1'},
+   'workspace_revision':'git:abc123','plan_version':1,'schedule_version':1,'state_version':1,
+   'required_components':['semantic'],'components':{'semantic':{'status':'saved','ref':'component.json','hash':digest,'integrity_proof':'hash'}},
+   'commit_status':'complete','next_safe_action':None,'running_nodes':['N'],'completed_nodes':[],'blocked_nodes':[]}
+  current={'workflow':copy.deepcopy(checkpoint['workflow']),'workspace_revision':'git:abc123'}
+  self.assertFalse(err(rt.validate_checkpoint(checkpoint,ROOT,current_identity=current,component_resolver=lambda ref: payload)))
+  changed=copy.deepcopy(current);changed['workflow']['version']='2.2.0';changed['workspace_revision']='git:def456'
+  findings=rt.validate_checkpoint(checkpoint,ROOT,current_identity=changed,component_resolver=lambda ref: payload)
+  self.assertIn('CHECKPOINT_CURRENT_IDENTITY_MISMATCH',err(findings))
+  partial=copy.deepcopy(current);partial['workflow'].pop('semantic_contract_version');partial.pop('workspace_revision')
+  findings=rt.validate_checkpoint(checkpoint,ROOT,current_identity=partial,component_resolver=lambda ref: payload)
+  self.assertNotIn('CHECKPOINT_CURRENT_IDENTITY_MISMATCH',err(findings))
+  self.assertIn('CHECKPOINT_CURRENT_IDENTITY_UNVERIFIED',[f.code for f in findings])
+  self.assertEqual(rt.compute_resume_actions({'plan_id':'p','plan_version':1,'nodes':[{'node_id':'N','side_effect_class':'none'}]},
+   {'plan_id':'p','plan_version':1,'state_version':1,'nodes':[{'node_id':'N','effective_status':'running'}]},checkpoint,changed)[0]['resume_action'],'reconcile_required')
+  missing={'workflow':copy.deepcopy(checkpoint['workflow'])}
+  action=rt.compute_resume_actions({'plan_id':'p','plan_version':1,'nodes':[{'node_id':'N','side_effect_class':'none'}]},
+   {'plan_id':'p','plan_version':1,'state_version':1,'nodes':[{'node_id':'N','effective_status':'running'}]},checkpoint,missing)[0]
+  self.assertEqual(action['resume_action'],'rerun_allowed')
+  self.assertIn('workspace_revision',action['identity_unknown_fields'])
+  missing_workflow={'workflow':{}}
+  gated=rt.compute_resume_actions({'plan_id':'p','plan_version':1,'nodes':[{'node_id':'N','side_effect_class':'none'}]},
+   {'plan_id':'p','plan_version':1,'state_version':1,'nodes':[{'node_id':'N','effective_status':'running'}]},checkpoint,missing_workflow)[0]
+  self.assertEqual(gated['reason'],'workflow_identity_unverified')
+  bad_shape=copy.deepcopy(current);bad_shape['workflow']='not-an-object'
+  findings=rt.validate_checkpoint(checkpoint,ROOT,current_identity=bad_shape,component_resolver=lambda ref: payload)
+  self.assertIn('CHECKPOINT_CURRENT_IDENTITY_INVALID',err(findings))
+  no_workspace_checkpoint=copy.deepcopy(checkpoint);no_workspace_checkpoint.pop('workspace_revision')
+  no_workspace_identity=copy.deepcopy(current);no_workspace_identity.pop('workspace_revision')
+  findings=rt.validate_checkpoint(no_workspace_checkpoint,ROOT,current_identity=no_workspace_identity,component_resolver=lambda ref: payload)
+  self.assertIn('workspace_revision',next(f.refs for f in findings if f.code=='CHECKPOINT_CURRENT_IDENTITY_UNVERIFIED'))
  def test_10_replay_missing_fails_closed(self):
   p=load('legal_parallel_independent_input.json')['plan'];n=p['nodes'][0];n['side_effect_class']='irreversible';n.pop('replay_safety',None);n['node_contract_hash']=rt.compute_node_contract_hash(n)
   self.assertIn('REPLAY_SAFETY_SUSPICIOUS',err(rt.validate_plan(p,ROOT)))
@@ -276,8 +326,96 @@ class Regression(unittest.TestCase):
  def test_39_cross_task_protocol_integrity(self):
   data=json.loads((ROOT/'evals/cross_task_cases.json').read_text())
   self.assertEqual(data['status'],'protocol_only_not_model_evaluated')
-  self.assertEqual(len(data['cases']),6);self.assertEqual(len({c['id'] for c in data['cases']}),6)
+  self.assertEqual(len(data['cases']),21);self.assertEqual(len({c['id'] for c in data['cases']}),21)
   self.assertTrue(all(c['task'] and c['acceptance'] and c['forbidden'] for c in data['cases']))
+  case_ids={c['id'] for c in data['cases']}
+  self.assertTrue({'v3_clarification_after_search','v3_must_ask_user_priority','v3_research_public_fact_no_question','v3_automatic_skill_entry','v3_stale_completion_checkpoint','v3_causal_web_search_strategy','v3_resume_runtime_revision_mismatch','v3_root_cancel_late_worker_result','v3_normative_policy_tradeoff','v3_late_worker_after_correction'} <= case_ids)
+  v3=(ROOT/'evals/v3-functional-scenarios.md').read_text()
+  self.assertEqual(sum(1 for line in v3.splitlines() if line.startswith('### V3-')),17)
+  self.assertIn('### V3-WS:',v3)
+  self.assertIn('### V3-NV:',v3)
+  self.assertIn('### V3-LS:',v3)
+  self.assertIn('superseded premise stale',v3)
+  self.assertTrue(any('current user correction' in item for item in next(c for c in data['cases'] if c['id']=='v3_late_worker_after_correction')['acceptance']))
+  self.assertIn('normative claim',v3)
+  self.assertTrue(any('normative judgment' in item for item in next(c for c in data['cases'] if c['id']=='v3_normative_policy_tradeoff')['acceptance']))
+  self.assertIn('add a no-Skill condition',v3)
+  self.assertIn('### Anchored scoring',v3)
+  self.assertIn('Reviewers should score independently first',v3)
+  self.assertIn('Do not sum dimensions into a single success percentage',v3)
+  retrieval=(ROOT/'references/retrieval-and-observation.md').read_text()
+  self.assertIn('Adapt to the yield',retrieval)
+  self.assertIn('operators',retrieval)
+  self.assertIn('Bates MJ.',retrieval)
+  routes=json.loads((ROOT/'routing-index.json').read_text())['references']
+  search_route=next(x for x in routes if x.get('id')=='retrieval-and-observation')
+  self.assertIn('web-search',search_route['load_when_tags'])
+  search_case=next(c for c in data['cases'] if c['id']=='v3_causal_web_search_strategy')
+  self.assertTrue(any('interface-specific operators' in item for item in search_case['acceptance']))
+  self.assertTrue(any('Assume a generic search operator' in item for item in search_case['forbidden']))
+  self.assertTrue(any('temporal order' in item and 'mediator–outcome confounding' in item for item in search_case['acceptance']))
+  self.assertTrue(any('temporal order' in item and 'mediator–outcome confounding' in item for item in search_case['forbidden']))
+  self.assertIn('Pairwise associations alone do not establish mediation',retrieval)
+  self.assertIn('Cashin AG, McAuley JH, VanderWeele TJ, Lee H.',retrieval)
+  self.assertIn('pairwise associations alone do not establish mediation',v3.lower())
+  self.assertIn('### V3-AU:',v3)
+  self.assertIn('### V3-ER:',v3)
+  self.assertIn('### V3-RC:',v3)
+  self.assertIn('current host capability',v3.lower())
+  self.assertIn('no current-run source/activity record showing that the connector was read',v3.lower())
+  self.assertIn('6 of 7 self-selected students',v3.lower())
+  self.assertIn('population prevalence estimate',v3.lower())
+  self.assertIn('second invocation after context compaction',v3.lower())
+  self.assertIn('no prior transcript or tool output',v3.lower())
+  self.assertIn('current official documentation',v3.lower())
+  self.assertIn('state it as unknown',v3.lower())
+  self.assertIn('two-stage resume',v3.lower())
+  self.assertIn('named wait trigger is now satisfied',v3.lower())
+  self.assertIn('rather than treating the handoff as complete or waiting again',v3.lower())
+  for rel in ('checkpoint-evidence-mismatch/state/checkpoint.md','checkpoint-evidence-mismatch/deliverables/recommendation.md','checkpoint-evidence-mismatch/verification/acceptance-review.json','long-horizon-workspace/state/checkpoint.md','long-horizon-workspace/research/architecture/sync-options.md','long-horizon-workspace/archive/docs/sync-options.md','long-horizon-workspace/notes/unrelated-ai-scheduler.md','dependency-resume/state/checkpoint.md','dependency-resume/state/dependency-map.md','dependency-resume/completed/local-export-analysis.md','dependency-resume/materials/provider-key-management-v2.md','dependency-resume/drafts/provider-sync.md','dependency-resume/drafts/privacy-section.md','dependency-resume/drafts/recovery-section.md'):
+   self.assertTrue((ROOT/'evals/fixtures'/rel).is_file(),rel)
+  retrieval=(ROOT/'references/retrieval-and-observation.md').read_text().lower()
+  self.assertIn('online search: turn the causal model into retrieval moves',retrieval)
+  self.assertIn('change one search dimension at a time',retrieval)
+  self.assertIn('a citation trail is a useful adjunct',retrieval)
+  self.assertIn('mechanism or mediator',retrieval)
+  methods=(ROOT/'references/research-modes-and-methods.md').read_text().lower()
+  self.assertIn('decision record',methods);self.assertIn('uncertainty routing',methods)
+  gate=(ROOT/'references/clarification-gate.md').read_text().lower()
+  self.assertIn('available here',gate);self.assertIn('conflicted',gate)
+  self.assertIn('do not search every source category by default',gate)
+  self.assertIn('only relevant context', (ROOT/'SKILL.md').read_text().lower())
+  self.assertIn('if that record is unavailable, report actual use as unverified', methods)
+  self.assertIn('stated preferences, observed behavior, and estimated population prevalence distinct', methods)
+  self.assertIn('cue, expected signal, and action', methods)
+  root_skill=(ROOT/'SKILL.md').read_text().lower()
+  self.assertIn('automatic matching and explicit invocation',root_skill)
+  self.assertIn('调用我的 workflow skills',root_skill)
+  self.assertIn('every direct user request',root_skill)
+  self.assertIn('cannot force itself to load',root_skill)
+  integration=(ROOT/'references/harness-integration.md').read_text().lower()
+  self.assertIn('activation is separate from routing',integration)
+  self.assertIn('always-on host instruction/front router',integration)
+  self.assertIn('neither classifies a raw user message nor activates a skill',integration)
+  host_profiles=(ROOT/'references/harness-profiles.md').read_text().lower()
+  self.assertIn('automatic activation and direct invocation',host_profiles)
+  self.assertIn('best-effort',host_profiles)
+  plugin=json.loads((ROOT.parent.parent/'.codex-plugin/plugin.json').read_text())
+  self.assertIn('调用我的 workflow skills',plugin['interface']['defaultPrompt'])
+  self.assertTrue((ROOT/'evals/fixtures/dependency-resume/state/dependency-map.md').is_file())
+  modular_recovery=(ROOT.parent.parent/'modular/skills/execution-control/references/synchronization-and-recovery.md').read_text().lower()
+  self.assertIn('root objective',modular_recovery)
+  self.assertIn('cannot be found',modular_recovery)
+  self.assertIn('parked side branch',modular_recovery)
+  self.assertIn('### Resume across workflow or runtime revisions', (ROOT/'references/synchronization-and-recovery.md').read_text())
+  self.assertIn('compare the saved workflow/policy identity', modular_recovery)
+  self.assertIn('## Root cancellation and late worker results', (ROOT/'references/runtime-and-delegation.md').read_text())
+  self.assertIn('## Root cancellation and late worker results', (ROOT.parent.parent/'modular/skills/execution-control/references/runtime-and-delegation.md').read_text())
+  self.assertIn('cannot reopen the root', (ROOT/'references/runtime-and-delegation.md').read_text())
+  for rel in ('runtime-revision-mismatch/state/checkpoint.json','runtime-revision-mismatch/state/current-environment.json','runtime-revision-mismatch/state/dependency-map.json','runtime-revision-mismatch/artifacts/recommendation-draft.md','runtime-revision-mismatch/README.md','root-cancellation-late-result/state/root.json','root-cancellation-late-result/worker/late-result.json','root-cancellation-late-result/worker/draft.md','root-cancellation-late-result/README.md'):
+   self.assertTrue((ROOT/'evals/fixtures'/rel).is_file(),rel)
+  self.assertIn('### V3-RV:',v3);self.assertIn('### V3-CA:',v3)
+  self.assertIn('no later user message reopens the root',v3.lower())
  def test_23_all_schema_metas_valid(self):
   for path in (ROOT/'schemas').glob('*.json'):jsonschema.Draft202012Validator.check_schema(json.loads(path.read_text()))
 if __name__=='__main__':

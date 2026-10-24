@@ -176,7 +176,8 @@
         "information-target",
         "problem-decomposition",
         "response-field",
-        "search-path-stagnation"
+        "search-path-stagnation",
+        "research-frontier"
       ],
       "typical_depth": [
         "deep",
@@ -195,7 +196,10 @@
         "retrieval",
         "orientation-retrieval",
         "evidence-retrieval",
-        "observation"
+        "observation",
+        "web-search",
+        "query-strategy",
+        "query-reformulation"
       ],
       "typical_depth": [
         "standard",
@@ -550,14 +554,14 @@
       "path": "references/model-adaptation.md",
       "load_when_tags": [
         "model-adaptation",
-        "gpt-5.6",
-        "gpt-6",
-        "astra",
+        "gpt-6-plus",
         "codex",
         "compute-allocation",
         "multi-agent",
         "compaction",
-        "scaffolding"
+        "scaffolding",
+        "claude-frontier",
+        "harness-adaptation"
       ],
       "typical_depth": [
         "standard",
@@ -568,6 +572,92 @@
       "machine_enforced": false,
       "context_cost_class": "medium",
       "default_priority": 5
+    },
+    {
+      "id": "comparative-synthesis",
+      "family": "deep-research",
+      "path": "references/comparative-synthesis.md",
+      "load_when_tags": [
+        "cross-study-comparison",
+        "benchmark-comparison",
+        "model-comparison",
+        "evidence-synthesis"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "harness-profiles",
+      "family": "core-reasoning",
+      "path": "references/harness-profiles.md",
+      "load_when_tags": [
+        "harness-adaptation",
+        "codex",
+        "claude-code",
+        "chatgpt-chat",
+        "claude-chat",
+        "grok-chat",
+        "skill-installation"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 8
+    },
+    {
+      "id": "research-modes-and-methods",
+      "family": "deep-research",
+      "path": "references/research-modes-and-methods.md",
+      "load_when_tags": [
+        "empirical-research",
+        "real-world-research",
+        "technical-research",
+        "architecture-research",
+        "pre-build",
+        "hybrid-research",
+        "tradeoff-scenarios"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "clarification-gate",
+      "family": "core-reasoning",
+      "path": "references/clarification-gate.md",
+      "load_when_tags": [
+        "clarification",
+        "ambiguous-request",
+        "user-question",
+        "missing-input",
+        "before-asking",
+        "grill-me"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 3
     }
   ]
 }

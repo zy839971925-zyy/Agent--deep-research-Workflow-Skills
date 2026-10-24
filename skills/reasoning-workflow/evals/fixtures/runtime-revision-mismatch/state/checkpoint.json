@@ -1,0 +1,35 @@
+{
+  "fixture_only": true,
+  "root_objective": "Finish a recommendation with source-backed provider claims.",
+  "workflow_identity": {
+    "version": "synthetic-build-A",
+    "policy_hash": "sha256:aaaa"
+  },
+  "repository_revision": "synthetic-rev-A",
+  "runtime_snapshot": {
+    "web_search": "available",
+    "private_document_connector": "available"
+  },
+  "completed": [
+    {
+      "id": "local-export-analysis",
+      "status": "verified",
+      "depends_on": []
+    }
+  ],
+  "open": [
+    {
+      "id": "provider-recovery-claim",
+      "status": "draft",
+      "depends_on": [
+        "private-document-connector",
+        "provider-doc-v1"
+      ]
+    }
+  ],
+  "acceptance": [
+    "Preserve independent local analysis.",
+    "Verify provider claim from current evidence or mark it unknown.",
+    "Check current artifact and acceptance evidence before completion."
+  ]
+}

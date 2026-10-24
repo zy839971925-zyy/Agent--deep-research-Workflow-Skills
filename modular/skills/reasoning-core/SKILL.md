@@ -13,6 +13,7 @@ Always available for substantive tasks. Start light; load only the references ne
 
 
 ## Progressive references
+- [`clarification-gate`](references/clarification-gate.md) — Load when a material ambiguity may require a question; check context and available evidence before asking.
 - [`problem-framing-and-effort`](references/problem-framing-and-effort.md) — Load only when the active gap matches one of: framing, depth, autonomy, clarification, task-profile, representation.
 - [`reasoning-structure-and-decomposition`](references/reasoning-structure-and-decomposition.md) — Load only when the active gap matches one of: decomposition, recomposition, structure, granularity, reasoning-stagnation.
 - [`relationships-and-systems`](references/relationships-and-systems.md) — Load only when the active gap matches one of: causal-chain, systems, relationships, feedback, mechanism.
@@ -20,7 +21,7 @@ Always available for substantive tasks. Start light; load only the references ne
 - [`human-context-and-interpretation`](references/human-context-and-interpretation.md) — Load only when the active gap matches one of: human-context, interpretation, statement.
 - [`worked-examples`](references/worked-examples.md) — Load only when the active gap matches one of: examples, workflow-example.
 
-- [`model-adaptation`](references/model-adaptation.md) — Load when GPT-5.6+ model/runtime behavior, compute allocation, delegation, or compaction materially affects the route.
+- [`model-adaptation`](references/model-adaptation.md) — Load when GPT-6+ and current frontier-model/runtime behavior, compute allocation, delegation, or compaction materially affects the route.
 
 ## Modular boundary
 

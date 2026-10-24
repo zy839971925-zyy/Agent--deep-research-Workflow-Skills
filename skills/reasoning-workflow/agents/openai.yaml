@@ -3,4 +3,4 @@ interface:
   short_description: "Depth-gated reasoning, research, and verified execution"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
-  default_prompt: "Use $reasoning-workflow to understand this task, choose proportionate depth, load only relevant resources, and verify the outcome"
+  default_prompt: "Apply $reasoning-workflow silently to this request: choose the least sufficient depth, load only relevant guidance, preserve explicit user steering, and verify the result"

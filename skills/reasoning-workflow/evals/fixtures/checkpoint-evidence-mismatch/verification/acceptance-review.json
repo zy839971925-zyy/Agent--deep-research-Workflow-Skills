@@ -1,0 +1,29 @@
+{
+  "fixture_status": "synthetic",
+  "reviewed_artifact": "deliverables/recommendation.md",
+  "artifact_version": "v2",
+  "checkpoint_artifact_version": "v1",
+  "criteria": [
+    {
+      "id": "compare-options",
+      "result": "partial",
+      "evidence": "deliverables/recommendation.md"
+    },
+    {
+      "id": "latest-correction-no-server-plaintext",
+      "result": "fail",
+      "evidence": "deliverables/recommendation.md"
+    },
+    {
+      "id": "verify-platform-guarantee",
+      "result": "missing",
+      "source_read_receipt": null
+    },
+    {
+      "id": "inspect-current-artifact",
+      "result": "pass",
+      "observed_version": "v2",
+      "digest_matches_checkpoint": false
+    }
+  ]
+}

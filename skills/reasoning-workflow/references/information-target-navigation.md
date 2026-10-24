@@ -18,10 +18,25 @@ Treat a search string as the last, lossy projection of a research decision. Use 
 2. **Decompose at the dependency.** Ask which premise, mechanism, comparison, or boundary the answer depends on. Split a branch only when its parts require different observations; record how the parts will recompose into the original question. A list of nouns from the prompt is not a decomposition.
 3. **Set an information target.** State a specific uncertainty and what possible result would change the answer, confidence, boundary, or next action. For rival explanations, seek an observation they predict differently. If all live explanations predict the same result, that result is not the next target.
 4. **Find the response field.** Ask where those different predictions would leave an observable trace: a controlled comparison, raw record, runtime trace, dataset, version history, affected-user report, or another surface. Map the expected signal under each explanation, who produces the record, when it is recorded, what is missing, and whether two apparent sources share an origin. Choose a feasible field that exposes the difference with the fewest material confounders.
-5. **Choose an observation method.** Inspect a supplied file, run a permitted experiment, follow citations, query a database, interview when authorized, or search the web. Only now translate the target and field into exact identifiers, measurements, time windows, terms, and source constraints for the available interface.
+5. **Choose an observation method.** Inspect a supplied file, run a permitted experiment, follow citations, query a database, interview when authorized, or search the web. Only now translate the target and field into exact identifiers, measurements, time windows, terms, and source constraints for the available interface. For web retrieval, follow the [online-search method](retrieval-and-observation.md#online-search-turn-the-causal-model-into-retrieval-moves) when you need to turn a causal dependency into adaptive queries and source checks.
 6. **Update the model.** Inspect the underlying material. Note whether it distinguishes the explanations, exposes a new variable, contradicts the frame, or merely repeats the same provenance. Follow a changed dependency to its downstream conclusions. Pick a new target, change fields, or stop with a bounded answer.
 
 The response field is more precise than a category of websites: it describes **how the world would respond under each live explanation**, where that response could be seen, and why the observation would be interpretable. A missing search result has weak meaning when the record may never have been published or indexed.
+
+## Research frontier: keep the next gap explicit
+
+For a sustained investigation, keep a compact frontier of the unresolved claims that could change the answer. Do not create one item for every question raised by every source; group details under the pivotal dependency they bear on.
+
+```text
+Open claim / dependency and why it matters:
+Live explanations or plausible range:
+Observation that would discriminate or narrow them:
+Best next source or method (and why this route is not redundant):
+What was observed → support / conflict / partial / still unknown:
+Next decision: close, split, reframe, pursue, or stop:
+```
+
+Prioritize by potential answer change and decision relevance relative to effort and access limits, not by source count. After reading evidence, update the item before issuing another query: close it, narrow its scope, split a new dependency, replace the frame, or leave it unresolved with the reason. If several routes lead to the same source family or cannot distinguish the live explanations, choose another route or stop. The frontier is working state, not a mandatory user-facing checklist.
 
 ## Small working card
 

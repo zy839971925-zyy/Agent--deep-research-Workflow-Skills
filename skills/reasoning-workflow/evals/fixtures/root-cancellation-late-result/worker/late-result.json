@@ -1,0 +1,8 @@
+{
+  "fixture_only": true,
+  "worker_id": "synthetic-worker-A",
+  "reported_status": "complete",
+  "reported_artifact": "worker/draft.md",
+  "authenticated_external_write_receipt": null,
+  "reported_external_side_effect": "unknown"
+}
