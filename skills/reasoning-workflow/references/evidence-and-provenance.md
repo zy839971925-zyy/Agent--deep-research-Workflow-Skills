@@ -88,6 +88,8 @@ Use calibrated natural language. Do not invent numerical probabilities unless a 
 
 Citations belong near the exact claim they support. Preserve locators for tables, figures, code, filings, posts, transcripts, or passages when material. Do not make a paragraph-end citation appear to support unrelated clauses. Unread or inaccessible material cannot silently support a strong claim.
 
+For a pivotal finding, capture a concise passage or faithful observation and its exact locator while reading. Keep the source's scope and caveat beside it; a citation without an inspected supporting location is a lead, not passage-level verification. When an important claim depends on comparing multiple studies or benchmarks, use the optional [comparative evidence synthesis](comparative-synthesis.md) card to expose incompatibilities rather than flattening them.
+
 
 
 ## Failure-mode independence

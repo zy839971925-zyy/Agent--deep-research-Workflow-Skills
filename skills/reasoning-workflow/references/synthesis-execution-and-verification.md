@@ -86,4 +86,6 @@ Before strengthening a conclusion, inspect the weakest material dependency. A co
 
 Final verification should focus on pivotal claims: does the cited source entail the claim, merely contextualize it, partially support it, or fail to support it? Does the entity/version/time/population/definition match? Is the wording stronger than the evidence permits?
 
+When a multi-source answer is ready to draft, use a provisional synthesis as a retrieval compass, not as evidence. Break only decision-bearing claims into support states (supported, partial, conflicting, unverified, or missing coverage); then target the largest material gap and a plausible adverse or independent route. Do not let the first plausible explanation dictate search terms, treat absence of a result as falsification, or audit every sentence when a few pivotal dependencies determine the conclusion. If a gap search changes the frame, rebuild the synthesis before writing the final answer.
+
 [← Return to root workflow](../SKILL.md)

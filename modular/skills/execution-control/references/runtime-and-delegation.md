@@ -56,7 +56,15 @@ Return state-bearing evidence rather than a long conversational transcript. A us
 
 When a shared workspace exists, use it as an internal bus for durable evidence, drafts, decisions, and handoffs; chat summaries are views of that state, not the authoritative state itself. This reduces copy-paste drift between workers.
 
+Keep each handoff within the actual host's input/context limits: preserve the objective, constraints, named gap, essential source locators, and return contract; point to durable materials instead of copying long transcripts. If admission fails for size, treat the branch as not started, remove duplication or split only along separable evidence routes, then verify that the retry was admitted. Never truncate a material constraint or report scheduled work as completed; if a safe compact handoff still cannot fit, continue serially or state the concrete limit.
+
 Do not ask subagents to write interdependent chapters in parallel when shared definitions or evidence state would drift. Multiple agents are not independent empirical sources.
+
+## Root cancellation and late worker results
+
+When the user or trusted controller cancels the root task, keep it terminal. A late worker report is evidence only: it cannot reopen the root, schedule another branch, or authorize a write or publication. Preserve a useful result for audit or a later explicit resumption, but do not continue stopped work merely because a worker finishes afterward.
+
+Cancellation does not prove that an already-running worker stopped before an external side effect. If a side effect may have committed and its outcome matters, reconcile the target state through an authorized read-only route; do not blindly repeat it or claim it was canceled. Resume only after a new direct user request explicitly reopens the task, then reconcile the current scope and state. Instructions alone cannot enforce a cancellation fence on an already-running executor; only a capable host can do that.
 
 ## Specialist Skills
 
@@ -64,9 +72,9 @@ This Skill is the process/orchestration layer. Use specialist Skills when they o
 
 Do not duplicate or override specialist instructions without a task-relevant reason. If two Skills conflict, higher-priority user/system instructions govern; otherwise prefer explicit ownership boundaries and reconcile outputs through the canonical state.
 
-## GPT-5.6+ runtime adaptation
+## GPT-6+ and frontier-model runtime adaptation
 
-For GPT-5.6 and later, adapt to actual runtime capabilities rather than hard-coding model versions. Use persisted reasoning when stable, compact when context becomes noisy, delegate when independent exploration or specialist work improves coverage, and move deterministic filtering or aggregation into code where available. Do not force fixed agent counts or uniform maximum reasoning effort across mechanical phases.
+For GPT-6-generation and later models, including current Claude frontier models, adapt to actual runtime capabilities rather than hard-coding model versions. Use persisted reasoning when stable, compact when context becomes noisy, delegate when independent exploration or specialist work improves coverage, and move deterministic filtering or aggregation into code where available. Do not force fixed agent counts or uniform maximum reasoning effort across mechanical phases.
 
 ## Failures, triggers, and retries
 

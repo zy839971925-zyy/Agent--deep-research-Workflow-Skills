@@ -10,7 +10,7 @@
 
 **Exit:** the actual question/outcome and proportionate effort are clear enough to proceed.
 
-**Related:** [reasoning structure and decomposition](reasoning-structure-and-decomposition.md), [inquiry and research](inquiry-and-research.md), [human context and interpretation](human-context-and-interpretation.md), [state model and invariants](state-model-and-invariants.md).
+**Related:** [reasoning structure and decomposition](reasoning-structure-and-decomposition.md), [inquiry and research](inquiry-and-research.md), [human context and interpretation](human-context-and-interpretation.md), [state model and invariants](state-model-and-invariants.md), [clarification gate](clarification-gate.md).
 
 **Return:** [root workflow](../SKILL.md) → Identify task / Calibrate effort.
 
@@ -28,7 +28,7 @@ A compact internal contract may include:
 
 `objective | output/success | scope/time | constraints/authorization | pivotal questions | exclusions`
 
-Infer routine missing detail. Ask only when a materially different answer, action, or safety boundary depends on information that cannot reasonably be inferred.
+Infer routine missing detail. Before asking about a material gap, use the [clarification gate](clarification-gate.md) to check whether context, project evidence, external research, or safe derivation can resolve it. Ask only for the smallest user-owned input that can materially change the result; never infer consequential-action authority.
 
 
 ## Find the essence before forcing a category

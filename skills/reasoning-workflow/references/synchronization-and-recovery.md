@@ -96,7 +96,22 @@ Do not resume by merely reading the last paragraph of a conversation.
 5. detect side effects that may already have committed;
 6. propagate staleness caused by changes since checkpoint;
 7. resolve conflicts before writing over newer state;
-8. resume from the next safe action.
+8. reconnect the next action to the original acceptance conditions and latest user steering;
+9. resume from the next safe action.
+
+### Resume across workflow or runtime revisions
+
+A checkpoint describes the environment at the time it was written, not the environment now. Before continuing material work, compare the recorded workflow version, policy/semantic-contract identity, and repository revision (when repository content matters) with the currently loaded workflow and workspace. Re-check the actual host surface, tools/connectors, permissions, and external versions that could change the next action or the validity of prior evidence. Record only the identifiers and capability facts that matter; an omitted or unreadable value is unknown, not “unchanged.”
+
+A mismatch does not make every prior result stale. Re-evaluate only routes, tests, claims, and artifacts that depend on the changed workflow, policy, code revision, capability, or source; preserve independent verified work. Do not carry forward a prior tool-use or test-success claim unless current-run evidence still supports it. If the current environment cannot be inspected, state that boundary and use a safe supported fallback or keep the dependent step blocked. A schema can check that a checkpoint contains version fields; only a trusted host can compare them with the actual current environment.
+
+### When a referenced file or resource cannot be found
+
+Do not treat a stale path, empty listing, or failed lookup as proof that the material never existed or is gone. Search the accessible workspace and relevant file/index/manifest by its stable ID, known name, type, content cues, and recorded version; inspect plausible candidates before choosing one. If multiple versions match, compare their contents, provenance, timestamps, and task state rather than trusting the filename alone. Do not silently substitute an older artifact, recreate a possibly current file, or claim a full search when access or results are partial. If no candidate is available after the relevant authorized search, preserve the missing-reference state, describe the searched scope/limitation, and ask for the smallest user-supplied artifact or locator only if the task cannot proceed without it.
+
+### Resume focus check
+
+After an interruption, handoff, merge, or checkpoint, re-read the root objective, current acceptance conditions, latest correction, completed work, and remaining obligations. For the next action, name the open requirement or answer-bearing uncertainty it advances. If it serves neither, it is probably scope drift: defer or discard it, while preserving any genuinely independent requested work. Reconnect useful branch results to the root answer, keep unresolved dependencies visible, and do not restart completed or unaffected work. This is a brief alignment check, not a new planning phase or a reason to repeat the entire investigation. Human interruption research can motivate concise resumption cues, but it is not direct evidence that a particular AI-agent checkpoint design improves model performance. Mark, Gudith & Klocke (2008), [“The Cost of Interrupted Work: More Speed and Stress”](https://ics.uci.edu/~gmark/chi08-mark.pdf), reports a controlled study of interrupted office tasks; applying its lesson to agent continuity is an engineering analogy, not a measured AI effect.
 
 If the runtime cannot actually persist files or inspect external state, state the limitation and fall back to the strongest supported semantic checkpoint.
 

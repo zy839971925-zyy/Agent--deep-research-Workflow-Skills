@@ -96,9 +96,24 @@ Do not resume by merely reading the last paragraph of a conversation.
 5. detect side effects that may already have committed;
 6. propagate staleness caused by changes since checkpoint;
 7. resolve conflicts before writing over newer state;
-8. resume from the next safe action.
+8. recover the root objective, latest user steering, completed work, and unmet acceptance conditions before acting;
+9. resume from the next safe action, tied to a specific unmet condition or answer-bearing uncertainty.
 
 If the runtime cannot actually persist files or inspect external state, state the limitation and fall back to the strongest supported semantic checkpoint.
+
+### Resume across workflow or runtime revisions
+
+A checkpoint records the environment at the time it was written, not the current one. Before material work resumes, compare the saved workflow/policy identity and repository revision (when relevant) with the loaded workflow and workspace. Re-check the actual host surface, tools/connectors, permissions, and external source versions that could change the next action or invalidate prior evidence. Missing or unreadable values are unknown, not proof that nothing changed.
+
+A mismatch does not invalidate every result. Re-evaluate only artifacts, claims, routes, and tests that depend on the changed version, capability, permission, or source; keep independent verified work. Do not reuse a prior tool-use or test-success claim without current evidence. If the host cannot inspect the current environment, state that limit and keep the dependent step blocked or use a supported fallback. A schema may require version fields, but only a trusted host can compare them with the live environment.
+
+### When a referenced artifact cannot be found
+
+A stale path, empty listing, or failed lookup does not prove an artifact is gone. Search the authorized workspace and relevant index/manifest using its stable ID, known name, type, content cues, and recorded version. Inspect plausible candidates; compare provenance, content, version, and task state instead of trusting a filename. Do not silently substitute an older artifact or recreate a possibly current one. If the relevant search is incomplete, preserve that limitation. If no candidate is available after the authorized search, record the missing-reference state and ask for the smallest locator or file only when the task cannot proceed without it.
+
+### Resume focus check
+
+After an interruption, correction, handoff, or merged result, briefly reconnect the next action to an unmet acceptance condition or answer-bearing uncertainty. A new lead that does not change the requested outcome, a material conclusion, or a blocker stays a parked side branch; do not let it displace the current work. Reconcile it later only if evidence shows that it matters. Reconnect useful branch results to the root answer, keep unresolved dependencies visible, and do not restart completed or unaffected work. This is a short alignment check, not a new planning phase.
 
 ## Idempotency for side effects
 

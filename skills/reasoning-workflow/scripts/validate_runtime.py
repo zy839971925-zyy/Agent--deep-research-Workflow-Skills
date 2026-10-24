@@ -14,6 +14,7 @@ def main():
     ap.add_argument('--capabilities')
     ap.add_argument('--worker-proposal')
     ap.add_argument('--checkpoint')
+    ap.add_argument('--current-identity',help='JSON comparison input only; does not authenticate host state or authorize resume')
     ap.add_argument('--json',action='store_true')
     a=ap.parse_args(); root=Path(__file__).resolve().parents[1]
     plan=load_json(Path(a.plan)); findings=validate_plan(plan,root)
@@ -27,7 +28,10 @@ def main():
         prop=load_json(Path(a.worker_proposal)); current_state_version=(ledger or {}).get('state_version'); findings += validate_worker_proposal(plan,prop,root,current_state_version)
         findings.append(finding('ERROR','WORKER_HOST_CONTEXT_REQUIRED','CLI is static validation only; live submission needs trusted host callback and atomic commit'))
     if a.checkpoint:
-        findings += validate_checkpoint(load_json(Path(a.checkpoint)),root,plan,schedule)
+        current_identity=load_json(Path(a.current_identity)) if a.current_identity else None
+        findings += validate_checkpoint(load_json(Path(a.checkpoint)),root,plan,schedule,current_identity=current_identity)
+    elif a.current_identity:
+        findings.append(finding('ERROR','CURRENT_IDENTITY_WITHOUT_CHECKPOINT','--current-identity is meaningful only when --checkpoint is supplied'))
     if a.json: print(json.dumps({'findings':[f.as_dict() for f in findings]},indent=2))
     else:
         for f in findings: print(f'{f.severity} [{f.code}] {f.message}')

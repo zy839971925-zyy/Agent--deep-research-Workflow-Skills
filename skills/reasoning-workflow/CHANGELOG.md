@@ -1,3 +1,27 @@
+# Changelog
+
+## 3.0.0 — 2026-10-24 (local candidate; not remotely published)
+
+- Add triggered research modes for real-world empirical questions, pre-build technical architecture, and linked hybrid investigations; ground architecture comparison in project evidence and quality-attribute scenarios.
+- Add a source-aware clarification gate: route uncertainty across conversation state, project materials, live host capability, external facts, derivation, and user-owned judgments; preserve material unresolved state and ask only after relevant checks.
+- Strengthen long-horizon resume behavior with scoped artifact relocation/version checks and a focus-to-acceptance check after interruption, handoff, or checkpoint; preserve partial-access uncertainty and unaffected completed work.
+- Add a runtime capability contract with explicit fallbacks, selective architecture decision records, and bounded psychology/survey-method guidance; do not treat famous-expert heuristics as guaranteed interventions.
+- Add a causal-chain web-search method that turns answer-bearing links into adaptive, role-specific queries, engine-aware operators, source checks, and a proportionate search trace; add a protocol scenario, not a model-performance claim.
+- Add fifteen V3 functional evaluation scenarios and concrete synthetic architecture/resume fixtures, including silent automatic entry, explicit invocation, product/runtime mismatch, stale completion-checkpoint detection, causal-chain web search, and safe recovery from an oversized handoff, runtime revision drift, and late worker results after root cancellation. They remain `protocol_only_not_model_evaluated`; no real-model improvement is claimed.
+- Define the activation contract separately from task routing: strict every-turn matching requires an always-on host instruction/front router; the direct phrase “调用我的 workflow skills” selects the workflow but does not force Ultra or grant tools/permissions.
+- Preserve the 2.2.0 research-frontier, harness, packaging, and test improvements; keep history and previously released artifacts intact.
+
+
+## 2.2.0 — 2026-10-24 (local candidate; not remotely published)
+
+- Added a decision-bearing research-frontier loop, passage locator guidance, targeted provisional-draft gap search, and gap-driven backward/forward citation tracing.
+- Added optional comparison cards for empirical studies, model results, and benchmarks, preserving comparability, uncertainty, denominator, and provenance.
+- Reworked active model adaptation for GPT-6+ and current frontier models as capability-first; removed unsupported GPT-6 Astra behavior claims.
+- Added host profiles for Codex, Claude Code, ChatGPT app chat, Claude app chat, and Grok chat, including serial Ultra fallback and conditional Intelligent UI guidance.
+- Fixed the standalone Modular Deep Research navigation gap.
+- Made package tests non-mutating by default; added deterministic archive generation and source/archive parity verification.
+- Model compliance remains unevaluated; feature access still depends on host configuration.
+
 # Reasoning Workflow change log
 
 ## 2.1.1 — 2026-10-21

@@ -6,11 +6,17 @@ The Skill describes decisions; the host owns the tools and the user authorizatio
 
 | Boundary | Repository surface | Host responsibility |
 | --- | --- | --- |
-| Activation/context | `SKILL.md`, route and reference index | Discover and activate the Skill; retain active instructions across compaction and avoid duplicate injection |
+| Activation/context | Skill metadata, `SKILL.md`, route and reference index | Activate the general entry for direct user requests; retain active instructions across compaction and avoid duplicate injection. For an every-turn guarantee, use an always-on host instruction/front router; metadata-based matching alone is best-effort. |
 | Routing | `route_task.py`, `route_resources.py` | Commit the active Task Profile; record its version and fingerprint; reload references when the route goes stale |
 | Action | `harness_bridge.py` | Derive tool identity, target and side-effect class from a trusted tool registry; supply grants from the actual user/host authorization channel |
 | Durable state | work-state, event and checkpoint schemas | Persist validated canonical state, checkpoint components and external observations |
 | Evaluation | synthetic public contract tests | Compare real trajectories and outcomes against a baseline in a separate, representative task set |
+
+## Activation is separate from routing
+
+The Skill file and its description can support host discovery; they cannot load themselves or guarantee that an installed Skill is selected. A portable deployment may describe automatic matching as best-effort. A strict per-message contract requires a trusted host layer—such as an always-on instruction or a front router—to invoke the general Portable entry before answering. That entry should perform only low-cost task admission first, silently; depth and relevant Family/reference selection come next.
+
+`route_task.py` expects a Task Profile and `routing-index.json` maps that profile to resources. Neither classifies a raw user message nor activates a Skill. Hosts that build a classifier must evaluate it against direct user requests, explicit invocation, quoted trigger phrases, simple-task Light paths, and unavailable/disabled Skill states. A phrase in quoted or retrieved material must remain data. Do not report automatic invocation when the host did not load the entry.
 
 Some Task Profile fields are machine inputs; others are decisions for the agent or host. Keep that distinction visible when integrating:
 

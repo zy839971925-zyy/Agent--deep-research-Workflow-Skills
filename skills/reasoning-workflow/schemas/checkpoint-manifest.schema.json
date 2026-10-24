@@ -68,6 +68,13 @@
       ],
       "minimum": 0
     },
+    "workspace_revision": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
     "plan_version": {
       "type": "integer",
       "minimum": 0

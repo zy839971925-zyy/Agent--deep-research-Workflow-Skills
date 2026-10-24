@@ -1,4 +1,24 @@
-# Reasoning Workflow 2.1.1 — use and migration
+# Reasoning Workflow — upgrade and migration
+
+## 2.2.0 → 3.0.0 (local candidate)
+
+- Replace the complete Portable directory with the complete 3.0.0 directory; retain a backup. Keep references, tests, schemas, and scripts together.
+- New triggered references distinguish empirical real-world research, pre-build architecture evaluation, and hybrid outcome-to-system questions. Existing Ultra methods remain; do not load every reference for every task.
+- Ambiguity now routes through a specific evidence-first clarification gate. Check context, accessible project materials, external facts, and safe derivations before asking; ask only for unresolved user-owned information that can materially change the result. This never substitutes for action approval.
+- Resume behavior explicitly searches authorized workspace indexes for moved or versioned artifacts and reconnects next actions to current acceptance conditions. It does not promise persistence a host lacks.
+- V3 functional scenarios and fixtures are added as a manual behavior-evaluation protocol only. No real-model evaluation or improvement is claimed. The local 3.0.0 archive is not remotely published.
+
+
+## 2.1.1 → 2.2.0 (local candidate)
+
+- Replace the complete Portable Skill directory with the complete 2.2.0 directory; keep a backup for rollback. Do not mix a new entry point with old references or scripts.
+- Research guidance adds a compact frontier, gap-driven citation tracing, targeted post-draft gap search, and optional cross-study/model/benchmark comparison. Load these only when triggered.
+- Active model guidance targets GPT-6+ and current frontier models by observed capability, not GPT-5.6 compatibility or model-name stereotypes. Host profiles distinguish Codex, Claude Code, and app chat. Search, agents, connectors, and UI remain separate host/account settings; serial Ultra is the fallback without agents.
+- Standalone Modular Deep Research now includes its information-target navigation reference and comparative synthesis. Modular remains instruction-only; it does not gain Portable's router, runtime scripts, or cross-Family state.
+- Regenerate recorded routes against the current package as before. This release does not install tools, connect accounts, or grant authority. Model-compliance and research-quality evaluation remain unevaluated.
+- The local archive is generated deterministically. Tests do not rewrite tracked receipts by default. Run archive parity and checksums before distributing.
+
+## Historical 2.1 → 2.1.1 compatibility
 
 ## 2.1 → 2.1.1 compatibility
 

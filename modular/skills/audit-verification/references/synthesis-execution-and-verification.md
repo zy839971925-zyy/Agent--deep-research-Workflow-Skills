@@ -86,4 +86,6 @@ Before strengthening a conclusion, inspect the weakest material dependency. A co
 
 Final verification should focus on pivotal claims: does the cited source entail the claim, merely contextualize it, partially support it, or fail to support it? Does the entity/version/time/population/definition match? Is the wording stronger than the evidence permits?
 
+A provisional synthesis is a retrieval compass, not evidence. Split only decision-bearing claims into supported, partial, conflicting, unverified, or missing-coverage states; target the largest material gap and, where useful, one plausible adverse or independent route. Do not let the first plausible explanation dictate confirming queries or turn this into a sentence-by-sentence audit. If new evidence changes the frame, rebuild the synthesis before delivery.
+
 [← Return to root workflow](../SKILL.md)
