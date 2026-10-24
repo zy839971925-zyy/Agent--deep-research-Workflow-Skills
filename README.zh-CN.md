@@ -50,8 +50,8 @@ flowchart LR
 ## 从这里开始
 
 1. **选择一个版本。** 不确定时，先用 Portable。
-2. **安装完整 Skill 文件夹。** 放到 AI 宿主识别的目录；不要只复制 `SKILL.md`，它需要同目录的支持文件。
-3. **在宿主中启用它。** 或将它设为宿主的默认工作流。各产品配置不同，可先看[DeepSeek Harness 安装指南](docs/DEEPSEEK_HARNESS.zh-CN.md)。
+2. **安装完整 Skill 文件夹。** 按[Claude Code、Codex 或其他 Agent 的说明](#install-portable-zh)选择宿主目录；不要只复制 `SKILL.md`，它需要同目录的支持文件。
+3. **在宿主中启用或调用它。** 下方按宿主给出了具体路径和验证方法；其他适配见[宿主与 Agent 配置](skills/reasoning-workflow/references/harness-profiles.md)。
 4. **像平时一样提问。** 工作流应根据情境推断调研路径和投入深度。想明确指定时，可以试试[下面的示例](#try-it)。
 5. **检查结果。** 对高风险或易变问题，要求它给出决定性证据、不确定性和适用边界，而不只是一个肯定的结论。
 
@@ -68,12 +68,81 @@ flowchart LR
 
 首次安装推荐 Portable。Modular 不是六份各自包含所有 Portable 功能的完整副本；它更适合能可靠组合多个 Skill 的宿主。Modular 包含 `reasoning-core`、`deep-research`、`decision-analysis`、`execution-control`、`audit-verification` 和 `workflow-learning`。
 
+<a id="install-portable-zh"></a>
+
 ### 安装 Portable
 
-1. 克隆本仓库，或下载[完整 Portable 压缩包](dist/reasoning-workflow-3.1.0.zip)。
-2. 把完整的 `reasoning-workflow` 文件夹放入宿主识别的 Skill 目录。例如，Codex 常用 `.agents/skills/reasoning-workflow/`，Claude Code 常用 `.claude/skills/reasoning-workflow/`。具体路径以宿主当前说明为准。
-3. 按宿主要求启用或选择该 Skill。从机器读取的英文入口文件 [`SKILL.md`](skills/reasoning-workflow/SKILL.md) 开始；它会根据任务需要指向其他资料。
-4. 先发一个普通请求，再用[示例](#try-it)明确指定一次推理深度。
+规范 Skill 位于 `skills/reasoning-workflow/`。请安装**整个文件夹**，不要只复制 `SKILL.md`：它依赖相对路径下的参考资料、families、schemas、scripts 和 assets。可以克隆仓库，或解压[完整 Portable 压缩包](dist/reasoning-workflow-3.1.0.zip)。下面命令假设你已克隆仓库，并在仓库根目录运行：
+
+```sh
+git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git
+cd Agent--deep-research-Workflow-Skills
+```
+
+克隆方式需要 Git，且需要先安装要使用的宿主。下面命令使用 Bash/zsh（macOS、Linux、WSL 或 Git Bash）。命令会在目标目录已存在时主动停止。请先检查或备份原有 Skill，不要把新文件直接合并覆盖自定义内容。示例安装到当前用户目录，所有项目都可用；只想给单个项目使用时，则放到对应宿主的项目目录（Claude Code 用 `.claude/skills/`；Codex 用 `.agents/skills/`）。
+
+#### Claude Code
+
+Claude Code 会发现用户级目录 `~/.claude/skills/` 和项目级目录 `.claude/skills/`。在仓库根目录运行下面命令，安装到当前用户：
+
+```sh
+dest="$HOME/.claude/skills/reasoning-workflow"
+if [ -e "$dest" ]; then
+  echo "目标已存在；替换前请先检查或备份：$dest" >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$dest")"
+cp -R skills/reasoning-workflow "$dest"
+test -f "$dest/SKILL.md"
+```
+
+运行 `claude`，询问 `What skills are available?`，确认列表里有 `reasoning-workflow`，再输入 `/reasoning-workflow` 或提出匹配该 Skill 描述的请求。如果列表中没有，检查目标路径并重启 Claude Code。当前发现与调用方式见 [Claude Code Skills 官方文档](https://docs.anthropic.com/en/docs/claude-code/skills)。
+
+#### Codex
+
+Codex 会发现用户级目录 `~/.agents/skills/`；也支持项目级 `.agents/skills/`。在仓库根目录运行下面命令，安装到当前用户：
+
+```sh
+dest="$HOME/.agents/skills/reasoning-workflow"
+if [ -e "$dest" ]; then
+  echo "目标已存在；替换前请先检查或备份：$dest" >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$dest")"
+cp -R skills/reasoning-workflow "$dest"
+test -f "$dest/SKILL.md"
+```
+
+在 Codex 中打开 `/skills`，确认列表里有 `reasoning-workflow`；再用 `$reasoning-workflow` 调用，或直接提出符合其描述的请求。Codex 通常会自动发现新 Skill；若未显示，请重启 Codex。当前目录与用法见 [Codex Skills 官方文档](https://developers.openai.com/codex/skills)。
+
+#### 给 AI Agent 的安装指令
+
+可以把下面这段指令复制给要配置的 Agent（已知宿主时，可在开头写明宿主名称）：
+
+> 请从 `https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills` 安装 Reasoning Workflow Skill。若已有干净仓库副本则使用它；否则在父目录运行 `git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git`，克隆到新的目录，不要覆盖已有文件。先识别当前宿主是 Claude Code、Codex，还是其他有文档说明的 Skill 宿主，并阅读该仓库 README 的安装部分。使用规范源目录 `skills/reasoning-workflow/`，完整复制这个文件夹并保留相对文件；不要只安装 `SKILL.md`。Claude Code 的用户级目标目录是 `~/.claude/skills/reasoning-workflow/`；Codex 是 `~/.agents/skills/reasoning-workflow/`。写入前先检查目标路径；如果已存在，请停止并报告路径，不要覆盖、合并、删除或改名用户文件。其他宿主只按其当前官方 Skill 安装说明操作；无法确认目标目录时，先询问再写入。完成后确认安装目录下有 `SKILL.md` 和支持目录；若当前会话能访问宿主，再验证宿主是否发现了它。报告来源、安装位置、做过的验证及无法验证的事项。除非真的运行了模型任务，不要声称已测试模型行为。这只安装 Skill；只有当当前宿主是 DeepSeek Harness 且用户要求安装其插件时，才继续安装 DeepSeek Harness 插件。
+
+Windows PowerShell 可用下面这段等价复制流程；Claude Code 的 `$dest` 如下，Codex 请改成 `.agents/skills/reasoning-workflow`：
+
+```powershell
+$dest = Join-Path $HOME ".claude/skills/reasoning-workflow"
+if (Test-Path -LiteralPath $dest) { throw "目标已存在，请先检查或备份：$dest" }
+New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+Copy-Item -Recurse -LiteralPath "skills/reasoning-workflow" -Destination $dest
+if (-not (Test-Path -LiteralPath (Join-Path $dest "SKILL.md"))) { throw "没有复制到 SKILL.md" }
+```
+
+这段提示说明了安全流程，不会自动授予文件修改权限。Agent 仍需实际访问宿主文件系统，并在目标已存在时停止。
+
+#### DeepSeek Harness：安装插件，而不只是 Skill 文件夹
+
+DeepSeek Harness 使用本仓库单独提供的原生 Cordis 组合包；把 Portable Skill 复制到其他宿主目录，**不会**安装这个插件。前置条件：已安装 `dsh` CLI，且 `pnpm` 可用。在仓库根目录把组合包加入你使用的 profile：
+
+```sh
+dsh plugin --profile default add ./integrations/deepseek-harness
+dsh --profile default --dump-config
+```
+
+如果你用的不是 `default`，请替换成实际 profile 名。确认解析后的插件列表包含 `reasoning-workflow-deepseek-harness`，然后启动或重启该 profile，并向 `/reasoning-workflow` 提出一个只读问题。这个组合包随仓库分发，尚未发布到 npm 或 Plugin Market。完整步骤见 [DeepSeek Harness 插件安装与使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md)。
 
 Python 辅助工具是可选的，依赖见 [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt)。这些工具用于准备或校验任务记录，不会运行模型、激活 Skill，也不会执行现实世界操作。
 
