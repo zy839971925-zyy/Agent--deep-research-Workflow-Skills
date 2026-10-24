@@ -89,7 +89,7 @@ The CLI and host installation behavior can change; use the current host document
 
 ### DeepSeek Harness
 
-DeepSeek Harness exposes local Skills through a documented filesystem-provider path; its native Cordis plugins are a separate executable extension mechanism. This repository supplies a Markdown Skill bundle, not a DSH plugin. Follow the [DeepSeek Harness setup, adaptation, and smoke-test guide](docs/DEEPSEEK_HARNESS.md) rather than treating `SKILL.md` as a plugin manifest.
+This repository includes an installable native Cordis bundle that registers Reasoning Workflow as a DeepSeek Harness Skill, alongside the portable Markdown Skill. Follow the [DeepSeek Harness plugin install and use guide](docs/DEEPSEEK_HARNESS.md); the bundle is local to this repository and is not yet published to npm or the Plugin Market.
 
 ## How the workflow chooses a route
 

@@ -93,7 +93,7 @@ CLI 和宿主的安装方式可能变化；如果命令或路径不可用，请�
 
 ### DeepSeek Harness
 
-DeepSeek Harness 通过有文档说明的文件系统提供方加载本地 Skill；原生 Cordis 插件则是另一种可执行扩展机制。本仓库提供 Markdown Skill 目录包，不是 DSH 插件。请按[DeepSeek Harness 安装、适配与冒烟测试指南](docs/DEEPSEEK_HARNESS.zh-CN.md)操作，不要把 `SKILL.md` 当作插件 manifest。
+本仓库除了 Portable Markdown Skill，还包含一个可安装的原生 Cordis 组合包，可将 Reasoning Workflow 注册为 DeepSeek Harness Skill。请看 [DeepSeek Harness 插件安装与使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md)；该组合包目前随仓库提供，尚未发布到 npm 或 Plugin Market。
 
 ## 工作流如何选择路径
 

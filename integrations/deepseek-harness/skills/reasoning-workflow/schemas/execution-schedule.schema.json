@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/execution-schedule.schema.json",
+  "title": "Reasoning Workflow Execution Schedule v1.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "schedule_id",
+    "schedule_version",
+    "plan_id",
+    "based_on_plan_version",
+    "mode",
+    "scope",
+    "assignments",
+    "completed_prerequisite_refs",
+    "deferred_nodes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schedule_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "based_on_plan_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "serial",
+        "parallel",
+        "hybrid",
+        "degraded"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "node_id",
+          "node_contract_hash",
+          "executor_id",
+          "executor_kind",
+          "attempt_id"
+        ],
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "node_contract_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "executor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "executor_kind": {
+            "type": "string",
+            "enum": [
+              "manager",
+              "worker_agent",
+              "specialist_skill",
+              "tool",
+              "external_job",
+              "human"
+            ]
+          },
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "starts_after": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "concurrency_group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "workspace_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isolation_mode": {
+            "type": "string",
+            "enum": [
+              "shared",
+              "isolated_workspace",
+              "transactional"
+            ],
+            "default": "shared"
+          },
+          "lease_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lease_expires_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "full_plan",
+        "wave",
+        "ready_set",
+        "recovery_patch"
+      ]
+    },
+    "completed_prerequisite_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "deferred_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "node_id",
+          "reason"
+        ],
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

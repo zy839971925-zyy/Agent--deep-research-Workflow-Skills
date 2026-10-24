@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/reasoning-workflow/execution-node-state.schema.json",
+  "title": "Reasoning Workflow Execution Node State Ledger v1",
+  "type": "object",
+  "required": ["schema_version", "plan_id", "plan_version", "state_version", "nodes"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "plan_id": {"type": "string", "minLength": 1},
+    "plan_version": {"type": "integer", "minimum": 1},
+    "state_version": {"type": "integer", "minimum": 0},
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "node_contract_hash", "effective_status", "updated_at"],
+        "properties": {
+          "node_id": {"type": "string", "minLength": 1},
+          "node_contract_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "effective_status": {
+            "type": "string",
+            "enum": ["planned", "ready", "leased", "running", "proposed_complete", "verifying", "verified_complete", "blocked", "stale", "cancelled", "failed"]
+          },
+          "active_attempt_id": {"type": ["string", "null"]},
+          "executor_id": {"type": ["string", "null"]},
+          "lease_id": {"type": ["string", "null"]},
+          "lease_expires_at": {"type": ["string", "null"]},
+          "last_result_ref": {"type": ["string", "null"]},
+          "verification_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "blocker_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "replay_safety": {"type": "string", "enum": ["safe", "idempotent", "detectable", "unsafe"]},
+          "side_effect_receipts": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/receipt"}
+          },
+          "updated_at": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "receipt": {
+      "type": "object",
+      "required": ["operation_id", "attempt_id", "action", "committed_at"],
+      "properties": {
+        "operation_id": {"type": "string", "minLength": 1},
+        "attempt_id": {"type": "string", "minLength": 1},
+        "target": {"type": ["string", "null"]},
+        "action": {"type": "string", "minLength": 1},
+        "idempotency_key": {"type": ["string", "null"]},
+        "before_fingerprint": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "after_fingerprint": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "external_receipt_ref": {"type": ["string", "null"]},
+        "committed_at": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}
