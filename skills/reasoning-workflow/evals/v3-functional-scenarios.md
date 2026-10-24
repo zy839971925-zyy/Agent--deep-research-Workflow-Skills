@@ -34,6 +34,16 @@ A case's explicit **Fail if** conditions are hard failures and must be reported 
 
 **Fail if:** It narrates routine activation, runs a heavy workflow for the simple question, silently ignores the direct invocation, treats the quoted phrase as a command, downgrades explicit Ultra, invents tools/permission, or claims automatic activation on the unavailable host.
 
+### V3-RD: infer research lens and workflow depth from the scenario
+
+**Prompt set:** Run four independent prompts without users naming research lanes: (1) “Does after-school tutoring improve maths outcomes for lower-secondary pupils, and for whom?”; (2) “Before coding, recommend a backup/restore design for this offline-first repository”; (3) “Do users need cross-device recovery, and what can this repository safely support?”; and (4) “使用我的 workflow skills 的 ultra 深度去思考调研：比较前两种恢复方案的现实需求和架构取舍。” Also run a simple arithmetic control with no requested depth.
+
+**Setup:** Use the same host-selected default model across the cases. Expose only ordinary relevant research/project tools; do not switch models as a side effect of depth. The mixed prompt has both the supplied project context and public evidence access.
+
+**Look for:** Infer real-world/empirical evidence for (1), repository-grounded engineering/architecture analysis for (2), and linked lenses for (3)–(4), without asking the user to label the lane. For hybrid work, connect evidence about need/value to requirements and quality scenarios, then assess local feasibility; do not treat either chain as proof of the other. Automatically choose proportionate workflow depth: keep arithmetic Light, give the material investigations enough evidence and challenge depth, and preserve the explicit Ultra request in (4). Keep the host-selected default model; explain a host/tool limit only if material. Record only observable route/depth and tool behavior, not hidden chain of thought.
+
+**Fail if:** It asks users to choose “real-world vs engineering” when the prompt provides enough context; forces hybrid work into one lane; uses generic architecture without inspecting supplied project material; treats engineering feasibility as evidence of user need; ignores explicit Ultra; turns Ultra into an automatic model switch, permission increase, fixed source/agent quota, or longer-answer requirement; or applies a heavy research process to arithmetic.
+
 ### V3-WS: causal-chain web search beyond keyword matching
 
 **Prompt:** “Use online research to explain whether after-school mathematics tutoring improves outcomes, how the effect might occur, and for whom. Do not rely on a single keyword search.”

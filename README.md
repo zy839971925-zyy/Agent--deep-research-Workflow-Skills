@@ -7,7 +7,7 @@ A practical workflow for research, decisions, and reliable execution.
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[Open the workflow](skills/reasoning-workflow/SKILL.md) · [Download the complete package](dist/reasoning-workflow-3.0.1.zip) · [Technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
+[Open the workflow](skills/reasoning-workflow/SKILL.md) · [Download the complete package](dist/reasoning-workflow-3.1.0.zip) · [Technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
 </div>
 
 ## What this is
@@ -36,7 +36,7 @@ flowchart LR
   J --> K[Verify the result and state remaining limits]
 ```
 
-The depth scale runs from Light through Standard, Deep and Max to Ultra. Depth changes effort—not autonomy, permissions, required answer length, or a fixed number of sources or agents. Ultra is for challenging the framing, following important dependencies, exploring genuinely different evidence routes, and checking decisive claims; it can still conclude that the simplest answer is enough.
+The host-selected model remains the default; the workflow infers a proportionate depth from the task, and an explicit user depth request takes precedence. The scale runs from Light through Standard, Deep and Max to Ultra. Depth changes effort—not model identity, autonomy, permissions, required answer length, or a fixed number of sources or agents. Ultra is for challenging the framing, following important dependencies, exploring genuinely different evidence routes, and checking decisive claims; it can still conclude that the simplest answer is enough.
 
 ## Two research paths
 

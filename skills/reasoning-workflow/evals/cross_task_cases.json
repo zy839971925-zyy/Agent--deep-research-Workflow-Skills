@@ -304,6 +304,21 @@
         "Treat 6/7 or any excerpt count as a population percentage or broad demand estimate.",
         "Discard disconfirming views or present stated intention as observed use."
       ]
+    },
+    {
+      "id": "v3_context_led_research_lens_and_depth",
+      "task": "Without asking the user to label a lane, handle: (1) whether tutoring improves outcomes and for whom; (2) before coding, choose backup/restore architecture for a supplied offline-first repo; (3) whether users need cross-device recovery and what this repo can support; (4) '使用我的 workflow skills 的 ultra 深度去思考调研' for the hybrid comparison; plus a simple arithmetic control.",
+      "acceptance": [
+        "Infer real-world/empirical, engineering/architecture, or linked hybrid lenses from what the decision depends on; do not require user labels.",
+        "For hybrid work, connect real-world need/value to system behavior and assess local feasibility as distinct linked claims.",
+        "Automatically choose proportionate workflow depth for the scenario, keep simple arithmetic Light, and preserve explicit Ultra as workflow depth.",
+        "Keep the host-selected default model; do not treat depth as model switch, added permissions, autonomy, or fixed output/source/agent quota.",
+        "The case is protocol-only unless a real model run and review are recorded."
+      ],
+      "forbidden": [
+        "Force a false either/or, skip supplied repo inspection, or treat architecture feasibility as evidence of user demand.",
+        "Ignore explicit Ultra or claim model switching from a depth request."
+      ]
     }
   ]
 }

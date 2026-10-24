@@ -7,7 +7,7 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[查看工作流入口](skills/reasoning-workflow/SKILL.md) · [下载完整包](dist/reasoning-workflow-3.0.1.zip) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
+[查看工作流入口](skills/reasoning-workflow/SKILL.md) · [下载完整包](dist/reasoning-workflow-3.1.0.zip) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
 </div>
 
 ## 这是一个什么项目
@@ -36,7 +36,7 @@ flowchart LR
   J --> K[核验结果并说明剩余限制]
 ```
 
-工作深度从 Light、Standard、Deep、Max 到 Ultra。深度影响投入程度，不会改变自主权或权限，不要求固定答案长度、来源数或 Agent 数量。Ultra 会更认真地检查问题框架、关键依赖、不同证据路径和决定性主张；但如果直接回答已经足够，结论仍可以很简单。
+默认保留宿主当前选择的模型，由工作流根据任务自动判断合适的深度；用户明确指定深度时以其要求为准。工作深度从 Light、Standard、Deep、Max 到 Ultra。深度影响投入程度，不会改变模型身份、自主权或权限，也不要求固定答案长度、来源数或 Agent 数量。Ultra 会更认真地检查问题框架、关键依赖、不同证据路径和决定性主张；但如果直接回答已经足够，结论仍可以很简单。
 
 ## 两种调研路径
 

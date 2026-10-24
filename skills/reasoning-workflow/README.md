@@ -1,10 +1,11 @@
-# Reasoning Workflow 3.0.1 — Portable edition
+# Reasoning Workflow 3.1.0 — Portable edition
 
 A general-purpose reasoning and execution workflow with a strong Deep Research path. Start with [SKILL.md](SKILL.md); load references only for active gaps.
 
 The Portable edition includes the governing entry, six on-demand Families, references, schemas, optional Python helpers, synthetic tests, migration notes, and host-adaptation guidance. Keep the complete directory together so relative links and helper paths resolve.
+For material research, infer real-world, pre-build engineering/architecture, or linked hybrid evidence from the scenario; users do not need to label it. Keep the host-selected model by default, infer a proportionate workflow depth, and honor explicit depth requests such as Ultra without treating them as model switches or added authority.
 
-- [3.0.1 release notes](docs/RELEASE_3.0.1.md): evaluation-fixture updates and what they do—and do not—validate.
+- [3.1.0 release notes](docs/RELEASE_3.1.0.md): scenario-led research routing, automatic workflow depth, and explicit Ultra precedence.
 - [Research modes and methods](references/research-modes-and-methods.md): real-world, pre-build architecture, and hybrid investigations.
 - [Clarification gate](references/clarification-gate.md): check context and evidence before asking for user-owned details.
 - [V3 functional scenarios](evals/v3-functional-scenarios.md): observable evaluation protocol; not model-evaluated.

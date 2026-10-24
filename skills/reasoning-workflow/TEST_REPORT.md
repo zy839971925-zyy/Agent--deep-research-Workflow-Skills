@@ -1,5 +1,28 @@
 # Reasoning Workflow — 实际测试报告
 
+## 3.1.0 路由与工作深度候选验证（2026-10-24）
+
+- 34 项仓库级宿主契约测试：通过；使用隔离环境中的 `jsonschema==4.23.0` 与 `markdown==3.8.2`。
+- 75 项 Portable 回归测试：通过，0 failure、0 error；包含 39 项保留基线、36 项新增回归检查和 38 次真实 CLI 子进程调用。测试摘要明确记录 `model_evaluated=false`。
+- 路由行为协议新增 V3-RD，跨任务案例新增 `v3_context_led_research_lens_and_depth`；合计 19 个 V3 场景、24 个跨任务案例。它们是静态协议/夹具，不是模型执行结果。
+- 编译检查：`python -m compileall -q skills/reasoning-workflow/scripts skills/reasoning-workflow/tests` 通过；`git diff --check` 通过。
+- 静态包检查：78 个 Markdown、353 个本地 Markdown 链接、13 个锚点、29 个 Python AST、54 个 JSON、14 个 JSON Schema、30 个路由引用；169 个包校验项通过。3.1.0 ZIP 与源码 170 个文件逐项一致，归档内 SHA-256 检查通过；dist 中 2.1.1、3.0.0、3.0.1、3.1.0 四个 ZIP 的 SHA-256 均通过。
+- 候选规则按场景推断现实/经验、工程/架构或混合证据路径；默认保留宿主选择的模型，自动选择工作流深度，明确的用户深度要求优先。深度不代表模型切换。没有执行真实模型对照或盲评，故不声称模型服从率或调研质量提升。
+
+复现：
+
+```sh
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python skills/reasoning-workflow/tests/run_all.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python -m unittest discover -s tests -v
+python -m compileall -q skills/reasoning-workflow/scripts skills/reasoning-workflow/tests
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python skills/reasoning-workflow/scripts/build_distribution.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python skills/reasoning-workflow/tests/check_package.py
+uv run --no-project --with jsonschema==4.23.0 --with markdown==3.8.2 python skills/reasoning-workflow/tests/check_package.py --archive dist/reasoning-workflow-3.1.0.zip
+(cd dist && sha256sum -c SHA256SUMS)
+```
+
+---
+
 ## 3.0.1 维护版验证（2026-10-24）
 
 - 34 项仓库级宿主契约测试：通过；使用隔离环境中的 `jsonschema==4.23.0` 与 `markdown==3.8.2`。

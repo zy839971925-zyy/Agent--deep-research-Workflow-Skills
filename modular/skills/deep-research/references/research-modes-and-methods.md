@@ -20,7 +20,13 @@ A product feature is not a session capability. Before promising or designing aro
 
 ## Choose a lens by the evidence problem
 
-“Research” can mean investigating the world, deciding how to build a system, or both. Choose by what must be known—not by whether the prompt contains words like “market,” “AI,” or “architecture.” Use only the parts that can change the answer. A mixed question may need linked lenses; do not force it into one.
+Users will often describe the situation, not its research category. Infer the lens from the requested decision and the evidence that could settle it; do not ask them to classify the task when the scenario supplies enough signal.
+
+- Use the **real-world/empirical lens** when the answer depends on what happens outside the system: people’s needs or behavior, prevalence, outcomes, causal effects, policy, market conditions, or forecasts.
+- Use the **engineering/architecture lens** when the answer depends on what can be built or operated under concrete repository, platform, interface, quality, security, cost, or deployment constraints—especially before coding or committing to a design. Inspect the actual project when available.
+- Use **both as linked lenses** when the request connects an external need/outcome to a proposed system. Trace the real-world evidence to the behavior or quality scenario the system must satisfy, then assess feasible designs; neither chain proves the other.
+
+Examples: “Does after-school tutoring improve outcomes, and for whom?” is real-world research; “Before development, which backup architecture fits this offline-first repository?” is engineering research; “Do users need cross-device recovery, and what design can safely provide it here?” is hybrid. These are internal routing cues, not a taxonomy the user must supply. Select only the lens components that can change the answer; a single prompt can contain several separable questions.
 
 ## Real-world and empirical questions
 
