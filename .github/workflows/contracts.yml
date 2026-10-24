@@ -28,5 +28,5 @@ jobs:
       - name: Build and verify the Portable distribution
         run: |
           python skills/reasoning-workflow/scripts/build_distribution.py
-          python skills/reasoning-workflow/tests/check_package.py --archive dist/reasoning-workflow-3.0.1.zip
+          python skills/reasoning-workflow/tests/check_package.py --archive dist/reasoning-workflow-3.1.0.zip
           cd dist && sha256sum -c SHA256SUMS

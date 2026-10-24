@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0 — 2026-10-24 (scenario-led research routing)
+
+- Infer real-world, pre-build engineering/architecture, or linked hybrid research paths from the scenario; no user lane label required.
+- Clarify host-selected default model and automatic workflow-depth selection; explicit requested depth wins, while Ultra does not imply a model switch or extra authority.
+- Add a controlled protocol case for real-world, engineering, hybrid, explicit Ultra, and Light controls. No model-behavior evaluation is claimed.
+
+
 ## 3.0.1 — 2026-10-24 (evaluation-fixture maintenance)
 
 - Bind the stale-checkpoint fixture to a real archived v1 artifact and computed digest, so version/content mismatch is testable rather than signalled by an obvious placeholder.

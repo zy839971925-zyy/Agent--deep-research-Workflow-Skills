@@ -1,103 +1,176 @@
 <div align="center">
-<img src="skills/reasoning-workflow/assets/icon.svg" width="88" height="88" alt="Reasoning Workflow" />
+  <img src="skills/reasoning-workflow/assets/icon.svg" width="76" height="76" alt="Reasoning Workflow" />
 
-# Reasoning Workflow
+  # Reasoning Workflow
 
-面向调研、决策与可靠执行的实用工作流。
+  **一套帮助 AI 提出更好的问题、找到更可靠证据，并把事情做完的工作流。**
 
-[English](README.md) · [简体中文](README.zh-CN.md)
+  [English](README.md) · [简体中文](README.zh-CN.md)
 
-[查看工作流入口](skills/reasoning-workflow/SKILL.md) · [下载完整包](dist/reasoning-workflow-3.0.1.zip) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
+  [DeepSeek Harness 使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md) · [选择安装版本](#edition) · [技术架构](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [下载 Portable 完整包](dist/reasoning-workflow-3.1.0.zip)
 </div>
 
-## 这是一个什么项目
+---
 
-Reasoning Workflow 是一套供 AI Agent 使用的指引与可选工具，帮助模型弄清问题真正取决于什么、选择合适且不过度的调研方法，并检查回答或交付是否有依据。深度调研是它的重要用途：沿着问题结构找证据，而不是只匹配几个关键词，再收集一堆重复同一说法的网页。
+Reasoning Workflow 是一套供 AI Agent 使用的指引，以及可选的辅助工具。它帮助 Agent 弄清答案真正取决于什么，选择与任务相称的调研方法，并检查建议或交付是否符合需求。
 
-它适用于现实问题调研、开发前的技术研究、决策、文件与代码产出，以及需要跨中断持续推进的工作。它不是模型、搜索引擎、权限系统，也不保证 Agent 一定遵循每条指引。Skill 的激活、工具、资料访问、权限，以及执行或持久化保障，都由宿主提供。
+它适用于现实问题调研、开发前的研究、决策、写作与代码，以及需要跨会话继续推进的工作。简单问题依然可以直接回答。工作流的目的是改善解决问题的路径，不是让每件事都变复杂。
 
-## 工作方式
+> [!NOTE]
+> 本仓库不是模型、搜索服务或权限系统。宿主应用决定 Skill 是否加载、可用模型与工具，以及允许执行哪些操作。Skill 指引本身不能强制激活，也不能证明模型确实照做。
 
-模型先确认要达成的结果，以及哪些证据或行动可能改变答案；再按当前任务加载必要的方法，推进有用的路径，最后对照原始需求核验结果。简单问题可以直接回答；复杂调研则可以使用更深入的方法和持久状态。
+<a id="deep-research"></a>
+
+## Deep Research：围绕“哪些证据会改变答案”展开
+
+本项目最核心的能力，是以证据为中心组织 Deep Research，而不是把搜索词写得更长。工作流会先找出结论真正取决于什么，再寻找能够区分竞争解释的观察，阅读原始材料，核查关键主张是否得到来源支持，并综合已知、适用边界与未知。若继续调研很难改变一个简单问题的答案，它也应及时停下。
+
+| Agent 会做什么 | 你可以从结果中检查什么 |
+|---|---|
+| 确定影响决策的问题与关键未知 | 聚焦于问题本身的回答，而不是泛泛介绍主题 |
+| 沿因果关系和竞争解释寻找证据，而非机械重复关键词 | 分别回应效果、机制、替代解释和适用边界的材料 |
+| 核对来源脉络，以及证据是否真的支持对应主张 | 清楚区分直接证据、推断、争议与未知 |
+| 把发现重新连接到原始决策，并控制调研投入 | 带有适用条件和剩余限制的建议 |
 
 ```mermaid
 flowchart LR
-  A[用户请求与预期结果] --> B[选择合适深度，找出关键不确定性]
-  B --> C{哪种证据路径合适？}
-  C --> D[现实问题调研]
-  C --> E[技术／架构调研]
-  C --> F[现实与技术相连的问题]
-  D --> G[搜索、阅读、比较并更新主张]
-  E --> H[检查仓库、约束与方案]
-  F --> I[连接现实需求与系统行为]
-  G --> J[回答、建议或提出必要问题]
-  H --> J
-  I --> J
-  J --> K[核验结果并说明剩余限制]
+  Q[真正重要的问题] --> U[决定答案的未知项]
+  U --> E[寻找能区分解释的证据]
+  E --> S[阅读来源并核查主张支持度]
+  S -->|仍有缺口或冲突| E
+  S --> Y[综合发现、边界与未知]
+  Y --> D[回答或建议]
+  D --> C{更多证据会改变答案吗？}
+  C -->|会，且缺口重要| E
+  C -->|不会| F[按适当深度完成]
 ```
 
-工作深度从 Light、Standard、Deep、Max 到 Ultra。深度影响投入程度，不会改变自主权或权限，不要求固定答案长度、来源数或 Agent 数量。Ultra 会更认真地检查问题框架、关键依赖、不同证据路径和决定性主张；但如果直接回答已经足够，结论仍可以很简单。
+例如，“辅导有没有用？”会被拆成对结果、项目设计、受益人群、可能机制、自我选择偏差和研究局限的核对；不会把一次搜索或单篇研究说成因果证明。方法概览见本 README 的“工作流如何选择路径”；实现结构见[技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)。
 
-## 两种调研路径
+## 从这里开始
 
-### 现实问题与因果问题
+1. **选择一个版本。** 不确定时，先用 Portable。
+2. **安装完整 Skill 文件夹。** 放到 AI 宿主识别的目录；不要只复制 `SKILL.md`，它需要同目录的支持文件。
+3. **在宿主中启用它。** 或将它设为宿主的默认工作流。各产品配置不同，可先看[DeepSeek Harness 安装指南](docs/DEEPSEEK_HARNESS.zh-CN.md)。
+4. **像平时一样提问。** 工作流应根据情境推断调研路径和投入深度。想明确指定时，可以试试[下面的示例](#try-it)。
+5. **检查结果。** 对高风险或易变问题，要求它给出决定性证据、不确定性和适用边界，而不只是一个肯定的结论。
 
-先判断需要回答哪一类主张：发生了什么、规模多大、什么导致变化、某种机制如何起作用、接下来可能怎样，或应该怎么做。它们需要的证据并不相同。
+<a id="edition"></a>
 
-面对因果问题时，因果链只是待检验的假设图，不是结论。工作流会挑出一个可能改变答案的因果环节，寻找能区分主要解释与替代解释的观察，阅读原始材料，再更新对应主张。视问题需要，可以分别查效应、机制与时间顺序、混杂或选择偏差，以及适用边界或无效结果；只有这些路径可能影响结论时才做。读到的术语、测量方法和文献引用，可以帮助设计下一轮搜索。搜索结果、听起来合理的机制或反复出现的引文，都不能单独证明整条因果链。
+## 选择安装版本
 
-例如，研究课后辅导是否提升数学成绩时，可以把效果估计与“出勤和反馈”机制分开，再核查先前成绩、家庭资源等竞争解释。比较研究时要看清研究对象、对照组、结果指标、设计和追踪时长，不能把所有标题含“辅导”的结果当成同一种证据。
+|  | Portable | Modular |
+|---|---|---|
+| 适合谁 | 希望有一个统一入口和完整工作流 | 宿主已能发现并调度多个 Skill |
+| 包含什么 | 入口 Skill、按需参考资料、Schema、可选 Python 工具和测试 | 六个独立的指令型 Skill，各自带参考资料 |
+| 取舍 | 包更完整；仅在使用辅助工具时需要兼容的 Python 环境 | 不含 Portable 的 Python 辅助工具及跨 Family 共享运行时／状态层 |
+| 从这里开始 | [`skills/reasoning-workflow/`](skills/reasoning-workflow/) | [`modular/README.zh-CN.md`（简体中文）](modular/README.zh-CN.md) |
 
-具体搜索方法和示例见[检索与观察](skills/reasoning-workflow/references/retrieval-and-observation.md)；证据匹配、访谈／问卷边界和架构研究见[研究模式与方法](skills/reasoning-workflow/references/research-modes-and-methods.md)。
+首次安装推荐 Portable。Modular 不是六份各自包含所有 Portable 功能的完整副本；它更适合能可靠组合多个 Skill 的宿主。Modular 包含 `reasoning-core`、`deep-research`、`decision-analysis`、`execution-control`、`audit-verification` 和 `workflow-learning`。
 
-### 开发前的技术与架构调研
+### 安装 Portable
 
-在建议架构前，先检查真实仓库和约束：现有接口、测试、依赖、运行环境和已写明的需求。把重要目标转成具体场景——什么条件下要发生什么，怎样判断成功；再用这些场景比较可行方案，说明关键取舍、风险，以及哪些假设改变时建议也会改变。
+1. 克隆本仓库，或下载[完整 Portable 压缩包](dist/reasoning-workflow-3.1.0.zip)。
+2. 把完整的 `reasoning-workflow` 文件夹放入宿主识别的 Skill 目录。例如，Codex 常用 `.agents/skills/reasoning-workflow/`，Claude Code 常用 `.claude/skills/reasoning-workflow/`。具体路径以宿主当前说明为准。
+3. 按宿主要求启用或选择该 Skill。从机器读取的英文入口文件 [`SKILL.md`](skills/reasoning-workflow/SKILL.md) 开始；它会根据任务需要指向其他资料。
+4. 先发一个普通请求，再用[示例](#try-it)明确指定一次推理深度。
 
-如果一个小型、可逆的原型或基准测试能回答重要不确定性，优先用它验证，而不是继续堆推测。对长期影响大、难以撤回的选择，可以留下简短决策记录；普通且容易调整的选择不必为此建档。调研可以推荐方向，但不等于获得实施授权。
+Python 辅助工具是可选的，依赖见 [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt)。这些工具用于准备或校验任务记录，不会运行模型、激活 Skill，也不会执行现实世界操作。
 
-如果问题同时涉及用户需求和技术可行性，就把两条证据链连起来但不要混为一谈：用户需要某个结果，不代表指定架构能实现它；技术上做得到，也不代表这个结果值得做。
+### 安装 Modular
 
-## 只有用户本人能解决时才提问
+1. 打开 [Modular 指南（简体中文）](modular/README.zh-CN.md)，按宿主需求选择要安装的 Skill。
+2. 将每个所选 Skill 的**完整文件夹**放入宿主识别的目录（例如 Codex 的 `.agents/skills/<skill-name>/`，或 Claude Code 的 `.claude/skills/<skill-name>/`）。
+3. 启用宿主的原生 Skill 发现。可以从 `reasoning-core` 开始；涉及证据调研时再启用 `deep-research`，其他 Skill 按任务需要加入。
 
-信息缺失不代表要马上打断用户。澄清闸门会先检查相关对话、项目材料、当前工具、外部事实和可推导的信息；只有剩下的不确定性确实属于用户，可能实质改变答案或选择，而且不能用条件式结论或可逆假设诚实处理时，才提出最小必要问题。有独立工作可做时，会继续推进。
+如果宿主支持 `skills` CLI，仓库指南提供了一个只安装指定 Skill 的示例：
 
-询问用户的优先级，不等于获得发送、付款、发布、删除或其他外部行动的许可；工作流会明确保留这条边界。
+```bash
+npx skills add zy839971925-zyy/Agent--deep-research-Workflow-Skills --skill deep-research
+```
 
-## 自动路由与主动调用
+CLI 和宿主的安装方式可能变化；如果命令或路径不可用，请以宿主当前文档为准。
 
-Portable 入口的设计目标是：当宿主把它作为默认入口提供时，对每条直接请求静默做轻量分流，选最合适的工作深度，并只加载相关方法；不会因为每个小问题都启动完整调研。
+### DeepSeek Harness
 
-你也可以直接说：“调用我的 workflow skills”。这会为当前请求选择该工作流，但不会自动切到 Ultra、开放工具或增加权限。引用文字或资料里出现这句话，不算用户主动调用。
+本仓库除了 Portable Markdown Skill，还包含一个可安装的原生 Cordis 组合包，可将 Reasoning Workflow 注册为 DeepSeek Harness Skill。请看 [DeepSeek Harness 插件安装与使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md)；该组合包目前随仓库提供，尚未发布到 npm 或 Plugin Market。
 
-自动激活由宿主负责。Skill 文件本身不能强迫宿主加载自己。若希望每条请求都经过工作流，需要把它设为宿主默认入口，或配置可信的 always-on 指令／前置路由，并在实际宿主上验证。原生 Skill 匹配可能只是尽力而为。仓库里的路由脚本只能依据任务 profile 选择深度和参考资料；它不会自行读取每条自然语言消息，也不会独立激活 Skill。
+## 工作流如何选择路径
 
-## 安装与使用
+你不需要先给任务贴上“现实问题”或“工程调研”的标签。遇到需要认真调查的问题时，Agent 会根据真正影响决策的问题，推断应该寻找哪类观察：
 
-有两个版本可选：
+- **现实／经验问题：** 发生了什么、规模多大、影响谁、什么导致变化，或预期结果有哪些证据？
+- **开发前工程／架构：** 在真实代码库、约束和质量目标下，哪些设计可行，关键取舍是什么？
+- **相互关联的混合问题：** 人们需要什么，这个系统能否实现？先区分需求证据和技术可行性证据，再在决策处把两者连接起来。
 
-- **Portable**（`skills/reasoning-workflow/`）是完整工作流，包含入口、按需参考资料、路由索引、Schema、可选 Python 工具和测试。适合希望使用统一入口和完整方法体系的情况。
-- **Modular**（`modular/`）把工作流拆成六个面向特定任务的指令型 Skill，适合宿主已经能做好 Skill 路由时使用；它不包含 Portable 的 Python 运行辅助工具和跨 Family 状态层。详见 [Modular 指南](modular/README.md)。
+默认使用宿主已经选择的模型。工作流会根据复杂度、不确定性、时效性、后果，以及新增证据能否改变答案，自动选择合适的投入深度：从 Light、Standard、Deep、Max 到 Ultra。这是工作投入程度，不代表切换模型、固定输出篇幅，也不会增加工具权限或行动授权。用户明确指定深度时，优先按指定深度执行，但仍受宿主实际能力限制。
 
-安装 Portable 时，克隆仓库或下载上面的完整压缩包；把整个 `reasoning-workflow` 文件夹放进宿主识别的 Skill 目录（例如 Codex 的 `.agents/skills/reasoning-workflow/`，或 Claude Code 的 `.claude/skills/reasoning-workflow/`），再按宿主要求启用或选中。让模型从 `SKILL.md` 开始，仅在任务需要时沿相对链接读取参考资料。不要只复制入口文件：它依赖同目录中的方法文档和可选资源。
+```mermaid
+flowchart LR
+  A[你的请求] --> B[推断所需证据路径与工作深度]
+  B --> C[现实／经验调研]
+  B --> D[开发前工程调研]
+  B --> E[现实与技术相连的混合问题]
+  C --> F[寻找并阅读与决策有关的证据]
+  D --> G[检查真实项目并比较可行设计]
+  E --> H[连接现实需求与系统可行性]
+  F --> I[回答、建议，或询问必要信息]
+  G --> I
+  H --> I
+  I --> J[核对结果并说明重要限制]
+```
 
-可选 Python 工具依赖列在 [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt)。这些工具可以准备或校验任务记录，但不会运行模型、激活 Skill 或执行现实世界操作。
+面对因果问题，因果链是待检验的假设，不是证明。搜索应沿着可能改变结论的环节展开，检查竞争解释和适用边界，并阅读原始材料，而不是只信摘要或重复引用。面对架构问题，应先检查实际仓库和需求，再推荐设计。更完整的 Deep Research 工作方式见本 README 的[Deep Research 介绍](#deep-research)；技术实现见[技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)。
 
-宿主安装位置与替代方案见[宿主与 Agent 配置](skills/reasoning-workflow/references/harness-profiles.md)。不同产品的功能、套餐、地区、工作区限制、连接器和工具权限并不相同。产品文档说某功能存在，不代表当前账号或会话已启用；只有本次运行确有证据时，才能说实际使用了某种在线调研模式或连接器。若功能不可用，应使用支持的替代路线，并说明还有什么没法完成。
+<a id="try-it"></a>
+
+## 试着使用
+
+Portable 入口的设计目标是：当宿主将它作为默认入口提供时，对每条请求静默做轻量分流。你也可以对当前请求明确调用：
+
+> **“调用我的 workflow skills，评估这个课后辅导项目能否提高数学成绩、对哪些学生有效，以及什么证据会改变结论。”**
+>
+> 预期路径：现实／因果调研。工作流应区分成绩效果与可能机制、替代解释，再调查那些可能改变结论的关键缺口。
+
+> **“开始开发前，请先检查这个代码库，为离线课表编辑和可靠恢复设计架构。使用我的 workflow skills 的 Ultra 深度。”**
+>
+> 预期路径：开发前工程调研，并按明确要求使用 Ultra 深度。Agent 应检查现有项目证据，按约束比较设计；Ultra 本身不代表授权改代码。
+
+> **“使用我的 workflow skills 的 Ultra 深度，查明学生是否需要这个恢复功能，以及我们的离线 App 能否安全支持它。”**
+>
+> 预期路径：现实需求与技术可行性相连的混合调研。需求证据和工程证据应分别说明，再连接到建议中。
+
+> **“简单回答即可，尽量轻量；除非有关键事实不确定，否则不用做大范围调研。”**
+>
+> 预期路径：Light 或同样精简的处理方式，直接回答；只有剩余不确定性会实质影响答案时，才做针对性核查。
+
+说 **“调用我的 workflow skills”** 会为当前请求选择该工作流；它本身不等于 Ultra。想明确使用 Ultra，可以说：**“使用我的 workflow skills 的 Ultra 深度去思考调研。”** 如果希望既调用又使用 Ultra，把两项要求都说清楚。
+
+## 没有按预期工作时
+
+- **宿主没有识别到 Skill：** 检查完整文件夹是否放在正确的宿主目录，并确认已开启 Skill 发现。部分宿主只会尽力匹配。若要求每条请求都先经过工作流，需要在宿主中配置可信的常驻指令或前置路由；Skill 文件不能强制自己加载。
+- **主动调用短语没有效果：** 把它作为你当前请求中的指令，不要只放在引文、文件或其他资料里；并确认当前宿主界面支持此 Skill。
+- **简单问题收到太多流程：** 明确要求直接回答或 Light。深度影响调查投入，不应强制长报告、固定章节或增加 Agent。
+- **Ultra 好像切换了模型或触发了操作：** 这不应发生。Ultra 只改变工作流投入程度，不切换模型、不增加权限，也不授权执行。
+- **Agent 说搜索过，却没有可用证据：** 要求它指出实际打开的来源，并说明来源如何支持关键主张。账号已连接或产品介绍中有某功能，不代表本次运行确实使用了它。
+- **Skill 只有部分内容可用：** 重新安装完整文件夹，不要只复制入口文件。使用 Modular 时，还要确认安装并启用了与当前任务有关的 Skill 及其参考资料。
+
+如果宿主没有提供需要的搜索工具、连接器、权限或运行时辅助工具，工作流应尽可能使用受支持的替代路线，并说明剩余限制；它不能凭空创造宿主未开放的能力。
 
 ## 测试能说明什么
 
-仓库包含用于路由工具、Schema、包内容、链接和协议场景的确定性测试。这些检查可以发现结构性回归，也能把预期行为写成可测试的要求；但它们不能证明模型实际照做，也不能证明调研质量提高。要评估效果，需要在模型、宿主、工具和预算可比的条件下，对同一组任务进行有／无工作流的测试，再评阅答案和可观察的证据收集过程。
+自动化检查覆盖 Schema、链接、辅助工具、包内容和协议场景等结构契约，可以发现这些方面的回归；但它们**不能证明模型会遵循每条指引，也不能证明调研质量提高**。要评估实际效果，需要在模型、宿主、工具和预算可比的条件下，对同一组任务进行有／无工作流的对照，并评阅答案及可观察的证据收集过程。
 
-同样，有效的计划、子代理报告或检查点并不能证明外部动作真的发生。需要可信宿主提供真实工具回执、权限检查、持久化和必要的执行约束。
+同样，计划、检查点或子代理报告也不能证明外部操作已经发生。宿主必须提供真实结果，并执行自身的权限和操作规则。
 
 ## 仓库导航
 
-- [`skills/reasoning-workflow/`](skills/reasoning-workflow/)：Portable 主版本、方法文档、Schema、工具和测试。
+- [`skills/reasoning-workflow/`](skills/reasoning-workflow/)：Portable 入口、方法、Schema、可选工具和包内测试。
 - [`modular/`](modular/)：供宿主原生路由使用的分体 Skill。
-- [`tests/`](tests/)：仓库级接口契约测试。
-- [`dist/`](dist/)：打包文件及校验和。
-- [技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [English technical architecture report](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
-- [贡献指南](CONTRIBUTING.md) · [隐私说明](PRIVACY.md) · [使用条款](TERMS.md) · [MIT License](LICENSE)
+- [`tests/`](tests/)：仓库级宿主契约测试。
+- [`dist/`](dist/)：Portable 版本包及校验和。
+- [DeepSeek Harness 指南（简体中文）](docs/DEEPSEEK_HARNESS.zh-CN.md) · [DeepSeek Harness guide (English)](docs/DEEPSEEK_HARNESS.md)
+- [技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [Technical architecture (English)](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md)
+- [贡献指南（英文）](CONTRIBUTING.md) · [隐私说明（英文）](PRIVACY.md) · [使用条款（英文）](TERMS.md) · [MIT 许可证原文](LICENSE)
 
-由[折鸢 / zy839971925-zyy](https://github.com/zy839971925-zyy)创建和维护。
+<sub>由 <a href="https://github.com/zy839971925-zyy">折鸢 / zy839971925-zyy</a> 维护。</sub>

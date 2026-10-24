@@ -1,0 +1,26 @@
+{
+  "name": "reasoning-workflow-deepseek-harness",
+  "version": "3.1.0",
+  "private": true,
+  "description": "Installable DeepSeek Harness bundle for the portable Reasoning Workflow Skill.",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "skills/reasoning-workflow/**"
+  ],
+  "engines": {
+    "dsh": ">=0.2.1-rc.3 <0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/smoke.test.mjs",
+    "sync-skill": "node scripts/sync-skill.mjs"
+  },
+  "license": "MIT"
+}

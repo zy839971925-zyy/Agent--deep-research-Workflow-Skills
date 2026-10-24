@@ -1,9 +1,9 @@
 {
   "name": "reasoning-workflow",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "release_date": "2026-10-24",
-  "baseline_version": "3.0.0",
-  "baseline_package_sha256": "72bf2627262c04f0de9d0b6278c1df28106e117a1c7aa0cc1bee06671e9f6874",
+  "baseline_version": "3.0.1",
+  "baseline_package_sha256": "a8b5d845ea1a93b7fb984c46e4aa2249807e28f3a2035084bda93d6b8ceb3b36",
   "model_entry": "SKILL.md",
   "test_entry": "tests/run_all.py",
   "automatic_install": false,

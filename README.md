@@ -1,103 +1,170 @@
 <div align="center">
-<img src="skills/reasoning-workflow/assets/icon.svg" width="88" height="88" alt="Reasoning Workflow" />
+  <img src="skills/reasoning-workflow/assets/icon.svg" width="76" height="76" alt="Reasoning Workflow" />
 
-# Reasoning Workflow
+  # Reasoning Workflow
 
-A practical workflow for research, decisions, and reliable execution.
+  **A practical method for asking better questions, finding better evidence, and finishing the work.**
 
-[English](README.md) · [简体中文](README.zh-CN.md)
+  [English](README.md) · [简体中文](README.zh-CN.md)
 
-[Open the workflow](skills/reasoning-workflow/SKILL.md) · [Download the complete package](dist/reasoning-workflow-3.0.1.zip) · [Technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
+  [Start with the Skill](skills/reasoning-workflow/SKILL.md) · [Choose an edition](#choose-an-edition) · [DeepSeek Harness](docs/DEEPSEEK_HARNESS.md) · [Architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [Download Portable](dist/reasoning-workflow-3.1.0.zip)
 </div>
 
-## What this is
+---
 
-Reasoning Workflow is a set of instructions and optional tools that helps an AI agent work out what a question really depends on, choose a proportionate research method, and check whether its answer or deliverable is supported. Deep Research is a central use: the workflow follows the structure of the problem instead of matching a few words and collecting pages that repeat them.
+Reasoning Workflow is a set of instructions—and optional helper tools—for AI agents. It helps an agent identify what an answer depends on, choose a proportionate way to investigate, and check that its recommendation or deliverable actually meets the request.
 
-It can help with real-world questions, research before a technical build, decisions, artifacts, and work that has to survive interruptions. It is not a model, search engine, permission system, or guarantee that an agent will follow every instruction. The host supplies activation, tools, source access, permissions, and any execution or persistence guarantees.
+Use it for questions about the world, research before a build, decisions, writing and code, or work that needs to continue across sessions. A simple question can still get a simple answer. The workflow is there to improve the route, not make every task elaborate.
 
-## How it works
+> [!NOTE]
+> This repository is not a model, search service, or permission system. The host application determines whether a Skill is loaded, which model and tools are available, and what actions are allowed. The instructions cannot force activation or prove that a model followed them.
 
-The model starts with the requested outcome and the evidence or action that could change it. It loads only the guidance relevant to that task, follows the useful route, then checks the result against the original need. A simple question can be answered directly; a complex investigation can use deeper methods and more persistent state.
+## Deep Research, built around the evidence that can change an answer
+
+The project's signature workflow is not a longer search prompt. It turns an open question into an evidence-led investigation: clarify what conclusion depends on, search for observations that distinguish competing explanations, read the underlying sources, check how well each decisive claim is supported, and synthesize what is known without hiding scope or uncertainty. The same loop can stop early when extra research is unlikely to change a simple answer.
+
+| What the agent does | What you can inspect in the result |
+|---|---|
+| Frames the decision-bearing question and names the important unknowns | A focused answer, not a generic topic survey |
+| Follows causal links and rival explanations instead of only repeating keywords | Evidence that addresses effects, mechanisms, alternatives, and boundaries |
+| Checks source provenance and the fit between evidence and claim | Visible distinctions between direct evidence, inference, disagreement, and unknowns |
+| Reconnects findings to the original decision and stops at proportionate effort | A recommendation with its conditions and remaining limits |
 
 ```mermaid
 flowchart LR
-  A[Request and intended outcome] --> B[Choose effort and identify decisive uncertainty]
-  B --> C{What evidence path fits?}
-  C --> D[Real-world research]
-  C --> E[Technical / architecture research]
-  C --> F[Linked hybrid question]
-  D --> G[Search, inspect, compare and update claims]
-  E --> H[Inspect repo, constraints and design options]
-  F --> I[Connect real-world need to system behavior]
-  G --> J[Answer, recommendation or focused question]
-  H --> J
-  I --> J
-  J --> K[Verify the result and state remaining limits]
+  Q[Question that matters] --> U[Answer-bearing unknowns]
+  U --> E[Search for discriminating evidence]
+  E --> S[Read sources and check claim support]
+  S -->|gap or conflict remains| E
+  S --> Y[Synthesize findings, boundaries, and unknowns]
+  Y --> D[Answer or recommendation]
+  D --> C{Could more evidence change it?}
+  C -->|yes, material gap| E
+  C -->|no| F[Finish at the right depth]
 ```
 
-The depth scale runs from Light through Standard, Deep and Max to Ultra. Depth changes effort—not autonomy, permissions, required answer length, or a fixed number of sources or agents. Ultra is for challenging the framing, following important dependencies, exploring genuinely different evidence routes, and checking decisive claims; it can still conclude that the simplest answer is enough.
+For example, “does tutoring work?” becomes a check of outcomes, programme design, who benefits, plausible mechanisms, selection effects, and the limits of the available studies—not a claim that one search proves causation. See the [Deep Research methods](skills/reasoning-workflow/references/research-modes-and-methods.md), [evidence-led retrieval](skills/reasoning-workflow/references/retrieval-and-observation.md), and [technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md).
 
-## Two research paths
+## Start here
 
-### Real-world and causal questions
+1. **Choose an edition** below. If you are unsure, start with Portable.
+2. **Install the whole Skill folder** in a location your AI host recognizes. Do not copy only `SKILL.md`; it links to supporting material.
+3. **Enable it in the host**, or make it available as the host's default workflow. Product-specific setup differs; see [host profiles](skills/reasoning-workflow/references/harness-profiles.md).
+4. **Ask normally.** The workflow should infer the research path and effort from the scenario. For a deliberate override, use one of the prompts in [Try it](#try-it).
+5. **Check the result.** For high-stakes or fast-changing questions, ask for the decisive evidence, uncertainty, and limits—not just a confident conclusion.
 
-First identify what kind of claim matters: what is happening, how common it is, what caused a change, how a mechanism might work, what may happen next, or what should be done. Those questions need different evidence.
+## Choose an edition
 
-For a causal question, the proposed chain is a map of hypotheses, not a finding. The workflow selects one link that could change the conclusion, searches for observations that distinguish the leading explanation from alternatives, reads the underlying source, and updates the claim. It may look separately for effects, mechanisms and timing, confounding or selection, and boundary or null results—but only when those routes could alter the answer. Terms, measures and source references learned from one useful paper can shape the next search. A search result, plausible mechanism, or repeated citation is not proof of the whole chain.
+| | Portable | Modular |
+|---|---|---|
+| Best when | You want one governing entry and the complete workflow | Your host already discovers and routes among separate Skills |
+| Includes | The entry Skill, on-demand references, schemas, optional Python helpers, and tests | Six focused, instruction-only Skills with their own references |
+| Trade-off | Broader package; helpers require a compatible Python environment if you use them | No Portable Python helpers or shared cross-Family runtime/state layer |
+| Start | [`skills/reasoning-workflow/`](skills/reasoning-workflow/) | [`modular/README.md`](modular/README.md) |
 
-For example, to study whether after-school tutoring improves mathematics achievement, an agent might separate the effect estimate from the proposed attendance-and-feedback mechanism, then check prior achievement and family resources as competing explanations. It should verify each study’s population, comparison group, outcome, design and follow-up instead of treating every result for “tutoring” as interchangeable.
+Portable is the recommended first install. Modular is not six standalone copies of every Portable feature; use it when the host can compose focused Skills reliably. The Modular edition contains `reasoning-core`, `deep-research`, `decision-analysis`, `execution-control`, `audit-verification`, and `workflow-learning`.
 
-See [Retrieval and observation](skills/reasoning-workflow/references/retrieval-and-observation.md) for the search method and worked example, and [Research modes and methods](skills/reasoning-workflow/references/research-modes-and-methods.md) for evidence matching, survey/interview limits, and architecture research.
+### Install Portable
 
-### Technical research before a build
+1. Clone this repository or download [the complete Portable package](dist/reasoning-workflow-3.1.0.zip).
+2. Put the complete `reasoning-workflow` directory in your host's recognized Skill directory. For example, Codex commonly uses `.agents/skills/reasoning-workflow/`; Claude Code commonly uses `.claude/skills/reasoning-workflow/`. Confirm the current host's own instructions before relying on a path.
+3. Enable or select the Skill as required by that host. Start from [`SKILL.md`](skills/reasoning-workflow/SKILL.md); it points to additional guidance as the task needs it.
+4. Try a normal request, then try an explicit depth request from [the examples](#try-it).
 
-Before recommending an architecture, inspect the actual repository and constraints: interfaces, tests, dependencies, runtime, and documented requirements. Translate the goals that matter into concrete scenarios—what should happen, under which conditions, and how success would be judged. Compare only plausible designs against those scenarios, including material trade-offs, risks, and assumptions that could reverse the recommendation.
+The Python helpers are optional. Their dependencies are listed in [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt); the helpers prepare or validate task records, but do not run a model, activate a Skill, or execute real-world actions.
 
-When a small reversible prototype or benchmark can settle an important uncertainty, prefer that evidence over another layer of speculation. A concise decision record is useful for a durable or costly-to-reverse choice; routine reversible choices do not need one. Research recommends a direction; it does not authorize implementation.
+### Install Modular
 
-If a question links user need and technical feasibility, keep the evidence chains connected but distinct: evidence that people need an outcome does not prove a proposed design can deliver it, and technical feasibility does not prove the outcome matters.
+1. Open the [Modular guide](modular/README.md) and choose only the Skills your host needs.
+2. Install each selected **full Skill folder** in the host's recognized directory (for example, `.agents/skills/<skill-name>/` for Codex or `.claude/skills/<skill-name>/` for Claude Code).
+3. Enable the host's native Skill discovery. Start with `reasoning-core`; add `deep-research` for evidence-heavy investigation, and the other focused Skills when their task is relevant.
 
-## Ask only when the user is the resolver
+If your host supports the `skills` CLI, the repository guide gives a focused-install example:
 
-A missing detail is not automatically a reason to interrupt. The clarification gate checks the relevant conversation, project materials, current tools, external facts, and derivable details first. It asks only when the remaining uncertainty belongs to the user, could materially change the answer or decision, and cannot be handled honestly with a conditional result or reversible assumption. It asks for the smallest useful input and continues independent work where possible.
+```bash
+npx skills add zy839971925-zyy/Agent--deep-research-Workflow-Skills --skill deep-research
+```
 
-A question about priorities is not permission to send, spend, publish, delete, or otherwise act. The workflow keeps that boundary explicit.
+The CLI and host installation behavior can change; use the current host documentation if this command or path is not supported.
 
-## Automatic routing and direct invocation
+### DeepSeek Harness
 
-The Portable entry is designed to perform a quiet, lightweight triage whenever it is available as the host’s default entry. It chooses the least sufficient depth and loads only relevant guidance; it does not run a full research process for every small request.
+This repository includes an installable native Cordis bundle that registers Reasoning Workflow as a DeepSeek Harness Skill, alongside the portable Markdown Skill. Follow the [DeepSeek Harness plugin install and use guide](docs/DEEPSEEK_HARNESS.md); the bundle is local to this repository and is not yet published to npm or the Plugin Market.
 
-You can also say: “调用我的 workflow skills”. That selects the workflow for the current request; it does not automatically select Ultra, unlock tools, or grant additional permissions. The phrase in quoted text or source material is not an invocation.
+## How the workflow chooses a route
 
-Automatic activation is a host responsibility. A Skill file cannot force a host to load it. If every request must pass through the workflow, configure a trusted always-on instruction or front router, or keep the Skill active as the host’s default entry, then test that behavior on the actual host. Native skill matching may be best-effort. The included routing scripts choose depth and references from a task profile; they do not inspect every raw message or activate the Skill by themselves.
+You do not need to label a task “real-world research” or “engineering research.” For a substantial investigation, the agent infers which observations could answer the decision-bearing question:
 
-## Install and use
+- **Real-world / empirical:** What happened, how often, for whom, what caused a change, or what evidence supports an expected outcome?
+- **Pre-build engineering / architecture:** Given the actual codebase, constraints, and quality goals, which design is feasible and what trade-offs matter?
+- **Linked / hybrid:** What do people need, and can a proposed system deliver it? Keep evidence of need distinct from evidence of technical feasibility, then connect them at the decision.
 
-Choose one edition:
+The host-selected model stays the default. The workflow infers a proportionate depth from complexity, uncertainty, freshness, consequences, and whether more evidence could change the answer. Depth can range from Light through Standard, Deep, and Max to Ultra. These are effort levels—not a request to switch models, a fixed output length, or permission to use more tools or take more actions. An explicit depth instruction takes precedence over the automatic choice, subject to what the host actually supports.
 
-- **Portable** (`skills/reasoning-workflow/`) is the complete workflow: entry point, on-demand references, routing index, schemas, optional Python helpers, and tests. Use it when you want one governing entry and the full set of methods.
-- **Modular** (`modular/`) splits the workflow into six focused instruction-only Skills for hosts that already route among Skills. It does not include the Portable Python runtime helpers or its cross-family state layer. See the [Modular guide](modular/README.md).
+```mermaid
+flowchart LR
+  A[Your request] --> B[Infer the useful evidence path and effort]
+  B --> C[Real-world / empirical]
+  B --> D[Pre-build engineering]
+  B --> E[Linked hybrid]
+  C --> F[Find and inspect decision-relevant evidence]
+  D --> G[Inspect the real project and compare feasible designs]
+  E --> H[Connect user need with system feasibility]
+  F --> I[Answer, recommend, or ask only for a material missing input]
+  G --> I
+  H --> I
+  I --> J[Check the result and state important limits]
+```
 
-To install Portable, clone this repository or download the complete package above. Place the full `reasoning-workflow` directory in the Skill location recognized by your host (for example, `.agents/skills/reasoning-workflow/` for Codex or `.claude/skills/reasoning-workflow/` for Claude Code), then enable or select it as the host requires. Start from `SKILL.md`; follow its relative links only as needed. Do not copy only the entry file: its references and optional resources live beside it.
+For causal questions, a proposed causal chain is a set of hypotheses, not proof. Search should follow the links that could change the conclusion, check competing explanations and boundaries, and read underlying evidence rather than trust a snippet or repeated citation. For architecture questions, inspect the actual repository and requirements before recommending a design. See [retrieval and observation](skills/reasoning-workflow/references/retrieval-and-observation.md) and [research modes and methods](skills/reasoning-workflow/references/research-modes-and-methods.md).
 
-For a shell-based setup, the repository’s optional helper dependencies are listed in [`requirements.txt`](skills/reasoning-workflow/scripts/requirements.txt). Python helpers prepare or validate task records; they do not run a model, activate a Skill, or execute real-world actions.
+## Try it
 
-Host-specific locations and fallback approaches are described in [Host and agent profiles](skills/reasoning-workflow/references/harness-profiles.md). Product features, plans, regions, workspace controls, connectors, and tool permissions differ. A feature advertised in product documentation is not proof that it is enabled in a particular account or session. Report an online research mode or connector as used only when the current run confirms it. If unavailable, use an appropriate supported fallback and say what could not be done.
+The Portable entry is designed to do a quiet, lightweight routing check when the host makes it available as the default entry. You can also explicitly invoke it for the current request:
 
-## What the checks mean
+> **“Call my workflow skills and assess whether this school tutoring program improves maths results, for whom, and what evidence would change the conclusion.”**
+>
+> Expected route: real-world/causal research. The workflow should separate outcome evidence from proposed mechanisms and alternatives, then investigate only the gaps that could change the answer.
 
-The repository includes deterministic tests for routing helpers, schemas, package contents, links, and protocol cases. These checks can catch structural regressions and make expected behavior testable. They do not show that a model actually followed a protocol or improved the quality of its research. That requires running the same tasks with and without the workflow under comparable models, host, tools, and budgets, then assessing answers and observable evidence-gathering behavior.
+> **“Before we build, inspect this repository and recommend an architecture for offline timetable editing and reliable restore. Use my workflow skills at Ultra depth.”**
+>
+> Expected route: pre-build engineering, with Ultra effort explicitly requested. The agent should inspect the available project evidence and compare designs against the stated constraints; Ultra does not itself authorize code changes.
 
-Likewise, a valid plan, worker report, or checkpoint is not proof that an external effect happened. A trusted host must supply actual tool results, authorization checks, durable state, and enforcement where required.
+> **“Use my workflow skills at Ultra depth to find out whether students need this recovery feature and whether our offline app can support it safely.”**
+>
+> Expected route: linked/hybrid. The agent should keep evidence of user need and technical feasibility distinct, then connect them in the recommendation.
 
-## Repository map
+> **“Give me a quick answer; use a light touch and skip broad research unless a key fact is uncertain.”**
+>
+> Expected route: Light or similarly bounded effort, with a direct answer and only a targeted check if a material uncertainty remains.
 
-- [`skills/reasoning-workflow/`](skills/reasoning-workflow/): canonical Portable workflow, methods, schemas, helpers, and tests.
+In Chinese, you can say **“调用我的 workflow skills”** to select the workflow. For an explicit depth request, try **“使用我的 workflow skills 的 Ultra 深度去思考调研”**. Invocation selects the workflow; it does not automatically mean Ultra. State both when you want both.
+
+## If it does not behave as expected
+
+- **The Skill is not being picked up:** Check that the full folder is in the right host-specific location and that Skill discovery is enabled. Some hosts match Skills best-effort. To require a check on every request, configure a trusted always-on instruction or front router in the host; the Skill file cannot force itself to load.
+- **A direct invocation phrase has no effect:** Use it as your own instruction in the current request, not inside a quote, document, or other material. Confirm the host exposes the Skill on this surface.
+- **A small request gets too much process:** Ask for a direct answer or Light effort. Depth should affect investigation, not require long reports, fixed sections, or extra agents.
+- **Ultra seems to change the model or trigger actions:** It should not. Ultra changes workflow effort only. It grants no model switch, extra permissions, or execution authority.
+- **The agent claims it searched but gives no usable evidence:** Ask it to name the sources it actually opened and connect them to the key claims. Search availability, a connected account, or a product feature description alone does not prove the current run used it.
+- **Only part of a Skill seems available:** Reinstall the full folder, not only its entry file. For Modular, check that the relevant focused Skill and its references are installed and enabled.
+
+When the host lacks a needed search tool, connector, permission, or runtime helper, the workflow should use a supported alternative where possible and state the remaining limit. It cannot create capabilities the host does not expose.
+
+## What has—and has not—been tested
+
+Automated checks cover structural contracts such as schemas, links, helper behavior, package contents, and protocol scenarios. They can catch regressions in those contracts. They do **not** show that a model follows every instruction or that research quality improves. That requires comparable, blinded runs with and without the workflow, using the same model, host, tools, and budget, followed by review of answers and observable evidence-gathering behavior.
+
+A plan, checkpoint, or worker report is likewise not proof that an external action happened. The host must provide the actual result and enforce its own permission and execution rules.
+
+## Repository guide
+
+- [`skills/reasoning-workflow/`](skills/reasoning-workflow/): Portable entry, methods, schemas, optional helpers, and package tests.
 - [`modular/`](modular/): focused Skills for host-native routing.
-- [`tests/`](tests/): repository-level contract tests.
-- [`dist/`](dist/): packaged workflow archives and checksums.
-- [Technical architecture report (English)](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
+- [`tests/`](tests/): repository-level host contract tests.
+- [`dist/`](dist/): versioned Portable packages and checksums.
+- [DeepSeek Harness guide (English)](docs/DEEPSEEK_HARNESS.md) · [DeepSeek Harness 指南（简体中文）](docs/DEEPSEEK_HARNESS.zh-CN.md)
+- [Technical architecture (English)](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
 - [Contributing](CONTRIBUTING.md) · [Privacy](PRIVACY.md) · [Terms](TERMS.md) · [MIT License](LICENSE)
 
-Created and maintained by [折鸢 / zy839971925-zyy](https://github.com/zy839971925-zyy).
+<sub>Maintained by <a href="https://github.com/zy839971925-zyy">折鸢 / zy839971925-zyy</a>.</sub>
