@@ -25,5 +25,11 @@
       "observed_version": "v2",
       "digest_matches_checkpoint": false
     }
-  ]
+  ],
+  "historical_artifact": "archive/recommendation-v1.md",
+  "checkpoint_artifact_digest": "sha256:6e8490c3e32ffb71b20cf63f5571fd38374d21f7f93bc07c3875f40129ff40c2",
+  "historical_artifact_digest": "sha256:6e8490c3e32ffb71b20cf63f5571fd38374d21f7f93bc07c3875f40129ff40c2",
+  "current_artifact_digest": "sha256:25c5977d4b9c4d798f23f54a398d444ca0dd54a5f1d1dfe0f4a18ad7d3d958b0",
+  "historical_digest_matches_checkpoint": true,
+  "digest_matches_checkpoint": false
 }

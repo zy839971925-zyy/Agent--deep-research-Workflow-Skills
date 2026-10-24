@@ -7,7 +7,7 @@ A practical workflow for research, decisions, and reliable execution.
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[Open the workflow](skills/reasoning-workflow/SKILL.md) · [Download the complete package](dist/reasoning-workflow-3.0.0.zip) · [Technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
+[Open the workflow](skills/reasoning-workflow/SKILL.md) · [Download the complete package](dist/reasoning-workflow-3.0.1.zip) · [Technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [技术架构报告](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)
 </div>
 
 ## What this is

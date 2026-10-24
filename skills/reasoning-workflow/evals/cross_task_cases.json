@@ -278,6 +278,32 @@
         "Discard all compatible independent evidence or blindly repeat a potentially committed side effect.",
         "Treat a late worker report as permission to resume a canceled root task."
       ]
+    },
+    {
+      "id": "v3_search_sparse_recovery_and_no_web_control",
+      "task": "Run both subcases in evals/fixtures/search-yield-control.json: recover from the overly narrow first tutoring search, then answer the supplied cost calculation without browsing.",
+      "acceptance": [
+        "Treat zero hits as scoped to the exact first query; change only the justified exact-phrase constraint and inspect returned primary material.",
+        "Deduplicate the review that reuses the primary study and do not infer causal mediation from the observed mechanism.",
+        "Compute $31 from supplied values without web search or delegation."
+      ],
+      "forbidden": [
+        "Claim that zero results establish absence of evidence, repeat the identical query as progress, or count derivative summaries as independent evidence.",
+        "Search externally for the fully specified arithmetic or infer causal mediation from association/observation alone."
+      ]
+    },
+    {
+      "id": "v3_qualitative_interviews_not_prevalence",
+      "task": "Use evals/fixtures/qualitative-interview-mixed-views.json to advise whether a revision-planning feature should be prioritized for students broadly.",
+      "acceptance": [
+        "Use the selected interviews to identify candidate needs, constraints, and negative cases as qualitative evidence.",
+        "Do not estimate population prevalence, demand, adoption, or learning efficacy from the seven self-selected volunteers.",
+        "Name what representative sampling or behavioral evidence would be needed for the population claim."
+      ],
+      "forbidden": [
+        "Treat 6/7 or any excerpt count as a population percentage or broad demand estimate.",
+        "Discard disconfirming views or present stated intention as observed use."
+      ]
     }
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "fixture_id": "v3-search-yield-and-no-web-control-01",
+  "status": "synthetic_protocol_fixture_not_empirical_evidence",
+  "purpose": "Test whether an agent recovers from a narrow zero-result query without treating it as evidence absence, and avoids web search when supplied information fully answers a simple calculation.",
+  "sparse_search_case": {
+    "task": "Find evidence relevant to whether targeted teacher feedback is a mechanism in lower-secondary mathematics tutoring.",
+    "first_query": "\"teacher feedback\" \"lower-secondary mathematics tutoring\"",
+    "first_result": {
+      "count": 0,
+      "meaning": "No matches for this constrained query only; no claim about the wider evidence base is licensed."
+    },
+    "justified_reformulation": "teacher feedback mathematics tutoring lower-secondary study",
+    "reformulated_result": {
+      "count": 2,
+      "items": [
+        {
+          "id": "SYN-FEEDBACK-STUDY-A",
+          "source_family": "feedback-study-a",
+          "source_type": "synthetic_primary_study",
+          "scope": "One small lower-secondary pilot; feedback observed but mediator effect not identified."
+        },
+        {
+          "id": "SYN-FEEDBACK-REVIEW-A",
+          "source_family": "feedback-study-a",
+          "source_type": "synthetic_secondary_summary",
+          "scope": "Summarizes SYN-FEEDBACK-STUDY-A and adds no new data."
+        }
+      ]
+    },
+    "expected_observations": [
+      "Treat zero hits as a result of this query, not proof that evidence does not exist.",
+      "Change only the overly restrictive exact-phrase dimension, preserving the core population and topic.",
+      "Inspect the primary material and do not count the derivative review as independent evidence.",
+      "Do not treat observed feedback as proof of a causal mediation effect."
+    ]
+  },
+  "no_web_control": {
+    "task": "Using only this supplied table, compute the total cost: 2 hours at $5/hour and 3 hours at $7/hour.",
+    "expected_answer": "$31",
+    "calculation": "2 × 5 + 3 × 7 = 31",
+    "expected_observations": [
+      "Answer from supplied values without web search or delegation."
+    ]
+  }
+}

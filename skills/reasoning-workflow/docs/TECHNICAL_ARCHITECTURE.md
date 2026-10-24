@@ -1,6 +1,6 @@
 # Technical architecture and execution boundaries
 
-**Candidate:** Reasoning Workflow 3.0.0, local review branch. This report describes the repository design; it is not a claim that any host activated the Skill or that model behavior improved. The GitHub `main` comparison baseline previously verified for this work was 2.1.1 (`97efc58`); 2.2.0 was a local intermediate candidate.
+**Design baseline:** Reasoning Workflow 3.0.0, merged into `main` on 2026-10-24. This report describes the repository design; it is not a claim that any host activated the Skill or that model behavior improved. The comparison baseline for the 3.0.0 work was 2.1.1 (`97efc58`); 2.2.0 was a local intermediate candidate.
 
 [中文技术架构报告](TECHNICAL_ARCHITECTURE.zh-CN.md) · [English README](../../../README.md) · [中文 README](../../../README.zh-CN.md)
 
