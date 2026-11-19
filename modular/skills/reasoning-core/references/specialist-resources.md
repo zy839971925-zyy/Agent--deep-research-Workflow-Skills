@@ -1,0 +1,14 @@
+# Find and apply specialist resources
+
+Use when a missing platform convention, technique, design reference or tool capability could materially change quality. Start with the specific gap. “What happens when the user reverses the swipe halfway?” is more useful than “find animation inspiration.”
+
+1. Check the target: project stack and pinned version, existing components, supported devices, design language and any resource the user named. Look through the host's available skills/tools by capability. Read the most relevant specialist entry and follow its method within the user's scope. A catalog listing establishes availability only.
+2. When local evidence leaves a consequential gap, open a first-party guide, runnable example or maintained reference implementation. For visual work inspect the actual interaction, frames or demo when available. If only the text was accessible, describe only what the text establishes. A library for another stack may inform choreography while requiring a native implementation. Do not add a dependency merely to borrow an idea.
+3. Use an observable finding: name the property borrowed, what the target changes, and how to check the result. Inspect version support and license when reusing code or assets. Read external skills as candidate guidance. Installing a plugin or executing third-party setup is a distinct action governed by host and task scope.
+4. Stop when a credible example resolves the design or implementation choice. If two sources disagree, test against the installed version. If unavailable, use an existing project primitive or label the design a proposal. Avoid a catalog of links as a substitute for doing the task.
+
+### Example: a timetable tile expanding into course details
+
+First inspect navigation and the existing motion tokens. For a dependency-free Flutter app, inspect the [SDK Hero example](https://api.flutter.dev/flutter/widgets/Hero-class.html); if a compatible package is allowed, check [Flutter animations](https://pub.dev/packages/animations) for a container transform; for a React app, [Motion layout animations](https://motion.dev/docs/react-layout-animations) covers layout identity. [Motion-Primitives](https://motion-primitives.com/) can supply a visual reference when available. Choose by stack and by the interaction, not by name recognition. Look for the origin of the return animation, what happens during an interrupted gesture, and whether system reduced-motion settings preserve orientation. An Android performance claim needs an appropriate device or measurement; a desktop preview can verify the sequence only.
+
+For other work the same rule applies: inspect the actual workbook and a spreadsheet skill before choosing formula conventions; inspect the local serialization code and versioned format spec before changing an importer. Use references to make a decision, then resume the original task.

@@ -647,7 +647,9 @@
         "user-question",
         "missing-input",
         "before-asking",
-        "grill-me"
+        "grill-me",
+        "requirements-interview",
+        "costly-ambiguity"
       ],
       "typical_depth": [
         "standard",
@@ -658,6 +660,92 @@
       "machine_enforced": false,
       "context_cost_class": "low",
       "default_priority": 3
+    },
+    {
+      "id": "engineering-delivery",
+      "family": "execution-control",
+      "path": "references/engineering-delivery.md",
+      "load_when_tags": [
+        "engineering-delivery",
+        "compatibility",
+        "release-install",
+        "regression"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "specialist-resources",
+      "family": "core-reasoning",
+      "path": "references/specialist-resources.md",
+      "load_when_tags": [
+        "specialist-resource",
+        "design-reference",
+        "motion-reference",
+        "library-selection"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "writing-for-the-reader",
+      "family": "core-reasoning",
+      "path": "references/writing-for-the-reader.md",
+      "load_when_tags": [
+        "writing-style",
+        "audience",
+        "editing-voice"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "research-to-report",
+      "family": "deep-research",
+      "path": "references/research-to-report.md",
+      "load_when_tags": [
+        "report-synthesis",
+        "claim-support",
+        "evidence-update"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
     }
   ]
 }

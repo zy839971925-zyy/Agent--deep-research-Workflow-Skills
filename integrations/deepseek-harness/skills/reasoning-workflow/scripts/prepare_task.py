@@ -2,18 +2,22 @@
 """Normalize and prepare references in one step; never executes the task or tools."""
 from pathlib import Path
 import argparse,json
-from routing_core import validate_profile,recheck_profile,route_task
+from routing_core import validate_profile,validate_signals,recheck_profile,route_task
 from route_resources import select
 ROOT=Path(__file__).resolve().parents[1]
 
 def prepare(profile,signals=(),gap_tags=(),root=ROOT):
     errors=validate_profile(profile,root)
+    signal_errors=validate_signals(signals,root)
+    if signal_errors:
+        return {'passed':False,'status':'invalid_input','errors':signal_errors,'task_executed':False}
     if errors:
         return {'passed':False,'status':'invalid_profile','errors':errors,'task_executed':False}
     profile=recheck_profile(profile,signals)
-    route=route_task(profile)
+    route=None
     try:
         index=json.loads((root/'routing-index.json').read_text())
+        route=route_task(profile,index)
         selected=select(index,route,profile,gap_tags)
         for ref in selected:
             path=(root/ref['path']).resolve()
@@ -22,7 +26,7 @@ def prepare(profile,signals=(),gap_tags=(),root=ROOT):
         ids={x['reference_id'] for x in selected};tags=set(gap_tags or profile.get('active_gap_tags',[]))
         allowed=set(route['required_families'])|set(route['optional_families'])
         deferred=[{'reference_id':x['id'],'path':x['path'],'reason':'matching_gap_next_phase'} for x in index['references']
-            if x['id'] not in ids and x['family'] in allowed and tags&set(x.get('load_when_tags',[]))]
+            if x['id'] not in ids and (x['family'] in allowed or x.get('on_demand_only')) and tags&set(x.get('load_when_tags',[]))]
     except (ValueError,KeyError,TypeError,OSError) as exc:
         return {'passed':False,'status':'blocked','task_profile':profile,'route':route,'errors':[str(exc)],
             'next_action':'Restore required resources or disclose an explicit capability-limited result; do not claim full requested-depth execution.', 'task_executed':False}

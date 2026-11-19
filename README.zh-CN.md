@@ -7,7 +7,7 @@
 
   [English](README.md) · [简体中文](README.zh-CN.md)
 
-  [DeepSeek Harness 使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md) · [选择安装版本](#edition) · [技术架构](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [下载 Portable 完整包](dist/reasoning-workflow-3.1.0.zip)
+  [DeepSeek Harness 使用指南](docs/DEEPSEEK_HARNESS.zh-CN.md) · [选择安装版本](#edition) · [技术架构](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md) · [下载 Portable 完整包](dist/reasoning-workflow-3.2.0.zip)
 </div>
 
 ---
@@ -47,6 +47,10 @@ flowchart LR
 
 例如，“辅导有没有用？”会被拆成对结果、项目设计、受益人群、可能机制、自我选择偏差和研究局限的核对；不会把一次搜索或单篇研究说成因果证明。方法概览见本 README 的“工作流如何选择路径”；实现结构见[技术架构报告（简体中文）](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.zh-CN.md)。
 
+### 3.2.0 日常使用
+
+普通问题直接答。复杂任务会先判断哪项选择值得打断你，能查到的事实自行查；设计或工程工作按技术栈寻找专业 Skill、原始示例和现有实现。工程交付从真实入口验收，调研报告按关键主张核对原文。参见 [3.2.0 变更与证据检查工具](skills/reasoning-workflow/docs/RELEASE_3.2.0.md)。
+
 ## 从这里开始
 
 1. **选择一个版本。** 不确定时，先用 Portable。
@@ -72,7 +76,7 @@ flowchart LR
 
 ### 安装 Portable
 
-规范 Skill 位于 `skills/reasoning-workflow/`。请安装**整个文件夹**，不要只复制 `SKILL.md`：它依赖相对路径下的参考资料、families、schemas、scripts 和 assets。可以克隆仓库，或解压[完整 Portable 压缩包](dist/reasoning-workflow-3.1.0.zip)。下面命令假设你已克隆仓库，并在仓库根目录运行：
+规范 Skill 位于 `skills/reasoning-workflow/`。请安装**整个文件夹**，不要只复制 `SKILL.md`：它依赖相对路径下的参考资料、families、schemas、scripts 和 assets。可以克隆仓库，或解压[完整 Portable 压缩包](dist/reasoning-workflow-3.2.0.zip)。下面命令假设你已克隆仓库，并在仓库根目录运行：
 
 ```sh
 git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git

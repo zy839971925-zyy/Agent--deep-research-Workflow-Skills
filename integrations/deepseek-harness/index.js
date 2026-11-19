@@ -9,7 +9,7 @@ const RESOURCE_BASE = {
   kind: 'directory',
   path: fileURLToPath(new URL('./skills/reasoning-workflow/', import.meta.url)),
 }
-const DESCRIPTION = 'Default silent entry for questions, research, artifacts, code, coordination and persistent projects. When available to the host, infer the relevant evidence path from each direct request, including real-world, pre-build engineering, or linked hybrid research; choose proportionate Light-to-Ultra workflow depth and load only relevant guidance. Keep the host-selected default model unless the user or host explicitly changes it. The direct user phrase “调用我的 workflow skills” explicitly selects this workflow.'
+const DESCRIPTION = 'Default silent workflow for everyday questions, research, writing, design and engineering. Match effort to the request, resolve costly ambiguity, find specialist resources and verify the requested outcome. Explicitly selectable with “调用我的 workflow skills”.'
 const INVOCATION = { modelInvocable: true, userInvocable: true }
 
 // DeepSeek Harness @deepseek-ai/dsh-skill currently defines BUNDLED_SKILL_RANK as 600.

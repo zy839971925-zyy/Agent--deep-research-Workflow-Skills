@@ -4,6 +4,7 @@ from pathlib import Path
 import argparse, importlib.metadata, json, sys, unittest
 from run_regression import Regression, RECEIPTS
 from test_2_1_1 import PatchRegression
+from test_3_2 import InfrastructureTests
 from test_harness_bridge_reconciliation import LostReceiptReconciliation
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -11,7 +12,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir',type=Path,help='optional disposable directory for versioned test receipts')
     args=parser.parse_args()
-    suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(Regression),unittest.defaultTestLoader.loadTestsFromTestCase(PatchRegression),unittest.defaultTestLoader.loadTestsFromTestCase(LostReceiptReconciliation)])
+    suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(Regression),unittest.defaultTestLoader.loadTestsFromTestCase(PatchRegression),unittest.defaultTestLoader.loadTestsFromTestCase(LostReceiptReconciliation),unittest.defaultTestLoader.loadTestsFromTestCase(InfrastructureTests)])
     result=unittest.TextTestRunner(verbosity=2).run(suite)
     release=json.loads((ROOT/'RELEASE.json').read_text(encoding='utf-8'))
     version=release['version']

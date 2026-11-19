@@ -2,7 +2,7 @@
 
 **设计基线：** Reasoning Workflow 3.0.0，已于 2026-10-24 合并至 `main`。本报告描述仓库设计，不代表任何宿主已实际激活 Skill，也不代表模型行为已经提升。3.0.0 工作所对照的基线是 2.1.1（`97efc58`）；2.2.0 是此前的本地中间候选。
 
-[English technical architecture](TECHNICAL_ARCHITECTURE.md) · [中文 README](../../../README.zh-CN.md) · [English README](../../../README.md)
+[English technical architecture](TECHNICAL_ARCHITECTURE.md) · [中文 README](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/README.zh-CN.md) · [English README](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/README.md)
 
 ## 1. 架构目标
 
@@ -111,7 +111,7 @@ flowchart LR
 - [`../evals/`](../evals/)：跨任务案例、V3 协议场景及夹具。
 - [`../scripts/`](../scripts/)：可选的确定性任务准备与打包工具。
 - [`../tests/`](../tests/)：静态、Schema、CLI 和包契约测试。
-- [`../../../modular/`](../../../modular/)：指令型模块版本。
+- [`../../../modular/`](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/modular/README.md)：指令型模块版本。
 - [`../TEST_REPORT.md`](../TEST_REPORT.md)、[`RELEASE_3.0.0.zh-CN.md`](RELEASE_3.0.0.zh-CN.md)：验证记录与发布说明。
 
 ## 参考资料

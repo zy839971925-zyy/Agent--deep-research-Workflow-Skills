@@ -2,7 +2,7 @@
 
 **Design baseline:** Reasoning Workflow 3.0.0, merged into `main` on 2026-10-24. This report describes the repository design; it is not a claim that any host activated the Skill or that model behavior improved. The comparison baseline for the 3.0.0 work was 2.1.1 (`97efc58`); 2.2.0 was a local intermediate candidate.
 
-[中文技术架构报告](TECHNICAL_ARCHITECTURE.zh-CN.md) · [English README](../../../README.md) · [中文 README](../../../README.zh-CN.md)
+[中文技术架构报告](TECHNICAL_ARCHITECTURE.zh-CN.md) · [English README](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/README.md) · [中文 README](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/README.zh-CN.md)
 
 ## 1. Architectural intent
 
@@ -113,7 +113,7 @@ For a defensible effectiveness claim, run the same model, host, tools, task set,
 - [`../evals/`](../evals/): cross-task cases, V3 protocol scenarios, and fixtures.
 - [`../scripts/`](../scripts/): optional deterministic preparation/build helpers.
 - [`../tests/`](../tests/): static, schema, CLI, and package-contract tests.
-- [`../../../modular/`](../../../modular/): focused instruction-only edition.
+- [`../../../modular/`](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/modular/README.md): focused instruction-only edition.
 - [`../TEST_REPORT.md`](../TEST_REPORT.md), [`RELEASE_3.0.0.zh-CN.md`](RELEASE_3.0.0.zh-CN.md): recorded verification and release notes.
 
 ## References

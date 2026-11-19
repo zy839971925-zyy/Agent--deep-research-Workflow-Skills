@@ -6,7 +6,7 @@
 
 ## Portable core and available editions
 
-The canonical [Portable edition](../README.md) contains the complete governing `SKILL.md`, references, schemas, optional Python helpers, tests, and execution contracts. Install the full directory when using its relative references or scripts. The [Modular edition](../../../modular/README.md) separates six instruction-only Skills for hosts that already route skills well; it omits the canonical deterministic runtime helpers and cross-family state.
+The canonical [Portable edition](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/skills/reasoning-workflow/README.md) contains the complete governing `SKILL.md`, references, schemas, optional Python helpers, tests, and execution contracts. Install the full directory when using its relative references or scripts. The [Modular edition](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/modular/README.md) separates six instruction-only Skills for hosts that already route skills well; it omits the canonical deterministic runtime helpers and cross-family state.
 
 Host adapters select installation and execution behavior; they are not separate research theories. Keep the core, adapter notes, and package version aligned. Do not copy only this guide or only `SKILL.md` and assume relative resources will resolve.
 

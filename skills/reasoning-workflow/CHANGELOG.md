@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.0 · 2026-11-19
+
+Adds targeted engineering acceptance, reference discovery, research reporting, reader-aware writing and focused interviews. Fixes standalone validation, unknown routing signals and the DSH index. [Release notes](docs/RELEASE_3.2.0.md).
+
 ## 3.1.0 — 2026-10-24 (scenario-led research routing)
 
 - Infer real-world, pre-build engineering/architecture, or linked hybrid research paths from the scenario; no user lane label required.

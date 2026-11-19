@@ -15,6 +15,7 @@ When a material ambiguity may change the research path or recommendation, first 
 
 
 ## Progressive references
+- [research-to-report](references/research-to-report.md) — Turn a discriminating search into a report with bounded, traceable claims.
 - [`research-modes-and-methods`](references/research-modes-and-methods.md) — Load when a material investigation is real-world/empirical, pre-build architecture, or hybrid.
 - [`inquiry-and-research`](references/inquiry-and-research.md) — Load only when the active gap matches one of: deep-research, evidence-need, research-loop, frame-discovery.
 - [`information-target-navigation`](references/information-target-navigation.md) — Load when a material unknown needs a discriminating observation or the investigation needs a compact research frontier.

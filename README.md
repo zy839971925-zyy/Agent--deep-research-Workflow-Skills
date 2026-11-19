@@ -7,7 +7,7 @@
 
   [English](README.md) · [简体中文](README.zh-CN.md)
 
-  [Start with the Skill](skills/reasoning-workflow/SKILL.md) · [Choose an edition](#choose-an-edition) · [DeepSeek Harness](docs/DEEPSEEK_HARNESS.md) · [Architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [Download Portable](dist/reasoning-workflow-3.1.0.zip)
+  [Start with the Skill](skills/reasoning-workflow/SKILL.md) · [Choose an edition](#choose-an-edition) · [DeepSeek Harness](docs/DEEPSEEK_HARNESS.md) · [Architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md) · [Download Portable](dist/reasoning-workflow-3.2.0.zip)
 </div>
 
 ---
@@ -45,6 +45,10 @@ flowchart LR
 
 For example, “does tutoring work?” becomes a check of outcomes, programme design, who benefits, plausible mechanisms, selection effects, and the limits of the available studies—not a claim that one search proves causation. See the [Deep Research methods](skills/reasoning-workflow/references/research-modes-and-methods.md), [evidence-led retrieval](skills/reasoning-workflow/references/retrieval-and-observation.md), and [technical architecture](skills/reasoning-workflow/docs/TECHNICAL_ARCHITECTURE.md).
 
+### 3.2.0 in everyday use
+
+The default entry can hand off one task to a specialist, ask the one product decision that would otherwise cause rework, or answer directly. For a shipped change, verify the installed artifact. For research, follow decisive claims back to their sources. See the [release notes and evidence checker](skills/reasoning-workflow/docs/RELEASE_3.2.0.md).
+
 ## Start here
 
 1. **Choose an edition** below. If you are unsure, start with Portable.
@@ -68,7 +72,7 @@ Portable is the recommended first install. Modular is not six standalone copies 
 
 ### Install Portable
 
-The canonical Skill is `skills/reasoning-workflow/`. Install that **entire directory**, not only `SKILL.md`: its references, families, schemas, scripts, and assets are relative to it. You can clone the repository or extract the complete [Portable package](dist/reasoning-workflow-3.1.0.zip). The commands below assume you cloned the repository and are running them from its root:
+The canonical Skill is `skills/reasoning-workflow/`. Install that **entire directory**, not only `SKILL.md`: its references, families, schemas, scripts, and assets are relative to it. You can clone the repository or extract the complete [Portable package](dist/reasoning-workflow-3.2.0.zip). The commands below assume you cloned the repository and are running them from its root:
 
 ```sh
 git clone --depth 1 https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills.git

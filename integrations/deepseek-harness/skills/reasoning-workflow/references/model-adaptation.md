@@ -63,3 +63,9 @@ Change scaffolding locally when the workflow misses a real obligation, loses con
 A newer model is not itself evidence of better research. Claims about quality, reliability, cost, or latency require task-relevant evaluation; official product documentation establishes feature availability, not measured performance gains.
 
 [← Return to root workflow](../SKILL.md)
+
+## Current model and host profiles, checked 2026-11-19
+
+Keep the general entry stable. Put provider-specific state transport in the integration that controls it. With GPT-6.2 Responses, keep the previous prefix stable on continuation and append user corrections. With Claude Opus 5.5, use its supported adaptive thinking behavior and recalibrate effort against the same tasks. With Gemini 4 Neon tool calls, preserve original signed parts and grouping in history. In chat-only hosts leave unavailable API controls alone. For a migration, start with the same prompt and task corpus, then vary one scaffold at a time. Report both correct outcomes and actual cost where exposed.
+
+[OpenAI migration guidance](https://developers.openai.com/api/docs/guides/latest-model) · [Claude model migration](https://platform.claude.com/docs/en/models/opus-5-5/migration-guide) · [Gemini Neon guide](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/guides/gemini-4-neon)

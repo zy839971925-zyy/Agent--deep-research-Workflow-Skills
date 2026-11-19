@@ -25,8 +25,16 @@ jobs:
           python -m unittest discover -s tests -v
       - name: Run Portable Skill regression suite (non-mutating)
         run: python skills/reasoning-workflow/tests/run_all.py
+      - name: Test bundled provider
+        run: npm --prefix integrations/deepseek-harness test
       - name: Build and verify the Portable distribution
         run: |
+          release=$(python -c 'import json; print(json.load(open("skills/reasoning-workflow/RELEASE.json"))["version"])')
+          archive="dist/reasoning-workflow-${release}.zip"
+          python skills/reasoning-workflow/tests/check_package.py --archive "$archive"
           python skills/reasoning-workflow/scripts/build_distribution.py
-          python skills/reasoning-workflow/tests/check_package.py --archive dist/reasoning-workflow-3.1.0.zip
+          git diff --exit-code -- dist skills/reasoning-workflow/SHA256SUMS
+          unpack=$(mktemp -d)
+          unzip -q "$archive" -d "$unpack"
+          (cd "$unpack/reasoning-workflow" && python tests/check_package.py && python tests/run_all.py)
           cd dist && sha256sum -c SHA256SUMS

@@ -1,14 +1,15 @@
 {
   "name": "reasoning-workflow",
-  "version": "3.1.0",
-  "release_date": "2026-10-24",
-  "baseline_version": "3.0.1",
-  "baseline_package_sha256": "a8b5d845ea1a93b7fb984c46e4aa2249807e28f3a2035084bda93d6b8ceb3b36",
+  "version": "3.2.0",
+  "release_date": "2026-11-19",
+  "baseline_version": "3.1.0",
+  "baseline_package_sha256": "aed5255c4a41d20a6e5d9fb82a6adeca05904b85357bf861df1781af423570da",
   "model_entry": "SKILL.md",
   "test_entry": "tests/run_all.py",
   "automatic_install": false,
   "remote_published": false,
   "model_compliance_evaluated": false,
   "distribution_variant": "main-integrated",
-  "integration_notes": "docs/MAIN_INTEGRATION.md"
+  "integration_notes": "docs/RELEASE_3.2.0.md",
+  "behavior_smoke_evaluated": true
 }

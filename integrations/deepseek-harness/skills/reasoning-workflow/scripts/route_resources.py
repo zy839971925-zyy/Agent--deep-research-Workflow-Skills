@@ -18,9 +18,13 @@ def select(index,route,profile,gap_tags):
     if profile.get('depth_class')=='light' and not tags and required <= {'core-reasoning'}: return []
     candidates=[]
     for e in index['references']:
-        if e['family'] not in allowed and not (profile.get('depth_class')=='ultra' and e['id']=='ultra-research'): continue
-        if e['family'] not in required and profile.get('depth_class') not in e.get('typical_depth',[]): continue
         overlap=tags & set(e.get('load_when_tags',[]))
+        # These instruction-only references also serve questions outside their home family.
+        # A tag selects reading material without admitting any execution capability.
+        on_demand = e.get('on_demand_only', False)
+        if on_demand and not overlap: continue
+        if not on_demand and e['family'] not in allowed and not (profile.get('depth_class')=='ultra' and e['id']=='ultra-research'): continue
+        if e['family'] not in required and profile.get('depth_class') not in e.get('typical_depth',[]): continue
         if overlap or e['family'] in required or (profile.get('depth_class')=='ultra' and e['id']=='ultra-research'): candidates.append((0 if overlap else 1,e['default_priority'],e,sorted(overlap)))
     candidates.sort(key=lambda x:(x[0],x[1],x[2]['id']))
     chosen=[]; seen=set()

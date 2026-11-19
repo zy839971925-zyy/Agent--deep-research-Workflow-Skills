@@ -1,8 +1,8 @@
-# Reasoning Workflow 3.1.0 — Modular 版
+# Reasoning Workflow 3.2.0 — Modular 版
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-Modular 版把六个工作流 Family 拆成可独立安装、仅含指令的 Agent Skill。适合宿主已经能很好地发现和路由 Skill，或某项任务只需要其中一部分的情况。共享研究方法与 Portable 3.1.0 同步；Modular 不是六份可以完整取代主入口 Portable Skill 的副本。
+Modular 版把六个工作流 Family 拆成可独立安装、仅含指令的 Agent Skill。适合宿主已经能很好地发现和路由 Skill，或某项任务只需要其中一部分的情况。共享研究方法与 Portable 3.2.0 同步；Modular 不是六份可以完整取代主入口 Portable Skill 的副本。
 
 遇到重要调研时，应根据情境推断需要考察现实结果、开发前的工程／架构证据，还是两者兼有；用户不必先给任务贴标签。默认保留宿主当前选择的模型。工作流会根据任务自动选择合适的投入深度，同时遵从用户明确指定的深度。Ultra 表示工作流投入程度，不代表切换模型。
 

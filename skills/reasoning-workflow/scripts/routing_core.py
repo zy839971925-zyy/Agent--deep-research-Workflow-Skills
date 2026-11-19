@@ -17,6 +17,11 @@ def validate_profile(profile,root):
     schema=load_json(Path(root)/'schemas'/'task-profile.schema.json')
     return [f"{'/'.join(map(str,e.absolute_path)) or '$'}: {e.message}" for e in jsonschema.Draft202012Validator(schema).iter_errors(profile)]
 
+def validate_signals(signals, root):
+    schema = load_json(Path(root) / 'schemas' / 'task-profile.schema.json')
+    supported = schema['properties']['recheck_triggers']['items']['enum']
+    return ['UNKNOWN_SIGNAL'] if set(signals or ()) - set(supported) else []
+
 def _q(v):
     try:return QUAL.index(v)
     except:return 0

@@ -13,6 +13,8 @@ Always available for substantive tasks. Start light; load only the references ne
 
 
 ## Progressive references
+- [writing-for-the-reader](references/writing-for-the-reader.md) — Draft or edit in the register the reader needs, preserving facts and voice.
+- [specialist-resources](references/specialist-resources.md) — Find an appropriate specialist or maintained reference and verify how it applies to this stack.
 - [`clarification-gate`](references/clarification-gate.md) — Load when a material ambiguity may require a question; check context and available evidence before asking.
 - [`problem-framing-and-effort`](references/problem-framing-and-effort.md) — Load only when the active gap matches one of: framing, depth, autonomy, clarification, task-profile, representation.
 - [`reasoning-structure-and-decomposition`](references/reasoning-structure-and-decomposition.md) — Load only when the active gap matches one of: decomposition, recomposition, structure, granularity, reasoning-stagnation.

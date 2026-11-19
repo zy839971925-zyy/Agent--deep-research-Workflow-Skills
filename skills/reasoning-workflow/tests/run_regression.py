@@ -102,10 +102,9 @@ class Regression(unittest.TestCase):
   case=next(c for c in json.loads((ROOT/'evals/cross_task_cases.json').read_text())['cases'] if c['id']=='v3_causal_web_search_strategy')
   self.assertIn('causal-search-source-pack.json',scenario)
   self.assertTrue(any('fixed synthetic source-pack fixture' in a for a in case['acceptance']))
-  for doc in (ROOT/'references/retrieval-and-observation.md',ROOT.parent.parent/'modular/skills/deep-research/references/retrieval-and-observation.md'):
-   text=doc.read_text()
-   self.assertIn('concise, observable decision note',text)
-   self.assertNotIn('state internally why',text)
+  text=(ROOT/'references/retrieval-and-observation.md').read_text()
+  self.assertIn('concise, observable decision note',text)
+  self.assertNotIn('state internally why',text)
  def test_40_checkpoint_current_identity_comparison(self):
   payload=b'synthetic checkpoint component';(self.d/'component.json').write_bytes(payload)
   digest='sha256:'+hashlib.sha256(payload).hexdigest()
@@ -368,14 +367,12 @@ class Regression(unittest.TestCase):
   modes=(ROOT/'references/research-modes-and-methods.md').read_text().lower()
   effort=(ROOT/'references/problem-framing-and-effort.md').read_text().lower()
   host=(ROOT/'references/harness-profiles.md').read_text().lower()
-  modular_skill=(ROOT.parent.parent/'modular/skills/deep-research/SKILL.md').read_text().lower()
-  modular_modes=(ROOT.parent.parent/'modular/skills/deep-research/references/research-modes-and-methods.md').read_text().lower()
-  for doc in (root_skill,modes,modular_skill,modular_modes):
+  for doc in (root_skill,modes):
    self.assertTrue('engineering' in doc or 'architecture' in doc)
    self.assertIn('real-world',doc)
    self.assertTrue('both' in doc or 'hybrid' in doc)
    self.assertIn('user',doc)
-  for doc in (root_skill,effort,host,modular_skill):
+  for doc in (root_skill,effort,host):
    self.assertTrue('default model' in doc or 'host-selected model' in doc)
    self.assertIn('explicit',doc)
    self.assertIn('ultra',doc)
@@ -453,17 +450,9 @@ class Regression(unittest.TestCase):
   host_profiles=(ROOT/'references/harness-profiles.md').read_text().lower()
   self.assertIn('automatic activation and direct invocation',host_profiles)
   self.assertIn('best-effort',host_profiles)
-  plugin=json.loads((ROOT.parent.parent/'.codex-plugin/plugin.json').read_text())
-  self.assertIn('调用我的 workflow skills',plugin['interface']['defaultPrompt'])
   self.assertTrue((ROOT/'evals/fixtures/dependency-resume/state/dependency-map.md').is_file())
-  modular_recovery=(ROOT.parent.parent/'modular/skills/execution-control/references/synchronization-and-recovery.md').read_text().lower()
-  self.assertIn('root objective',modular_recovery)
-  self.assertIn('cannot be found',modular_recovery)
-  self.assertIn('parked side branch',modular_recovery)
   self.assertIn('### Resume across workflow or runtime revisions', (ROOT/'references/synchronization-and-recovery.md').read_text())
-  self.assertIn('compare the saved workflow/policy identity', modular_recovery)
   self.assertIn('## Root cancellation and late worker results', (ROOT/'references/runtime-and-delegation.md').read_text())
-  self.assertIn('## Root cancellation and late worker results', (ROOT.parent.parent/'modular/skills/execution-control/references/runtime-and-delegation.md').read_text())
   self.assertIn('cannot reopen the root', (ROOT/'references/runtime-and-delegation.md').read_text())
   for rel in ('runtime-revision-mismatch/state/checkpoint.json','runtime-revision-mismatch/state/current-environment.json','runtime-revision-mismatch/state/dependency-map.json','runtime-revision-mismatch/artifacts/recommendation-draft.md','runtime-revision-mismatch/README.md','root-cancellation-late-result/state/root.json','root-cancellation-late-result/worker/late-result.json','root-cancellation-late-result/worker/draft.md','root-cancellation-late-result/README.md'):
    self.assertTrue((ROOT/'evals/fixtures'/rel).is_file(),rel)

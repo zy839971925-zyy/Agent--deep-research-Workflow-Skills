@@ -1,0 +1,751 @@
+{
+  "schema_version": "1.0",
+  "rule": "Related links are navigation hints, never automatic-load instructions. Load references through the current deterministic route and real unresolved gaps; required_reference_ids (including explicit Ultra methods) cannot be dropped by phase limits or missing tags.",
+  "families": [
+    {
+      "id": "core-reasoning",
+      "description": "Universal problem framing, decomposition, relationships, causal chains, hypotheses and interpretation."
+    },
+    {
+      "id": "deep-research",
+      "description": "Model-driven orientation, evidence needs, retrieval, provenance, freshness and research synthesis."
+    },
+    {
+      "id": "decision-analysis",
+      "description": "Objectives, alternatives, measurements, trade-offs and recommendations."
+    },
+    {
+      "id": "execution-control",
+      "description": "Plans, schedules, capabilities, workers, state, checkpoint, recovery and replay safety."
+    },
+    {
+      "id": "audit-verification",
+      "description": "Contract verification, independent review, closure, effectiveness and workflow adherence."
+    },
+    {
+      "id": "workflow-learning",
+      "description": "Post-run CAPA, experience memory, eval-gated learning promotion and rollback. Maintenance plane only."
+    }
+  ],
+  "references": [
+    {
+      "id": "problem-framing-and-effort",
+      "family": "core-reasoning",
+      "path": "references/problem-framing-and-effort.md",
+      "load_when_tags": [
+        "framing",
+        "depth",
+        "autonomy",
+        "clarification",
+        "task-profile",
+        "representation"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 1
+    },
+    {
+      "id": "reasoning-structure-and-decomposition",
+      "family": "core-reasoning",
+      "path": "references/reasoning-structure-and-decomposition.md",
+      "load_when_tags": [
+        "decomposition",
+        "recomposition",
+        "structure",
+        "granularity",
+        "reasoning-stagnation"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "relationships-and-systems",
+      "family": "core-reasoning",
+      "path": "references/relationships-and-systems.md",
+      "load_when_tags": [
+        "causal-chain",
+        "systems",
+        "relationships",
+        "feedback",
+        "mechanism"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "hypotheses-and-bias-control",
+      "family": "core-reasoning",
+      "path": "references/hypotheses-and-bias-control.md",
+      "load_when_tags": [
+        "hypotheses",
+        "competing-explanations",
+        "bias",
+        "falsification"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "human-context-and-interpretation",
+      "family": "core-reasoning",
+      "path": "references/human-context-and-interpretation.md",
+      "load_when_tags": [
+        "human-context",
+        "interpretation",
+        "statement"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "worked-examples",
+      "family": "core-reasoning",
+      "path": "references/worked-examples.md",
+      "load_when_tags": [
+        "examples",
+        "workflow-example"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 9
+    },
+    {
+      "id": "inquiry-and-research",
+      "family": "deep-research",
+      "path": "references/inquiry-and-research.md",
+      "load_when_tags": [
+        "deep-research",
+        "evidence-need",
+        "research-loop",
+        "frame-discovery"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "information-target-navigation",
+      "family": "deep-research",
+      "path": "references/information-target-navigation.md",
+      "load_when_tags": [
+        "information-target",
+        "problem-decomposition",
+        "response-field",
+        "search-path-stagnation",
+        "research-frontier"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 0
+    },
+    {
+      "id": "retrieval-and-observation",
+      "family": "deep-research",
+      "path": "references/retrieval-and-observation.md",
+      "load_when_tags": [
+        "retrieval",
+        "orientation-retrieval",
+        "evidence-retrieval",
+        "observation",
+        "web-search",
+        "query-strategy",
+        "query-reformulation"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "evidence-and-provenance",
+      "family": "deep-research",
+      "path": "references/evidence-and-provenance.md",
+      "load_when_tags": [
+        "evidence",
+        "provenance",
+        "citation",
+        "source-independence"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "time-scenarios-and-forecasting",
+      "family": "deep-research",
+      "path": "references/time-scenarios-and-forecasting.md",
+      "load_when_tags": [
+        "forecast",
+        "time",
+        "scenario",
+        "freshness",
+        "volatility",
+        "forecast-update"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "multimodal-and-data",
+      "family": "deep-research",
+      "path": "references/multimodal-and-data.md",
+      "load_when_tags": [
+        "multimodal",
+        "data",
+        "files",
+        "images",
+        "data-generating-process",
+        "selection"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "decision-and-recommendation",
+      "family": "decision-analysis",
+      "path": "references/decision-and-recommendation.md",
+      "load_when_tags": [
+        "decision",
+        "recommendation",
+        "tradeoff",
+        "choice",
+        "allocation",
+        "option-set",
+        "preference-uncertainty",
+        "robustness",
+        "clarification-voi"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "measurement-and-operationalization",
+      "family": "decision-analysis",
+      "path": "references/measurement-and-operationalization.md",
+      "load_when_tags": [
+        "measurement",
+        "metric",
+        "proxy",
+        "operationalization",
+        "evaluator-validity",
+        "measurement-chain"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "runtime-and-delegation",
+      "family": "execution-control",
+      "path": "references/runtime-and-delegation.md",
+      "load_when_tags": [
+        "execution",
+        "delegation",
+        "swarm",
+        "schedule",
+        "worker",
+        "capability",
+        "failure-diagnosis",
+        "replanning"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "synchronization-and-recovery",
+      "family": "execution-control",
+      "path": "references/synchronization-and-recovery.md",
+      "load_when_tags": [
+        "checkpoint",
+        "resume",
+        "recovery",
+        "replay",
+        "side-effect",
+        "checkpoint-alignment"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "state-model-and-invariants",
+      "family": "execution-control",
+      "path": "references/state-model-and-invariants.md",
+      "load_when_tags": [
+        "state",
+        "canonical-state",
+        "invariants",
+        "durable"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "semantic-state-contract",
+      "family": "execution-control",
+      "path": "references/semantic-state-contract.md",
+      "load_when_tags": [
+        "semantic-state",
+        "lifecycle",
+        "effective-state"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 2
+    },
+    {
+      "id": "traceability-and-integrity",
+      "family": "execution-control",
+      "path": "references/traceability-and-integrity.md",
+      "load_when_tags": [
+        "traceability",
+        "integrity",
+        "event",
+        "lineage"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "domain-patterns",
+      "family": "execution-control",
+      "path": "references/domain-patterns.md",
+      "load_when_tags": [
+        "domain-pattern",
+        "implementation-pattern"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 8
+    },
+    {
+      "id": "synthesis-execution-and-verification",
+      "family": "audit-verification",
+      "path": "references/synthesis-execution-and-verification.md",
+      "load_when_tags": [
+        "verification",
+        "synthesis",
+        "closure",
+        "artifact-contract",
+        "orthogonal-verification"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "formal-review-and-audit",
+      "family": "audit-verification",
+      "path": "references/formal-review-and-audit.md",
+      "load_when_tags": [
+        "audit",
+        "review",
+        "adherence",
+        "dual-review",
+        "adversarial-review",
+        "reviewer-independence",
+        "evaluator-validity",
+        "orthogonal-verification"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "change-governance-and-effectiveness",
+      "family": "audit-verification",
+      "path": "references/change-governance-and-effectiveness.md",
+      "load_when_tags": [
+        "change-governance",
+        "effectiveness",
+        "capa",
+        "high-consequence"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 2
+    },
+    {
+      "id": "workflow-learning-and-capa",
+      "family": "workflow-learning",
+      "path": "references/workflow-learning-and-capa.md",
+      "load_when_tags": [
+        "learning",
+        "capa",
+        "regression",
+        "self-evolution",
+        "maintenance",
+        "negative-transfer",
+        "applicability"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": true,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "ultra-research",
+      "family": "deep-research",
+      "path": "references/ultra-research.md",
+      "load_when_tags": [
+        "ultra",
+        "fresh-frame",
+        "evidence-ecology",
+        "missingness",
+        "boundary",
+        "research-path-reset",
+        "pivotal-claims"
+      ],
+      "typical_depth": [
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "high",
+      "default_priority": 1
+    },
+    {
+      "id": "model-adaptation",
+      "family": "core-reasoning",
+      "path": "references/model-adaptation.md",
+      "load_when_tags": [
+        "model-adaptation",
+        "gpt-6-plus",
+        "codex",
+        "compute-allocation",
+        "multi-agent",
+        "compaction",
+        "scaffolding",
+        "claude-frontier",
+        "harness-adaptation"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 5
+    },
+    {
+      "id": "comparative-synthesis",
+      "family": "deep-research",
+      "path": "references/comparative-synthesis.md",
+      "load_when_tags": [
+        "cross-study-comparison",
+        "benchmark-comparison",
+        "model-comparison",
+        "evidence-synthesis"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 3
+    },
+    {
+      "id": "harness-profiles",
+      "family": "core-reasoning",
+      "path": "references/harness-profiles.md",
+      "load_when_tags": [
+        "harness-adaptation",
+        "codex",
+        "claude-code",
+        "chatgpt-chat",
+        "claude-chat",
+        "grok-chat",
+        "skill-installation"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 8
+    },
+    {
+      "id": "research-modes-and-methods",
+      "family": "deep-research",
+      "path": "references/research-modes-and-methods.md",
+      "load_when_tags": [
+        "empirical-research",
+        "real-world-research",
+        "technical-research",
+        "architecture-research",
+        "pre-build",
+        "hybrid-research",
+        "tradeoff-scenarios"
+      ],
+      "typical_depth": [
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "medium",
+      "default_priority": 4
+    },
+    {
+      "id": "clarification-gate",
+      "family": "core-reasoning",
+      "path": "references/clarification-gate.md",
+      "load_when_tags": [
+        "clarification",
+        "ambiguous-request",
+        "user-question",
+        "missing-input",
+        "before-asking",
+        "grill-me",
+        "requirements-interview",
+        "costly-ambiguity"
+      ],
+      "typical_depth": [
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 3
+    },
+    {
+      "id": "engineering-delivery",
+      "family": "execution-control",
+      "path": "references/engineering-delivery.md",
+      "load_when_tags": [
+        "engineering-delivery",
+        "compatibility",
+        "release-install",
+        "regression"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "specialist-resources",
+      "family": "core-reasoning",
+      "path": "references/specialist-resources.md",
+      "load_when_tags": [
+        "specialist-resource",
+        "design-reference",
+        "motion-reference",
+        "library-selection"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "writing-for-the-reader",
+      "family": "core-reasoning",
+      "path": "references/writing-for-the-reader.md",
+      "load_when_tags": [
+        "writing-style",
+        "audience",
+        "editing-voice"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    },
+    {
+      "id": "research-to-report",
+      "family": "deep-research",
+      "path": "references/research-to-report.md",
+      "load_when_tags": [
+        "report-synthesis",
+        "claim-support",
+        "evidence-update"
+      ],
+      "typical_depth": [
+        "light",
+        "standard",
+        "deep",
+        "max",
+        "ultra"
+      ],
+      "machine_enforced": false,
+      "context_cost_class": "low",
+      "default_priority": 50,
+      "on_demand_only": true
+    }
+  ]
+}

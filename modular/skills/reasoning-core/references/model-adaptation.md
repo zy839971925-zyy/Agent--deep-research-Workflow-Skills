@@ -63,3 +63,5 @@ Change scaffolding locally when the workflow misses a real obligation, loses con
 A newer model is not itself evidence of better research. Claims about quality, reliability, cost, or latency require task-relevant evaluation; official product documentation establishes feature availability, not measured performance gains.
 
 [← Return to root workflow](../SKILL.md)
+
+For provider migrations keep the common entry stable. Check the current provider docs for supported effort, history format and signed tool results. On a fresh version, compare the same tasks, observable outcomes, latency and actual cost before retaining model-specific scaffolding.

@@ -27,7 +27,7 @@
 
 ## 2.1 → 2.1.1 compatibility
 
-See [中文修复与升级说明](docs/RELEASE_2.1.1.zh-CN.md). Keep the 2.1 directory/records; load this separate directory through the same `SKILL.md` entry. There is no automatic migration or execution.
+See [中文修复与升级说明](https://github.com/zy839971925-zyy/Agent--deep-research-Workflow-Skills/blob/e65072c/skills/reasoning-workflow/docs/RELEASE_2.1.1.zh-CN.md). Keep the 2.1 directory/records; load this separate directory through the same `SKILL.md` entry. There is no automatic migration or execution.
 
 - Regenerate routes from the current normalized profile: routes now include `required_reference_ids`; resource selection rejects stale or edited routes.
 - Re-review affected recorded targets with the new `fingerprint` function. Old hashes may change because singular/transitive dependencies are now included; do not relabel old reviews as current.

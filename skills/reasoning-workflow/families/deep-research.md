@@ -5,6 +5,7 @@ Activate for material evidence depth, frame uncertainty, multi-source verificati
 > Return to the governing router after the current module. `Related` never means auto-load.
 
 ## References
+- [research-to-report](../references/research-to-report.md) — Turn a discriminating search into a report with bounded, traceable claims.
 - [`research-modes-and-methods`](../references/research-modes-and-methods.md) — Load when the investigation concerns real-world evidence, pre-build technical architecture, or a hybrid outcome-to-system decision.
 - [`inquiry-and-research`](../references/inquiry-and-research.md) — Load only when the active gap matches one of: deep-research, evidence-need, research-loop, frame-discovery.
 - [`information-target-navigation`](../references/information-target-navigation.md) — Load only when the active gap is information-target, problem-decomposition, response-field, search-path-stagnation, or a long-running research frontier. Turn a decisive unknown into an observable difference before generating a query.

@@ -5,6 +5,7 @@ Activate only when work persists beyond an answer: external side effects, durabl
 > Return to the governing router after the current module. `Related` never means auto-load.
 
 ## References
+- [engineering-delivery](../references/engineering-delivery.md) — Verify changed behavior from a real entry point and exercise its important failure case.
 - [`runtime-and-delegation`](../references/runtime-and-delegation.md) — Load only when the active gap matches one of: execution, delegation, swarm, schedule, worker, capability, failure-diagnosis, replanning.
 - [`synchronization-and-recovery`](../references/synchronization-and-recovery.md) — Load only when the active gap matches one of: checkpoint, resume, recovery, replay, side-effect, checkpoint-alignment.
 - [`state-model-and-invariants`](../references/state-model-and-invariants.md) — Load only when the active gap matches one of: state, canonical-state, invariants, durable.

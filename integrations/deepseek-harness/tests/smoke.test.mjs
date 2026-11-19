@@ -32,6 +32,7 @@ test('registers a bundled, user- and model-invocable reasoning-workflow Skill', 
   const canonicalText = await readFile(new URL('SKILL.md', sourceDir), 'utf8')
   const canonicalBody = canonicalText.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim()
   assert.equal(definition.content, canonicalBody, 'provider must return the Skill body without YAML frontmatter')
+  assert.equal(definition.description, canonicalText.match(/^description: (.+)$/m)[1])
   assert.equal(installedText, canonicalText, 'packaged Skill must match the canonical Portable SKILL.md')
   assert.ok(!definition.content.startsWith('---'), 'frontmatter must not leak into loaded instructions')
   assert.equal(definition.name, candidate.name)

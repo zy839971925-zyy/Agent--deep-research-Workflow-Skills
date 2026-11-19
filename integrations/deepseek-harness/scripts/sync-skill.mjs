@@ -8,11 +8,13 @@ const sourceDir = path.join(repoDir, 'skills/reasoning-workflow')
 const targetDir = path.join(packageDir, 'skills/reasoning-workflow')
 const includedDirs = ['references', 'families', 'schemas', 'scripts', 'assets']
 
+const includedFiles = ['SKILL.md', 'UPGRADE.md', 'routing-index.json', 'RELEASE.json']
+
 await mkdir(targetDir, { recursive: true })
-for (const entry of ['SKILL.md', 'UPGRADE.md', ...includedDirs]) {
+for (const entry of [...includedFiles, ...includedDirs]) {
   await rm(path.join(targetDir, entry), { recursive: true, force: true })
 }
-for (const file of ['SKILL.md', 'UPGRADE.md']) {
+for (const file of includedFiles) {
   await cp(path.join(sourceDir, file), path.join(targetDir, file))
 }
 for (const dir of includedDirs) {
